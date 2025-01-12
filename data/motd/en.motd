@@ -1,49 +1,51 @@
 # Lines longer than 78 characters will be wrapped automatically
 # The following line is for reference
 ##############################################################################
-<color_white>Visit us:</color>
+<color_white>Contact Options:</color>
 
-<color_light_gray>* Homepage:</color>    <color_cyan>https://cataclysmdda.org</color>
+<color_light_gray>* Original Homepage:</color>    <color_cyan>https://cataclysmdda.org</color>
 
 <color_white>Report bugs, suggestion and follow the development at:</color>
 
-<color_light_gray>* Github: </color><color_light_cyan>https://github.com/CleverRaven/Cataclysm-DDA/issues</color>
-<color_light_gray>* e-mail: </color><color_light_cyan>kevin.granade@gmail.com</color>
+<color_light_gray>* Github: </color><color_light_cyan>https://github.com/Command-Line-Vulpine/Cataclysm-Restored/color>
+<color_light_gray>* e-mail: </color><color_light_cyan>lanceo90@humanoid.net</color>
 
 <color_white>Join the discussion on forums and chats:</color>
 
-<color_light_gray>* Discourse:                 </color><color_cyan>https://discourse.cataclysmdda.org/</color>
-<color_light_gray>* Discord:                   </color><color_cyan>https://discord.gg/jFEc7Yp</color>
-<color_light_gray>* IRC:                       </color><color_cyan>#CataclysmDDA at libera.chat</color>
+<color_light_gray>* YouTube:                   </color><color_cyan>https://www.youtube.com/c/commandlinevulpine/</color>
+<color_light_gray>* Discord:                   </color><color_cyan>https://discord.gg/GqD8Tvk</color>
 
-<color_light_gray>Other useful links are also available at our Homepage.</color>
 
 <color_light_gray>In game you can access the options via the main menu (<color_yellow>Esc</color>).</color>
 
 <color_light_red>******************************************************************************</color>
-<color_light_red>    Disclaimer for the experimental builds:</color>
+<color_light_red>    Disclaimers:</color>
 <color_light_red>******************************************************************************</color>
 
-<color_white>Q: </color><color_yellow>What is an experimental build?</color>
+<color_yellow>#### Why is this nessacary?</color>
 
-<color_white>A: </color><color_light_gray>The goal of the experimental builds is to be a second tier of quality control.  It's the frontline where new content is released to be tested and balanced after initial quality control.  Be aware that by choosing to play the latest experimental builds you are participating in the development process by literally playtesting the new content, and it is prone to bugs and underdeveloped features.</color>
+<color_light_gray>A growing set of the fanbase has been dissatisfied with the direction the devs have been taking the base game; starting from around 0.E Stable onward.  Most recently, with 0.H Stable and experimentals beyond that are starting to aggravate a much larger portion of the fanbase.  The direction of the game has become very confused, with an over-focus on "realism" at the sacrafice of fun.</color>
 
-<color_white>Q: </color><color_yellow>Why are experimental builds even a thing?</color>
+<color_yellow>### Why this instead of Bright Nights?</color>
 
-<color_white>A: </color><color_light_gray>Consider it like playing an alpha/beta version - bugs and underdeveloped features are part of it.  Due to continuous integration rigors, experimental builds are always in a state of a constant work in progress.  Experimental is a sandbox where the bug detecting and feature polishing takes place.  Big and small features are constantly released to those builds to be checked for overall stability and balance.  Because of that, experimentals are not under the rigor of guaranteeing balance and stability.  In fact, nothing is guaranteed in the experimental builds.</color>
+<color_light_gray>I've heard and found Bright Nights adjustments to be somewhat inconsistant, as well as being outdated.  For instance, I've heard it doesn't have the new inventory system added in 0.F - we're to 0.H now.  There are some features that have been added I think should stay, such as that inventory system.</color>
 
-<color_white>Q: </color><color_yellow>Are experimental builds playable then?</color>
+<color_yellow>#### Why you?</color>
 
-<color_white>A: </color><color_light_gray>Yes.  But while experimental builds overall are stable, it is also not guaranteed as features may be introduced in an underdeveloped state, in parts; and may introduce bugs, including severe ones that may crash the game or corrupt savegames.  It's rare, but due to the complexity of the game, the initial quality control before merging with experimental build may be inadequate, and there is always room for human error.  This is why experimental builds exist in the first place.</color>
+<color_light_gray>I'm no professional developer, but I'm not new to making mods.  Back in the 0.C era I made the Five Nights at Freddy's mod that added the animatronics and pizzeria to the game.  I also made the Lightfire Union mod for Stellaris which added a full fox furry race to the game using (with permission) artwork by real artists.  I've also done minor modifications for myself to CDDA when I play it.  Lastly, I've been playing CDDA since pre-0.A, all on camera for YouTube - I'll be blunt, and just say I think I have a better understanding of how the game was really meant to feel than the modern dev team.</color>
 
-<color_white>Q: </color><color_yellow>Should I play experimental builds then, or stick to stable build?</color>
+<color_yellow>#### What do you plan to change?</color>
 
-<color_white>A: </color><color_light_gray>The reward is instant access to the newest content, the risk is losing your game progress if a nasty bug emerges.  It is always your choice to play experimental builds, with a stable build available, so play at your own discretion.  You take all of the burden if something goes wrong, so be warned.  Take precautions, make backups.  Sometimes it's even best to postpone updating for few days until a big feature has been stabilized or a significant bug has been removed.</color>
+<color_light_gray>1. I'm removing portal storms.  In my opinion Cataclysm IS a zombie game, not an eldrich horror game.  I'm not removing eldrich creatures from their normal ways of spawning, because demons have been around from the start - and I feel another major aspect was an idea that many apocalypses are happening all at once; whereas now they want it to be just one.
 
-<color_white>Q: </color><color_yellow>Should I be aware of anything else?</color>
+2. No max item length for backpacks.  This was one of the big mistakes with the new inventory system.  Not being able to pick up a plank without weilding or dragging it is extremely frustrating.  Or being able to carry a crowbar or gun in it.  It only adds tedium, and the realism is questionable anyway; you could always leave a bag partially unzipped irl.
 
-<color_white>A: </color><color_light_gray>Yes.  Remember that everything you see and are about to see is potentially subject to change.  All features, including newly implemented, are a work in progress and may change in the course of game development.  And, as said previously, nothing is guaranteed, including balance and stability.</color>
+3. Removing breathability.  Its hard to remove core features, so my method of fixing this for now will be to make everything 100% breathable.  Sweating nearly killed a character of mine just boiling water.  Its completely unrealistic a person wouldn't realize they're too hot and back away from a fire automatically.  Additionally, it's redundant with Warmth anyway.  Just make armor hotter.
 
-<color_white>Q: </color><color_yellow>What if I find the risk of playing experimental build unacceptable?</color>
+4. Acid rain.  The man, the myth, the legend.  Part of my feeling of "every apocalypse is happening at once" acid rain was core to the experience of Early CDDA.  I heard a rumor it was supposed to be put back in, but that was years ago now so it's clear it's not.  I'll do it myself.
 
-<color_white>A: </color><color_light_gray>If the risk is unacceptable - play the stable version.  If you are willing to take the risk - enjoy the newly added content of the experimental builds and partake in development - report bugs, submit suggestions, or even contribute your own content to the game.  Good luck.</color>
+5. Bringing back rags.  The tailoring system has been vastly overcomplicated.  I would like to bring back rags being the only nessacary cloth resource.
+
+6. Item re-rebalancing.  The all time classic starting weapon in CDDA was the makeshift crowbar.  Its time it made a comeback - a long with a lot of other fan favorite weapons.  (I'll try to keep it reasonable)
+
+7. You tell me.  I haven't been completely tuned in to every single thing that's changed, some of it might be far beyond my power to fix.   But if it's a number in a json, I can do it.  Until I think of something better, just leave a comment on this youtube video of mine https://youtu.be/E72xz9NEf_4 and I'll look into it.</color>
