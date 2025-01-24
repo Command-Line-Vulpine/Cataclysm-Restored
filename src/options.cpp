@@ -2840,8 +2840,8 @@ void options_manager::add_options_world_default()
 
     add( "CHARACTER_POINT_POOLS", "world_default", to_translation( "Character point pools" ),
          to_translation( "Allowed point pools for character generation." ),
-    { { "any", to_translation( "Any" ) }, { "multi_pool", to_translation( "Legacy Multipool" ) }, { "story_teller", to_translation( "Survivor" ) } },
-    "story_teller"
+    { { "any", to_translation( "Any" ) }, { "single_pool", to_translation( "Single Pool" ) }, { "multi_pool", to_translation( "Multi Pool" ) }, { "story_teller", to_translation( "Freeform" ) } },
+    "any"
        );
 
     add_empty_line();
