@@ -347,7 +347,7 @@ static std::string pools_to_string( const avatar &u, pool_type pool )
         case pool_type::TRANSFER:
             return _( "Character Transfer: No changes can be made." );
         case pool_type::FREEFORM:
-            return _( "Survivor" );
+            return _( "Freeform" );
     }
     return "If you see this, this is a bug";
 }
@@ -761,7 +761,7 @@ bool avatar::create( character_type type, const std::string &tempname )
     tab_manager tabs( character_tabs );
 
     const std::string point_pool = get_option<std::string>( "CHARACTER_POINT_POOLS" );
-    pool_type pool = pool_type::FREEFORM;
+    pool_type pool = pool_type::ONE_POOL;
     if( point_pool == "multi_pool" ) {
         // if using legacy multipool only set it to that
         pool = pool_type::MULTI_POOL;
@@ -1175,25 +1175,25 @@ void set_points( tab_manager &tabs, avatar &u, pool_type &pool )
     std::vector<point_limit_tuple> opts;
 
     const point_limit_tuple multi_pool = std::make_tuple( pool_type::MULTI_POOL,
-                                         _( "Legacy: Multiple pools" ),
+                                         _( "Multiple pools" ),
                                          _( "Stats, traits and skills have separate point pools.\n"
                                             "Putting stat points into traits and skills is allowed and putting trait points into skills is allowed.\n"
-                                            "Scenarios and professions affect skill points.\n\n"
-                                            "This is a legacy mode.  Point totals are no longer balanced." ) );
+                                            "Scenarios and professions affect skill points." ) );
 
-    const point_limit_tuple one_pool = std::make_tuple( pool_type::ONE_POOL, _( "Legacy: Single pool" ),
-                                       _( "Stats, traits and skills share a single point pool.\n\n"
-                                          "This is a legacy mode.  Point totals are no longer balanced." ) );
+    const point_limit_tuple one_pool = std::make_tuple( pool_type::ONE_POOL, _( "Single pool" ),
+                                       _( "Stats, traits and skills share a single point pool." ) );
 
-    const point_limit_tuple freeform = std::make_tuple( pool_type::FREEFORM, _( "Survivor" ),
+    const point_limit_tuple freeform = std::make_tuple( pool_type::FREEFORM, _( "Freeform" ),
                                        _( "No point limits are enforced, create a character with the intention of telling a story or challenging yourself." ) );
 
-    if( point_pool == "multi_pool" ) {
+    if( point_pool == "single_pool" ) {
+        opts = { { one_pool } };
+    } else if( point_pool == "multi_pool" ) {
         opts = { { multi_pool } };
     } else if( point_pool == "story_teller" ) {
         opts = { { freeform } };
     } else {
-        opts = { { freeform, multi_pool, one_pool } };
+        opts = { { one_pool, multi_pool, freeform } };
     }
 
     int highlighted = 0;
