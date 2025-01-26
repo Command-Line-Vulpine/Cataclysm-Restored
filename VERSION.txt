@@ -1,0 +1,4 @@
+build type: windows-with-graphics-x64
+build number: 2025-01-12
+commit sha: c26c2294060c570e6f82c16afa546632556244a8
+commit url: https://github.com/Command-Line-Vulpine/Cataclysm-Restored/commit/a7ddaedb6158d1ef900751b14f281821e41aa62a
