@@ -90,7 +90,7 @@
     "qualities": [ [ "PRY", 2 ], [ "HAMMER", 1 ] ],
     "use_action": [ "CROWBAR" ],
     "techniques": [ "WBLOCK_2", "RAPID", "PRECISE" ],
-    "flags": [ "BELT_CLIP", "FRAGILE_MELEE" ],
+    "flags": [ "DURABLE_MELEE", "BELT_CLIP" ],
     "weapon_category": [ "BATONS" ],
     "melee_damage": { "bash": 12, "cut": 1 }
   },
