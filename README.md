@@ -27,6 +27,8 @@ v 0.2
 1. Buffed makeshift crowbar, cudgel, and quarterstaff to older stats.
 2. Removed welding rod requirements; also added easy ways to make them, as a backup.
 3. Boosted cotton sheet output from dissembling sheets.
+4. Have game default to single-pool points system.  Rename "survivor" back to Freeform.
+5. Obligatory self-insert OC on Fox Body Pillow. Just MShock and UndeadPeople.
 
 v 0.1
 
