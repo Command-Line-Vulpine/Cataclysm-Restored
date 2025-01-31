@@ -5,27 +5,19 @@
     "subtype": "distribution",
     "entries": [
       {
-        "group": "twisted_geometry",
-        "artifact": {
-          "procgen_id": "twisted_geometry",
-          "rules": { "power_level": 750, "max_attributes": 4, "max_negative_power": -1000, "resonant": true }
-        },
-        "prob": 50
-      },
-      {
         "group": "ps_artifacts",
         "artifact": {
           "procgen_id": "netherum_tunnels",
           "rules": { "power_level": 750, "max_attributes": 4, "max_negative_power": -1000, "resonant": true }
         },
-        "prob": 50
+        "prob": 100
       }
     ]
   },
   {
     "type": "item_group",
     "id": "altered_object_i",
-    "subtype": "collection",
+    "subtype": "distribution",
     "entries": [
       {
         "group": "altered_item",
@@ -34,8 +26,7 @@
           "rules": { "power_level": 750, "max_attributes": 4, "max_negative_power": -1000, "resonant": true }
         },
         "prob": 100
-      },
-      { "item": "resonance_measurement_device", "prob": 25 }
+      }
     ]
   },
   {

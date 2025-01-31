@@ -123,14 +123,6 @@
     "multi_activity": true
   },
   {
-    "id": "ACT_BASH",
-    "type": "activity_type",
-    "activity_level": "MODERATE_EXERCISE",
-    "verb": "bashing",
-    "can_resume": false,
-    "based_on": "neither"
-  },
-  {
     "id": "ACT_BIKERACK_RACKING",
     "type": "activity_type",
     "activity_level": "MODERATE_EXERCISE",
@@ -205,7 +197,7 @@
   {
     "id": "ACT_MULTIPLE_FISH",
     "type": "activity_type",
-    "activity_level": "NO_EXERCISE",
+    "activity_level": "LIGHT_EXERCISE",
     "verb": "fishing",
     "based_on": "neither",
     "auto_needs": true
@@ -397,7 +389,7 @@
   {
     "id": "ACT_FISH",
     "type": "activity_type",
-    "activity_level": "NO_EXERCISE",
+    "activity_level": "LIGHT_EXERCISE",
     "verb": "fishing",
     "rooted": true,
     "based_on": "speed",
@@ -431,7 +423,6 @@
     "type": "activity_type",
     "activity_level": "NO_EXERCISE",
     "verb": "heating",
-    "rooted": true,
     "based_on": "time"
   },
   {
@@ -538,6 +529,14 @@
     "based_on": "neither",
     "can_resume": false,
     "auto_needs": true
+  },
+  {
+    "id": "ACT_ADV_INVENTORY",
+    "type": "activity_type",
+    "activity_level": "MODERATE_EXERCISE",
+    "verb": "interacting with inventory",
+    "based_on": "neither",
+    "can_resume": false
   },
   {
     "id": "ACT_ARMOR_LAYERS",
@@ -732,14 +731,6 @@
     "based_on": "speed"
   },
   {
-    "id": "ACT_OUTFIT_SWAP",
-    "type": "activity_type",
-    "activity_level": "LIGHT_EXERCISE",
-    "verb": "changing clothes",
-    "rooted": true,
-    "based_on": "speed"
-  },
-  {
     "id": "ACT_WASH",
     "type": "activity_type",
     "activity_level": "MODERATE_EXERCISE",
@@ -926,6 +917,15 @@
     "can_resume": false
   },
   {
+    "id": "ACT_PICKUP_MENU",
+    "type": "activity_type",
+    "activity_level": "NO_EXERCISE",
+    "verb": "picking up",
+    "rooted": true,
+    "based_on": "neither",
+    "can_resume": false
+  },
+  {
     "id": "ACT_CONSUME_FOOD_MENU",
     "type": "activity_type",
     "activity_level": "NO_EXERCISE",
@@ -933,6 +933,15 @@
     "rooted": true,
     "based_on": "neither",
     "ignored_distractions": [ "hunger", "thirst" ],
+    "can_resume": false
+  },
+  {
+    "id": "ACT_VIEW_RECIPE",
+    "type": "activity_type",
+    "activity_level": "NO_EXERCISE",
+    "verb": "viewing recipe",
+    "rooted": true,
+    "based_on": "neither",
     "can_resume": false
   },
   {
@@ -1105,25 +1114,5 @@
     "interruptable": false,
     "can_resume": false,
     "interruptable_with_kb": false
-  },
-  {
-    "id": "ACT_GLIDE",
-    "type": "activity_type",
-    "activity_level": "NO_EXERCISE",
-    "verb": "gliding",
-    "based_on": "neither",
-    "interruptable": false,
-    "can_resume": false,
-    "refuel_fires": false,
-    "auto_needs": false,
-    "interruptable_with_kb": false
-  },
-  {
-    "id": "ACT_SALINE_INFUSE",
-    "type": "activity_type",
-    "activity_level": "NO_EXERCISE",
-    "verb": "infusing saline",
-    "based_on": "time",
-    "do_turn_eoc": "SALINE_INFUSION_eff"
   }
 ]

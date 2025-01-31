@@ -9,10 +9,8 @@
 #include <vector>
 
 #include "cuboid_rectangle.h"
-#include "input.h"
 
 class JsonArray;
-class JsonObject;
 class translation;
 namespace catacurses
 {
@@ -22,19 +20,16 @@ class window;
 class help
 {
     public:
-        static void load( const JsonObject &jo, const std::string &src );
-        static void reset();
+        void load();
         void display_help() const;
+
     private:
-        void load_object( const JsonObject &jo, const std::string &src );
-        void reset_instance();
+        void deserialize( const JsonArray &ja );
         std::map<int, inclusive_rectangle<point>> draw_menu( const catacurses::window &win,
-                                               int selected, std::map<int, input_event> &hotkeys ) const;
+                                               int selected ) const;
         static std::string get_note_colors();
         static std::string get_dir_grid();
-        // Modifier for each mods order
-        int current_order_start = 0;
-        std::string current_src;
+
         std::map<int, std::pair<translation, std::vector<translation>>> help_texts;
 };
 

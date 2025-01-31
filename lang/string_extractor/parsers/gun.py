@@ -31,12 +31,12 @@ def parse_gun(json, origin):
     if "modes" in json:
         for mode in json["modes"]:
             write_text(mode[1], origin,
-                       comment="Firing mode of gun")
+                       comment="Firing mode of gun \"{}\"".format(name))
 
     if "skill" in json:
         if json["skill"] != "archery":
             write_text(json["skill"], origin, context="gun_type_type",
-                       comment="Skill associated with gun")
+                       comment="Skill associated with gun \"{}\"".format(name))
 
     if "reload_noise" in json:
         write_text(json["reload_noise"], origin,
@@ -45,4 +45,5 @@ def parse_gun(json, origin):
     if "valid_mod_locations" in json:
         for loc in json["valid_mod_locations"]:
             write_text(loc[0], origin,
-                       comment="Valid mod location of gun")
+                       comment="Valid mod location of gun \"{}\""
+                       .format(name))

@@ -25,7 +25,7 @@ class sokoban_game
                 std::string sTileOld;
 
                 cUndo() {
-                    old = point::zero;
+                    old = point_zero;
 
                     sTileOld = " ";
                 }

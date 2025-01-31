@@ -16,7 +16,7 @@ point point::from_string( const std::string &s )
     is >> result;
     if( !is ) {
         debugmsg( "Could not convert string '" + s + "' to point" );
-        return point::zero;
+        return point_zero;
     }
     return result;
 }
@@ -71,7 +71,7 @@ tripoint tripoint::from_string( const std::string &s )
     is >> result;
     if( !is ) {
         debugmsg( "Could not convert string '" + s + "' to tripoint" );
-        return tripoint::zero;
+        return tripoint_zero;
     }
     return result;
 }
@@ -166,7 +166,7 @@ std::vector<point> closest_points_first( const point &center, int min_dist, int 
     int x_init = std::max( min_dist, 1 );
     point p( x_init, 1 - x_init );
 
-    point d( point::east );
+    point d( point_east );
 
     for( int i = 0; i < n; i++ ) {
         result.push_back( center + p );

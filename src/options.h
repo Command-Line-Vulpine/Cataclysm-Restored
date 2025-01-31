@@ -91,8 +91,6 @@ class options_manager
 
                 std::string getName() const;
                 std::string getPage() const;
-                /// The translated group name. If not in a group, an empty string.
-                std::string getGroupName() const;
                 /// The translated displayed option name.
                 std::string getMenuText() const;
                 /// The translated displayed option tool tip.
@@ -122,7 +120,7 @@ class options_manager
                 void setValue( int iSetIn );
 
                 template<typename T>
-                T value_as( bool convert = false ) const;
+                T value_as() const;
 
                 bool operator==( const cOpt &rhs ) const;
                 bool operator!=( const cOpt &rhs ) const {
@@ -193,9 +191,6 @@ class options_manager
                 float fMax = 0.0f;
                 float fDefault = 0.0f;
                 float fStep = 0.0f;
-
-                template<typename T>
-                std::optional<T> _convert() const;
         };
 
         using options_container = std::unordered_map<std::string, cOpt>;
@@ -237,8 +232,8 @@ class options_manager
         cOpt &get_option( const std::string &name );
 
         //add hidden external option with value
-        void add_external( const std::string &sNameIn, const std::string &sPageIn,
-                           const std::string &sType );
+        void add_external( const std::string &sNameIn, const std::string &sPageIn, const std::string &sType,
+                           const translation &sMenuTextIn, const translation &sTooltipIn );
 
         //add string select option
         void add( const std::string &sNameIn, const std::string &sPageIn,
@@ -320,7 +315,7 @@ class options_manager
                 PageItem( ItemType type, const std::string &data, const std::string &group )
                     : type( type ), data( data ), group( group ) { }
 
-                std::string fmt_tooltip( const std::string &group_id, const options_container &cont ) const;
+                std::string fmt_tooltip( const Group &group, const options_container &cont ) const;
         };
 
         /**
@@ -366,9 +361,6 @@ class options_manager
 
         /** Add empty line to page. */
         void add_empty_line( const std::string &sPageIn );
-
-        /** Find page by id. */
-        Page &find_page( const std::string &id );
 
         /** Find group by id. */
         const Group &find_group( const std::string &id ) const;
@@ -500,9 +492,9 @@ inline bool has_option( const std::string &name )
 }
 
 template<typename T>
-inline T get_option( const std::string &name, bool convert = false )
+inline T get_option( const std::string &name )
 {
-    return get_options().get_option( name ).value_as<T>( convert );
+    return get_options().get_option( name ).value_as<T>();
 }
 
 #endif // CATA_SRC_OPTIONS_H

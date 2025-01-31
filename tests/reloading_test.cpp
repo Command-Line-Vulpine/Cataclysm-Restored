@@ -607,8 +607,8 @@ TEST_CASE( "speedloader_reloading", "[reload],[gun]" )
 TEST_CASE( "gunmod_reloading", "[reload],[gun]" )
 {
     SECTION( "empty gun and gunmod" ) {
-        item gun( "debug_modular_m4_carbine" );
-        item mod( "m203" );
+        item gun( "modular_m4_carbine" );
+        item mod( "pipe_launcher40mm" );
         gun.force_insert_item( mod, pocket_type::MOD );
 
         SECTION( "wrong ammo" ) {
@@ -631,8 +631,8 @@ TEST_CASE( "gunmod_reloading", "[reload],[gun]" )
     }
 
     SECTION( "partially empty gun and empty gunmod" ) {
-        item gun( "debug_modular_m4_carbine" );
-        item mod( "m203" );
+        item gun( "modular_m4_carbine" );
+        item mod( "pipe_launcher40mm" );
         item mag1( "stanag30" );
         mag1.put_in( item( "556", calendar::turn, 10 ), pocket_type::MAGAZINE );
 
@@ -665,8 +665,8 @@ TEST_CASE( "gunmod_reloading", "[reload],[gun]" )
     }
 
     SECTION( "partially empty gun and full gunmod" ) {
-        item gun( "debug_modular_m4_carbine" );
-        item mod( "m203" );
+        item gun( "modular_m4_carbine" );
+        item mod( "pipe_launcher40mm" );
         item mag1( "stanag30" );
         mag1.put_in( item( "556", calendar::turn, 10 ), pocket_type::MAGAZINE );
         mod.put_in( item( "40x46mm_m433", calendar::turn, 1 ), pocket_type::MAGAZINE );
@@ -700,8 +700,8 @@ TEST_CASE( "gunmod_reloading", "[reload],[gun]" )
     }
 
     SECTION( "partially empty gun and gunmod with casing" ) {
-        item gun( "debug_modular_m4_carbine" );
-        item mod( "m203" );
+        item gun( "modular_m4_carbine" );
+        item mod( "pipe_launcher40mm" );
         item mag1( "stanag30" );
         mag1.put_in( item( "556", calendar::turn, 10 ), pocket_type::MAGAZINE );
         mod.force_insert_item( item( "40x46mm_m118_casing" ).set_flag( json_flag_CASING ),
@@ -736,8 +736,8 @@ TEST_CASE( "gunmod_reloading", "[reload],[gun]" )
     }
 
     SECTION( "full gun and empty gunmod" ) {
-        item gun( "debug_modular_m4_carbine" );
-        item mod( "m203" );
+        item gun( "modular_m4_carbine" );
+        item mod( "pipe_launcher40mm" );
         item mag1( "stanag30" );
         mag1.put_in( item( "556", calendar::turn, 30 ), pocket_type::MAGAZINE );
 
@@ -934,7 +934,7 @@ TEST_CASE( "automatic_reloading_action", "[reload],[gun]" )
 
         dummy.set_wielded_item( item( "sw_610", calendar::turn_zero, 0 ) );
         REQUIRE( dummy.get_wielded_item()->ammo_remaining() == 0 );
-        REQUIRE( dummy.get_wielded_item().can_reload_with( ammo, false ) );
+        REQUIRE( dummy.get_wielded_item()->can_reload_with( *ammo, false ) );
 
         WHEN( "the player triggers auto reload until the revolver is full" ) {
             reload_a_revolver( dummy, *dummy.get_wielded_item(), *ammo );
@@ -948,7 +948,7 @@ TEST_CASE( "automatic_reloading_action", "[reload],[gun]" )
         GIVEN( "the player has another gun with ammo" ) {
             item_location gun2 = dummy.i_add( item( "sw_610", calendar::turn_zero, 0 ) );
             REQUIRE( gun2->ammo_remaining() == 0 );
-            REQUIRE( gun2.can_reload_with( ammo, false ) );
+            REQUIRE( gun2->can_reload_with( *ammo, false ) );
             WHEN( "the player triggers auto reload until the first revolver is full" ) {
                 reload_a_revolver( dummy, *dummy.get_wielded_item(), *ammo );
                 WHEN( "the player triggers auto reload until the second revolver is full" ) {
@@ -1135,10 +1135,10 @@ TEST_CASE( "reload_liquid_container", "[reload],[liquid]" )
     }
 
     SECTION( "liquid reload from map" ) {
-        const tripoint_bub_ms test_origin( 60, 60, 0 );
+        const tripoint test_origin( 60, 60, 0 );
         map &here = get_map();
         dummy.setpos( test_origin );
-        const tripoint_bub_ms near_point = test_origin + tripoint::east;
+        const tripoint near_point = test_origin + tripoint_east;
 
         SECTION( "liquid in container on floor" ) {
             ammo_jug.remove_item();

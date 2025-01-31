@@ -7,6 +7,7 @@
 #include "game.h"
 #include "game_ui.h"
 #include "input.h"
+#include "loading_ui.h"
 #include "mapsharing.h"
 #include "options.h"
 #include "output.h"
@@ -162,6 +163,8 @@ int main( int argc, char *argv[] )
         debugmsg( "%s", err.what() );
         exit_handler( -999 );
     }
+
+    loading_ui ui( false );
 
     get_options().init();
     get_options().load();

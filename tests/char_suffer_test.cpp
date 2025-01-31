@@ -15,14 +15,11 @@
 #include "item.h"
 #include "map.h"
 #include "map_helpers.h"
-#include "options_helpers.h"
 #include "player_helpers.h"
 #include "test_statistics.h"
 #include "type_id.h"
 
 static const efftype_id effect_grabbed( "grabbed" );
-
-static const ter_str_id ter_t_rock_wall( "t_rock_wall" );
 
 static const trait_id trait_ALBINO( "ALBINO" );
 static const trait_id trait_SUNBURN( "SUNBURN" );
@@ -104,10 +101,9 @@ static int test_suffer_pain_felt( Character &dummy, const time_duration &dur )
 TEST_CASE( "suffering_from_albinism", "[char][suffer][albino]" )
 {
     clear_map();
-    clear_avatar();
-    set_time_to_day();
-    scoped_weather_override clear_weather( WEATHER_CLEAR );
     avatar &dummy = get_avatar();
+    clear_character( dummy );
+    g->reset_light_level();
 
     int focus_lost = 0;
     // TODO: The random chance of pain is too unprectable to test reliably.
@@ -127,7 +123,8 @@ TEST_CASE( "suffering_from_albinism", "[char][suffer][albino]" )
     item longshirt( "test_longshirt" );
 
     GIVEN( "avatar is in sunlight with the albino trait" ) {
-        REQUIRE( g->is_in_sunlight( dummy.pos_bub() ) );
+        calendar::turn = calendar::turn_zero + 12_hours;
+        REQUIRE( g->is_in_sunlight( dummy.pos() ) );
 
         dummy.toggle_trait( trait_ALBINO );
         REQUIRE( dummy.has_trait( trait_ALBINO ) );
@@ -210,9 +207,8 @@ TEST_CASE( "suffering_from_sunburn", "[char][suffer][sunburn]" )
 {
     clear_map();
     clear_avatar();
-    set_time_to_day();
-    scoped_weather_override clear_weather( WEATHER_CLEAR );
     Character &dummy = get_player_character();
+    g->reset_light_level();
     const std::vector<bodypart_id> body_parts_with_hp = dummy.get_all_body_parts(
                 get_body_part_flags::only_main );
 
@@ -225,7 +221,8 @@ TEST_CASE( "suffering_from_sunburn", "[char][suffer][sunburn]" )
     item longshirt( "test_longshirt" );
 
     GIVEN( "avatar is in sunlight with the solar sensitivity trait" ) {
-        REQUIRE( g->is_in_sunlight( dummy.pos_bub() ) );
+        calendar::turn = calendar::turn_zero + 12_hours;
+        REQUIRE( g->is_in_sunlight( dummy.pos() ) );
 
         dummy.toggle_trait( trait_SUNBURN );
         REQUIRE( dummy.has_trait( trait_SUNBURN ) );
@@ -462,8 +459,8 @@ TEST_CASE( "suffering_from_asphyxiation", "[char][suffer][oxygen][grab]" )
         REQUIRE( !dummy.is_underwater() );
         REQUIRE( dummy.get_stamina() == dummy.get_stamina_max() );
         // Always spawn the first two grabbers, no need for intensity checks
-        spawn_test_monster( "mon_debug_memory", dummy.pos_bub() + tripoint::east );
-        spawn_test_monster( "mon_debug_memory", dummy.pos_bub() + tripoint::west );
+        spawn_test_monster( "mon_debug_memory", dummy.pos() + tripoint_east );
+        spawn_test_monster( "mon_debug_memory", dummy.pos() + tripoint_west );
         dummy.add_effect( effect_grabbed, 20_turns, body_part_torso, false, 2, true );
         REQUIRE( dummy.has_effect( effect_grabbed, body_part_torso ) );
         WHEN( "two grabbers" ) {
@@ -475,8 +472,8 @@ TEST_CASE( "suffering_from_asphyxiation", "[char][suffer][oxygen][grab]" )
         }
 
         WHEN( "four grabbers" ) {
-            spawn_test_monster( "mon_debug_memory", dummy.pos_bub() + tripoint::north );
-            spawn_test_monster( "mon_debug_memory", dummy.pos_bub() + tripoint::south );
+            spawn_test_monster( "mon_debug_memory", dummy.pos() + tripoint_north );
+            spawn_test_monster( "mon_debug_memory", dummy.pos() + tripoint_south );
             THEN( "they lose 1 oxygen per turn" ) {
                 test_suffer( dummy, 10_turns, true );
                 CHECK( dummy.oxygen == 36 );
@@ -484,10 +481,10 @@ TEST_CASE( "suffering_from_asphyxiation", "[char][suffer][oxygen][grab]" )
         }
 
         WHEN( "six grabbers" ) {
-            spawn_test_monster( "mon_debug_memory", dummy.pos_bub() + tripoint::north );
-            spawn_test_monster( "mon_debug_memory", dummy.pos_bub() + tripoint::south );
-            spawn_test_monster( "mon_debug_memory", dummy.pos_bub() + tripoint::north_west );
-            spawn_test_monster( "mon_debug_memory", dummy.pos_bub() + tripoint::south_west );
+            spawn_test_monster( "mon_debug_memory", dummy.pos() + tripoint_north );
+            spawn_test_monster( "mon_debug_memory", dummy.pos() + tripoint_south );
+            spawn_test_monster( "mon_debug_memory", dummy.pos() + tripoint_north_west );
+            spawn_test_monster( "mon_debug_memory", dummy.pos() + tripoint_south_west );
             THEN( "they lose 1 or 2 oxygen per turn" ) {
                 test_suffer( dummy, 10_turns, true );
                 CHECK( dummy.oxygen == Approx( 31 ).margin( 5 ) );
@@ -495,12 +492,12 @@ TEST_CASE( "suffering_from_asphyxiation", "[char][suffer][oxygen][grab]" )
         }
 
         WHEN( "eight grabbers" ) {
-            spawn_test_monster( "mon_debug_memory", dummy.pos_bub() + tripoint::north );
-            spawn_test_monster( "mon_debug_memory", dummy.pos_bub() + tripoint::south );
-            spawn_test_monster( "mon_debug_memory", dummy.pos_bub() + tripoint::north_west );
-            spawn_test_monster( "mon_debug_memory", dummy.pos_bub() + tripoint::south_west );
-            spawn_test_monster( "mon_debug_memory", dummy.pos_bub() + tripoint::north_east );
-            spawn_test_monster( "mon_debug_memory", dummy.pos_bub() + tripoint::south_east );
+            spawn_test_monster( "mon_debug_memory", dummy.pos() + tripoint_north );
+            spawn_test_monster( "mon_debug_memory", dummy.pos() + tripoint_south );
+            spawn_test_monster( "mon_debug_memory", dummy.pos() + tripoint_north_west );
+            spawn_test_monster( "mon_debug_memory", dummy.pos() + tripoint_south_west );
+            spawn_test_monster( "mon_debug_memory", dummy.pos() + tripoint_north_east );
+            spawn_test_monster( "mon_debug_memory", dummy.pos() + tripoint_south_east );
             THEN( "they lose 2 oxygen per turn" ) {
                 test_suffer( dummy, 10_turns, true );
                 CHECK( dummy.oxygen == 26 );
@@ -509,10 +506,10 @@ TEST_CASE( "suffering_from_asphyxiation", "[char][suffer][oxygen][grab]" )
 
         map &here = get_map();
         WHEN( "crushed against two walls by two grabbers" ) {
-            here.ter_set( dummy.pos_bub() + tripoint::south, ter_t_rock_wall );
-            here.ter_set( dummy.pos_bub() + tripoint::north, ter_t_rock_wall );
-            REQUIRE( here.impassable( dummy.pos_bub() + tripoint::south ) );
-            REQUIRE( here.impassable( dummy.pos_bub() + tripoint::north ) );
+            here.ter_set( dummy.pos() + tripoint_south, t_rock_wall );
+            here.ter_set( dummy.pos() + tripoint_north, t_rock_wall );
+            REQUIRE( here.impassable( dummy.pos() + tripoint_south ) );
+            REQUIRE( here.impassable( dummy.pos() + tripoint_north ) );
 
             THEN( "they lose 1 oxygen per turn, just like four grabbers" ) {
                 test_suffer( dummy, 10_turns, true );

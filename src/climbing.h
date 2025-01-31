@@ -2,20 +2,22 @@
 #ifndef CATA_SRC_CLIMBING_H
 #define CATA_SRC_CLIMBING_H
 
-#include <algorithm>
-#include <string>
-#include <string_view>
-#include <unordered_map>
-#include <utility>
+#include <iosfwd>
+#include <new>
+#include <optional>
+#include <set>
 #include <vector>
+#include <unordered_map>
 
-#include "coordinates.h"
+#include "calendar.h"
 #include "point.h"
 #include "translation.h"
 #include "type_id.h"
 
-class Character;
 class JsonObject;
+class Character;
+class map;
+struct tripoint;
 
 /**
 * A "Climbing Aid" as defined here is any one trait, mutation, tool, furniture terrain, technique
@@ -74,7 +76,7 @@ class climbing_aid
         bool was_loaded = false;
 
 
-        static condition_list detect_conditions( Character &you, const tripoint_bub_ms &examp );
+        static condition_list detect_conditions( Character &you, const tripoint &examp );
 
         static aid_list list( const condition_list &cond );
         static aid_list list_all( const condition_list &cond );
@@ -89,9 +91,9 @@ class climbing_aid
         class fall_scan
         {
             public:
-                explicit fall_scan( const tripoint_bub_ms &examp );
+                explicit fall_scan( const tripoint &examp );
 
-                tripoint_bub_ms examp; // Initial position of scan (usually a ledge / open air tile)
+                tripoint examp; // Initial position of scan (usually a ledge / open air tile)
                 int height; // Z-levels to "ground" based on here.valid_move
                 int height_until_creature; // Z-levels below that are free of creatures
                 int height_until_furniture; // Z-levels below that are free of furniture
@@ -102,22 +104,22 @@ class climbing_aid
                     return height != 0;
                 }
 
-                tripoint_bub_ms pos_top() const {
+                tripoint pos_top() const {
                     return examp;
                 }
-                tripoint_bub_ms pos_bottom() const {
-                    tripoint_bub_ms ret = examp;
-                    ret.z() -= height;
+                tripoint pos_bottom() const {
+                    tripoint ret = examp;
+                    ret.z -= height;
                     return ret;
                 }
-                tripoint_bub_ms pos_just_below() const {
-                    tripoint_bub_ms ret = examp;
-                    ret.z() -= 1;
+                tripoint pos_just_below() const {
+                    tripoint ret = examp;
+                    ret.z -= 1;
                     return ret;
                 }
-                tripoint_bub_ms pos_furniture_or_floor() const {
-                    tripoint_bub_ms ret = examp;
-                    ret.z() -= std::min( height, height_until_furniture + 1 );
+                tripoint pos_furniture_or_floor() const {
+                    tripoint ret = examp;
+                    ret.z -= std::min( height, height_until_furniture + 1 );
                     return ret;
                 }
 

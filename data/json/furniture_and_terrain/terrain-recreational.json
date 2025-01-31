@@ -81,8 +81,6 @@
     "color": "red",
     "move_cost": 0,
     "deconstruct": { "ter_set": "t_pavement", "items": [ { "item": "2x4", "count": 4 }, { "item": "nail", "charges": [ 6, 10 ] } ] },
-    "connect_groups": "WALL",
-    "connects_to": "WALL",
     "flags": [ "TRANSPARENT", "WALL", "PERMEABLE" ],
     "bash": {
       "str_min": 8,
@@ -120,8 +118,6 @@
       ]
     },
     "deconstruct": { "ter_set": "t_floor_waxed", "items": [ { "item": "2x4", "count": 4 }, { "item": "nail", "charges": [ 6, 10 ] } ] },
-    "connect_groups": [ "INDOORFLOOR", "WALL" ],
-    "connects_to": "WALL",
     "flags": [ "TRANSPARENT", "WALL", "PERMEABLE", "INDOORS" ]
   }
 ]

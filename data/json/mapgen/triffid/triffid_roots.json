@@ -2,7 +2,8 @@
   {
     "type": "mapgen",
     "method": "json",
-    "om_terrain": "triffid_roots",
+    "om_terrain": [ "triffid_roots" ],
+    "weight": 100,
     "object": {
       "fill_ter": "t_root_floor",
       "rows": [
@@ -39,7 +40,8 @@
   {
     "type": "mapgen",
     "method": "json",
-    "om_terrain": "triffid_rootss",
+    "om_terrain": [ "triffid_rootss" ],
+    "weight": 100,
     "object": {
       "fill_ter": "t_root_floor",
       "rows": [
@@ -76,7 +78,8 @@
   {
     "type": "mapgen",
     "method": "json",
-    "om_terrain": "triffid_rootsn",
+    "om_terrain": [ "triffid_rootsn" ],
+    "weight": 100,
     "object": {
       "fill_ter": "t_root_floor",
       "rows": [
@@ -113,7 +116,8 @@
   {
     "type": "mapgen",
     "method": "json",
-    "om_terrain": "triffid_rootse",
+    "om_terrain": [ "triffid_rootse" ],
+    "weight": 100,
     "object": {
       "fill_ter": "t_root_floor",
       "rows": [
@@ -150,7 +154,8 @@
   {
     "type": "mapgen",
     "method": "json",
-    "om_terrain": "triffid_rootsw",
+    "om_terrain": [ "triffid_rootsw" ],
+    "weight": 100,
     "object": {
       "fill_ter": "t_root_floor",
       "rows": [
@@ -195,7 +200,8 @@
   {
     "type": "mapgen",
     "method": "json",
-    "om_terrain": "triffid_rootsen",
+    "om_terrain": [ "triffid_rootsen" ],
+    "weight": 100,
     "object": {
       "fill_ter": "t_root_floor",
       "rows": [
@@ -232,7 +238,8 @@
   {
     "type": "mapgen",
     "method": "json",
-    "om_terrain": "triffid_rootsnw",
+    "om_terrain": [ "triffid_rootsnw" ],
+    "weight": 100,
     "object": {
       "fill_ter": "t_root_floor",
       "rows": [
@@ -269,7 +276,8 @@
   {
     "type": "mapgen",
     "method": "json",
-    "om_terrain": "triffid_rootssw",
+    "om_terrain": [ "triffid_rootssw" ],
+    "weight": 100,
     "object": {
       "fill_ter": "t_root_floor",
       "rows": [
@@ -306,7 +314,8 @@
   {
     "type": "mapgen",
     "method": "json",
-    "om_terrain": "triffid_rootsse",
+    "om_terrain": [ "triffid_rootsse" ],
+    "weight": 100,
     "object": {
       "fill_ter": "t_root_floor",
       "rows": [

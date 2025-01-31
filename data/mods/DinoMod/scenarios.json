@@ -2,54 +2,164 @@
   {
     "type": "scenario",
     "id": "dm_wilderness",
-    "copy-from": "wilderness",
     "name": "Hunted by Dinosaurs",
     "points": -2,
     "description": "You find yourself among trees.  The screaming and moaning is fainter, but it sounds like something bigger and more dangerous is close by.",
     "start_name": "Wilderness",
-    "surround_groups": [ [ "GROUP_DINOSAUR_MEGA_CARNIVORE", 70 ] ]
+    "allowed_locs": [ "sloc_field", "sloc_forest", "sloc_swamp", "sloc_campsite", "sloc_campground", "sloc_desert_island", "sloc_river" ],
+    "flags": [ "LONE_START" ],
+    "surround_groups": [ [ "GROUP_DINOSAUR_MEGA_CARNIVORE", 70.0 ] ]
   },
   {
     "type": "scenario",
     "id": "missed",
     "copy-from": "missed",
-    "extend": { "allowed_locs": [ "sloc_dinoexhibit", "sloc_dinozoo_cafeteria" ] }
+    "allowed_locs": [
+      "sloc_house",
+      "sloc_house_boarded",
+      "sloc_grocery_store",
+      "sloc_garage",
+      "sloc_furniture_store",
+      "sloc_library",
+      "sloc_bookstore",
+      "sloc_zoo_giftshop",
+      "sloc_zoo_cages",
+      "sloc_dinozoo_giftshop",
+      "sloc_dinozoo_cages",
+      "sloc_golfcourse_mid_course",
+      "sloc_golfcourse_clubhouse",
+      "sloc_church",
+      "sloc_cemetery",
+      "sloc_dinoexhibit"
+    ]
   },
   {
     "type": "scenario",
     "id": "surrounded",
     "copy-from": "surrounded",
-    "extend": { "allowed_locs": [ "sloc_dinoexhibit", "sloc_dinozoo_cafeteria" ] }
+    "allowed_locs": [
+      "sloc_house",
+      "sloc_house_boarded",
+      "sloc_school",
+      "sloc_grocery_store",
+      "sloc_garage",
+      "sloc_furniture_store",
+      "sloc_library",
+      "sloc_bookstore",
+      "sloc_zoo_giftshop",
+      "sloc_zoo_cages",
+      "sloc_dinozoo_giftshop",
+      "sloc_dinozoo_cages",
+      "sloc_golfcourse_mid_course",
+      "sloc_golfcourse_clubhouse",
+      "sloc_church",
+      "sloc_cemetery",
+      "sloc_fire_station",
+      "sloc_police",
+      "sloc_dinoexhibit"
+    ]
   },
   {
     "type": "scenario",
     "id": "infected",
     "copy-from": "infected",
-    "extend": { "allowed_locs": [ "sloc_dinoexhibit", "sloc_dinozoo_cafeteria" ] }
+    "allowed_locs": [
+      "sloc_house",
+      "sloc_house_boarded",
+      "sloc_school",
+      "sloc_grocery_store",
+      "sloc_garage",
+      "sloc_furniture_store",
+      "sloc_library",
+      "sloc_bookstore",
+      "sloc_zoo_giftshop",
+      "sloc_zoo_cages",
+      "sloc_dinozoo_giftshop",
+      "sloc_dinozoo_cages",
+      "sloc_golfcourse_mid_course",
+      "sloc_golfcourse_clubhouse",
+      "sloc_church",
+      "sloc_cemetery",
+      "sloc_dinoexhibit"
+    ]
   },
   {
     "type": "scenario",
     "id": "fungal_start",
     "copy-from": "fungal_start",
-    "extend": { "allowed_locs": [ "sloc_dinoexhibit", "sloc_dinozoo_cafeteria" ] }
+    "allowed_locs": [
+      "sloc_house",
+      "sloc_house_boarded",
+      "sloc_school",
+      "sloc_grocery_store",
+      "sloc_garage",
+      "sloc_furniture_store",
+      "sloc_library",
+      "sloc_bookstore",
+      "sloc_zoo_giftshop",
+      "sloc_zoo_cages",
+      "sloc_dinozoo_giftshop",
+      "sloc_dinozoo_cages",
+      "sloc_golfcourse_mid_course",
+      "sloc_golfcourse_clubhouse",
+      "sloc_church",
+      "sloc_cemetery",
+      "sloc_dinoexhibit"
+    ]
   },
   {
     "type": "scenario",
     "id": "bad_day",
     "copy-from": "bad_day",
-    "extend": { "allowed_locs": [ "sloc_dinoexhibit", "sloc_dinozoo_cafeteria" ] }
+    "allowed_locs": [
+      "sloc_house",
+      "sloc_house_boarded",
+      "sloc_school",
+      "sloc_grocery_store",
+      "sloc_gun_store",
+      "sloc_garage",
+      "sloc_pawn_shop",
+      "sloc_bank",
+      "sloc_military_surplus",
+      "sloc_furniture_store",
+      "sloc_library",
+      "sloc_bookstore",
+      "sloc_zoo_giftshop",
+      "sloc_zoo_cages",
+      "sloc_dinozoo_giftshop",
+      "sloc_dinozoo_cages",
+      "sloc_golfcourse_mid_course",
+      "sloc_golfcourse_clubhouse",
+      "sloc_church",
+      "sloc_cemetery",
+      "sloc_dinoexhibit"
+    ]
   },
   {
     "type": "scenario",
     "id": "lab_chal",
     "copy-from": "lab_chal",
-    "extend": { "allowed_locs": [ "sloc_dinolab" ] }
+    "allowed_locs": [
+      "sloc_lab_random",
+      "sloc_lab_escape_cells",
+      "sloc_lab_finale",
+      "sloc_ice_lab_stairs",
+      "sloc_ice_lab_finale",
+      "sloc_dinolab"
+    ]
   },
   {
     "type": "scenario",
     "id": "lab_staff",
     "copy-from": "lab_staff",
-    "extend": { "allowed_locs": [ "sloc_dinolab" ] }
+    "allowed_locs": [
+      "sloc_lab_random",
+      "sloc_lab_escape_cells",
+      "sloc_lab_finale",
+      "sloc_ice_lab_stairs",
+      "sloc_ice_lab_finale",
+      "sloc_dinolab"
+    ]
   },
   {
     "type": "scenario",

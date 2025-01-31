@@ -11,4 +11,8 @@ def parse_monster_attack(json, origin):
         "no_dmg_msg_npc",
     ]:
         if key in json:
-            write_text(json[key], origin, comment="Monster attack message")
+            write_text(
+                json[key],
+                origin,
+                comment='Monster attack "{}" message'.format(json["id"]),
+            )

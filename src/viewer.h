@@ -2,7 +2,7 @@
 #ifndef CATA_SRC_VIEWER_H
 #define CATA_SRC_VIEWER_H
 
-#include "coords_fwd.h"
+#include "coordinates.h"
 
 class Creature;
 

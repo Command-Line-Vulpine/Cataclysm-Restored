@@ -21,23 +21,22 @@
         "condition": {
           "and": [
             { "u_has_mission": "MISSION_RANCH_DOCTOR_MEDICAL_ANESTHETIC" },
-            { "not": { "compare_string": [ "yes", { "npc_val": "mission_tacoma_ranch_doctor_anesthetic_asked" } ] } }
+            {
+              "not": { "npc_has_var": "doctor_anesthetic_asked", "type": "mission", "context": "tacoma_ranch", "value": "yes" }
+            }
           ]
         },
-        "effect": [ { "npc_add_var": "mission_tacoma_ranch_doctor_anesthetic_asked", "value": "yes" } ]
+        "effect": [ { "npc_add_var": "doctor_anesthetic_asked", "type": "mission", "context": "tacoma_ranch", "value": "yes" } ]
       },
       { "text": "What are you doing here?", "topic": "TALK_RANCH_WOODCUTTER_JOB" },
       { "text": "I'd like to hire your services.", "topic": "TALK_RANCH_WOODCUTTER_HIRE" },
-      { "text": "<end_talking_leave>", "topic": "TALK_DONE" }
+      { "text": "I've got to go…", "topic": "TALK_DONE" }
     ]
   },
   {
     "type": "talk_topic",
     "id": "TALK_RANCH_WOODCUTTER_JOB",
-    "dynamic_line": {
-      "gendered_line": "I'm one of the migrants that got diverted to this outpost when I arrived at the refugee center.  They said I was big enough to swing an axe, so my profession became lumberjack… didn't have any say in it.  If I want to eat, then I'll be cutting wood from now till kingdom come.",
-      "relevant_genders": [ "npc" ]
-    },
+    "dynamic_line": "I'm one of the migrants that got diverted to this outpost when I arrived at the refugee center.  They said I was big enough to swing an axe, so my profession became lumberjack… didn't have any say in it.  If I want to eat, then I'll be cutting wood from now till kingdom come.",
     "responses": [ { "text": "Oh.", "topic": "TALK_RANCH_WOODCUTTER" } ]
   },
   {
@@ -85,8 +84,8 @@
         ],
         "condition": { "u_has_items": { "item": "FMCNote", "count": 4800 } }
       },
-      { "text": "<end_talking_later>", "topic": "TALK_RANCH_WOODCUTTER", "condition": "npc_available" },
-      { "text": "<end_talking_later> <end_talking_bye>", "topic": "TALK_RANCH_WOODCUTTER" }
+      { "text": "Maybe later.", "topic": "TALK_RANCH_WOODCUTTER", "condition": "npc_available" },
+      { "text": "I'll be back later.", "topic": "TALK_RANCH_WOODCUTTER" }
     ]
   }
 ]

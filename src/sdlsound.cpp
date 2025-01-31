@@ -24,6 +24,7 @@
 #include "debug.h"
 #include "init.h"
 #include "json.h"
+#include "loading_ui.h"
 #include "messages.h"
 #include "music.h"
 #include "options.h"
@@ -283,7 +284,7 @@ static std::string current_playlist;
 static size_t current_playlist_at = 0;
 static size_t absolute_playlist_at = 0;
 static std::vector<std::size_t> playlist_indexes;
-bool sound_init_success = false;
+static bool sound_init_success = false;
 static std::map<std::string, music_playlist> playlists;
 static cata_path current_soundpack_path;
 
@@ -328,7 +329,7 @@ bool init_sound()
                                static_cast<int>( sfx::group::context_themes ) );
             Mix_GroupChannels( static_cast<int>( sfx::channel::stamina_75 ),
                                static_cast<int>( sfx::channel::stamina_35 ),
-                               static_cast<int>( sfx::group::low_stamina ) );
+                               static_cast<int>( sfx::group::fatigue ) );
 
             sound_init_success = true;
         } else {
@@ -881,7 +882,8 @@ void load_soundset()
 
     current_soundpack_path = soundpack_path;
     try {
-        DynamicDataLoader::get_instance().load_data_from_path( soundpack_path, "core" );
+        loading_ui ui( false );
+        DynamicDataLoader::get_instance().load_data_from_path( soundpack_path, "core", ui );
     } catch( const std::exception &err ) {
         debugmsg( "failed to load sounds: %s", err.what() );
     }

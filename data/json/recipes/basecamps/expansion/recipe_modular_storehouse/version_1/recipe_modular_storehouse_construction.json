@@ -19,8 +19,7 @@
         "fbms_rammed_earth_palette": "Rammed earth walls and sod roof",
         "fbms_rock_palette": "Rock walls and wooden roof",
         "fbms_wad_palette": "Wattle-and-daub walls and sod roof",
-        "fbms_wood_palette": "Wooden walls and wooden roof",
-        "fbms_brick_palette": "Brick walls and wooden roof"
+        "fbms_wood_palette": "Wooden walls and wooden roof"
       }
     },
     "blueprint_requires": [ { "id": "fbms_0" } ],
@@ -47,8 +46,7 @@
         "fbms_rammed_earth_palette": "Rammed earth walls and sod roof",
         "fbms_rock_palette": "Rock walls and wooden roof",
         "fbms_wad_palette": "Wattle-and-daub walls and sod roof",
-        "fbms_wood_palette": "Wooden walls and wooden roof",
-        "fbms_brick_palette": "Brick walls and wooden roof"
+        "fbms_wood_palette": "Wooden walls and wooden roof"
       }
     },
     "blueprint_requires": [ { "id": "fbms_0" } ],
@@ -75,8 +73,7 @@
         "fbms_rammed_earth_palette": "Rammed earth walls and sod roof",
         "fbms_rock_palette": "Rock walls and wooden roof",
         "fbms_wad_palette": "Wattle-and-daub walls and sod roof",
-        "fbms_wood_palette": "Wooden walls and wooden roof",
-        "fbms_brick_palette": "Brick walls and wooden roof"
+        "fbms_wood_palette": "Wooden walls and wooden roof"
       }
     },
     "blueprint_requires": [ { "id": "fbms_west" } ],
@@ -103,8 +100,7 @@
         "fbms_rammed_earth_palette": "Rammed earth walls and sod roof",
         "fbms_rock_palette": "Rock walls and wooden roof",
         "fbms_wad_palette": "Wattle-and-daub walls and sod roof",
-        "fbms_wood_palette": "Wooden walls and wooden roof",
-        "fbms_brick_palette": "Brick walls and wooden roof"
+        "fbms_wood_palette": "Wooden walls and wooden roof"
       }
     },
     "blueprint_requires": [ { "id": "fbms_west" } ],
@@ -131,8 +127,7 @@
         "fbms_rammed_earth_palette": "Rammed earth walls and sod roof",
         "fbms_rock_palette": "Rock walls and wooden roof",
         "fbms_wad_palette": "Wattle-and-daub walls and sod roof",
-        "fbms_wood_palette": "Wooden walls and wooden roof",
-        "fbms_brick_palette": "Brick walls and wooden roof"
+        "fbms_wood_palette": "Wooden walls and wooden roof"
       }
     },
     "blueprint_requires": [ { "id": "fbms_east" } ],
@@ -159,8 +154,7 @@
         "fbms_rammed_earth_palette": "Rammed earth walls and sod roof",
         "fbms_rock_palette": "Rock walls and wooden roof",
         "fbms_wad_palette": "Wattle-and-daub walls and sod roof",
-        "fbms_wood_palette": "Wooden walls and wooden roof",
-        "fbms_brick_palette": "Brick walls and wooden roof"
+        "fbms_wood_palette": "Wooden walls and wooden roof"
       }
     },
     "blueprint_requires": [ { "id": "fbms_east" } ],
@@ -187,8 +181,7 @@
         "fbms_rammed_earth_palette": "Rammed earth walls and sod roof",
         "fbms_rock_palette": "Rock walls and wooden roof",
         "fbms_wad_palette": "Wattle-and-daub walls and sod roof",
-        "fbms_wood_palette": "Wooden walls and wooden roof",
-        "fbms_brick_palette": "Brick walls and wooden roof"
+        "fbms_wood_palette": "Wooden walls and wooden roof"
       }
     },
     "blueprint_requires": [ { "id": "fbms_southeast" }, { "id": "fbms_southwest" } ],
@@ -215,8 +208,7 @@
         "fbms_rammed_earth_palette": "Rammed earth walls and sod roof",
         "fbms_rock_palette": "Rock walls and wooden roof",
         "fbms_wad_palette": "Wattle-and-daub walls and sod roof",
-        "fbms_wood_palette": "Wooden walls and wooden roof",
-        "fbms_brick_palette": "Brick walls and wooden roof"
+        "fbms_wood_palette": "Wooden walls and wooden roof"
       }
     },
     "blueprint_requires": [ { "id": "fbms_northeast" }, { "id": "fbms_northwest" } ],
@@ -243,8 +235,7 @@
         "fbms_rammed_earth_palette": "Rammed earth walls and sod roof",
         "fbms_rock_palette": "Rock walls and wooden roof",
         "fbms_wad_palette": "Wattle-and-daub walls and sod roof",
-        "fbms_wood_palette": "Wooden walls and wooden roof",
-        "fbms_brick_palette": "Brick walls and wooden roof"
+        "fbms_wood_palette": "Wooden walls and wooden roof"
       }
     },
     "blueprint_requires": [ { "id": "fbms_north" }, { "id": "fbms_south" } ],

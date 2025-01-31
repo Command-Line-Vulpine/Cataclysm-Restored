@@ -30,7 +30,7 @@
     "type": "widget",
     "style": "text",
     "width": 1,
-    "string": { "str": " ", "//~": "NO_I18N" }
+    "string": " "
   },
   {
     "id": "structured_tiny_body_graphs_left_layout",

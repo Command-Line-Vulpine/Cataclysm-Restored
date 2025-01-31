@@ -15,10 +15,6 @@
 #include <string>
 #include <typeinfo>
 
-#if !(defined(WIN32) || defined(TILES) || defined(CYGWIN))
-#include <curses.h>
-#endif
-
 #if defined(TILES)
 #include "sdl_wrappers.h"
 #endif
@@ -139,12 +135,7 @@ extern "C" {
             default:
                 return;
         }
-#if !(defined(WIN32) || defined(TILES)) && !defined(CYGWIN)
-        endwin();
-#endif
-        if( !isDebuggerActive() ) {
-            log_crash( "Signal", msg );
-        }
+        log_crash( "Signal", msg );
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunknown-pragmas"
 #pragma GCC diagnostic ignored "-Wold-style-cast"
@@ -168,12 +159,10 @@ extern "C" {
             type = msg = "Unexpected termination";
         }
     } catch( const std::exception &e ) {
-        if( !isDebuggerActive() ) {
-            type = typeid( e ).name();
-            msg = e.what();
-            // call here to avoid `msg = e.what()` going out of scope
-            log_crash( type, msg );
-        }
+        type = typeid( e ).name();
+        msg = e.what();
+        // call here to avoid `msg = e.what()` going out of scope
+        log_crash( type, msg );
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunknown-pragmas"
 #pragma GCC diagnostic ignored "-Wold-style-cast"
@@ -185,9 +174,7 @@ extern "C" {
         type = "Unknown exception";
         msg = "Not derived from std::exception";
     }
-    if( !isDebuggerActive() ) {
-        log_crash( type, msg );
-    }
+    log_crash( type, msg );
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunknown-pragmas"
 #pragma GCC diagnostic ignored "-Wold-style-cast"

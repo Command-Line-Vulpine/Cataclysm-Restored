@@ -168,8 +168,7 @@
             "north": [ { "om_terrain": "road_curved", "om_terrain_match_type": "SUBTYPE" } ]
           }
         }
-      ],
-      "flags": [ "ERASE_ALL_BEFORE_PLACING_TERRAIN" ]
+      ]
     }
   },
   {

@@ -3,7 +3,10 @@
     "id": "TALK_GREAT_LIBRARY_LIBRARIAN",
     "type": "talk_topic",
     "dynamic_line": {
-      "compare_string": [ "yes", { "u_val": "general_meeting_u_met_Elvira" } ],
+      "u_has_var": "u_met_Elvira",
+      "type": "general",
+      "context": "meeting",
+      "value": "yes",
       "yes": [
         "*whispering.  \"Welcome back to the Library.\"",
         "*whispering.  \"Hello again.  Can I help you find something?\"",
@@ -15,29 +18,29 @@
       {
         "text": "Hello, who are you?  This is a library, is it?",
         "topic": "TALK_GREAT_LIBRARY_LIBRARIAN_Intro",
-        "condition": { "not": { "compare_string": [ "yes", { "u_val": "general_meeting_u_met_Elvira" } ] } },
-        "effect": { "u_add_var": "general_meeting_u_met_Elvira", "value": "yes" }
+        "condition": { "not": { "u_has_var": "u_met_Elvira", "type": "general", "context": "meeting", "value": "yes" } },
+        "effect": { "u_add_var": "u_met_Elvira", "type": "general", "context": "meeting", "value": "yes" }
       },
       {
         "text": "Oh sorry, I'm not interested right now.",
         "topic": "TALK_DONE",
-        "condition": { "not": { "compare_string": [ "yes", { "u_val": "general_meeting_u_met_Elvira" } ] } }
+        "condition": { "not": { "u_has_var": "u_met_Elvira", "type": "general", "context": "meeting", "value": "yes" } }
       },
       {
         "text": "I wanted to talk.",
         "topic": "TALK_GREAT_LIBRARY_LIBRARIAN_Talk",
-        "condition": { "compare_string": [ "yes", { "u_val": "general_meeting_u_met_Elvira" } ] }
+        "condition": { "u_has_var": "u_met_Elvira", "type": "general", "context": "meeting", "value": "yes" }
       },
       {
         "text": "Let me see what you have.",
         "topic": "TALK_GREAT_LIBRARY_LIBRARIAN_DoneTrading",
-        "condition": { "compare_string": [ "yes", { "u_val": "general_meeting_u_met_Elvira" } ] },
+        "condition": { "u_has_var": "u_met_Elvira", "type": "general", "context": "meeting", "value": "yes" },
         "effect": "start_trade"
       },
       {
         "text": "Just saying hello.",
         "topic": "TALK_DONE",
-        "condition": { "compare_string": [ "yes", { "u_val": "general_meeting_u_met_Elvira" } ] }
+        "condition": { "u_has_var": "u_met_Elvira", "type": "general", "context": "meeting", "value": "yes" }
       }
     ]
   },
@@ -53,7 +56,7 @@
         "effect": "start_trade"
       },
       { "text": "When will you have new material?", "topic": "TALK_GREAT_LIBRARY_LIBRARIAN_AskedRestock" },
-      { "text": "That's all for now.  <end_talking_bye>", "topic": "TALK_DONE" }
+      { "text": "That's all for now.  Take care.", "topic": "TALK_DONE" }
     ]
   },
   {
@@ -64,7 +67,7 @@
       "I am expecting some new materials <interval>, hopefully some good escapism."
     ],
     "responses": [
-      { "text": "<done_conversation_section>", "topic": "TALK_GREAT_LIBRARY_LIBRARIAN_Talk" },
+      { "text": "Actually, I wanted to ask…", "topic": "TALK_GREAT_LIBRARY_LIBRARIAN_Talk" },
       { "text": "Thanks, I will make sure to check back.", "topic": "TALK_DONE" }
     ]
   },
@@ -86,7 +89,7 @@
         "topic": "TALK_GREAT_LIBRARY_LIBRARIAN_DoneTrading",
         "effect": "start_trade"
       },
-      { "text": "I just want to browse.  <end_talking_bye>", "topic": "TALK_DONE" }
+      { "text": "I just want to browse.  See you.", "topic": "TALK_DONE" }
     ]
   },
   {
@@ -118,7 +121,7 @@
         "topic": "TALK_GREAT_LIBRARY_LIBRARIAN_DoneTrading",
         "effect": "start_trade"
       },
-      { "text": "<end_talking_leave>", "topic": "TALK_DONE" }
+      { "text": "Actually, I need to head out.", "topic": "TALK_DONE" }
     ]
   },
   {
@@ -133,12 +136,26 @@
       {
         "text": "Are there any other settlements around?",
         "topic": "TALK_GREAT_LIBRARY_LIBRARIAN_Robofac",
-        "condition": { "not": { "compare_string": [ "yes", { "u_val": "general_free_merchants_u_hub01_breadcrumb_accepted" } ] } }
+        "condition": {
+          "and": [
+            {
+              "not": { "u_has_var": "u_hub01_breadcrumb_accepted", "type": "general", "context": "free_merchants", "value": "yes" }
+            },
+            {
+              "not": { "u_has_var": "completed_robofac_intercom_2", "type": "dialogue", "context": "intercom", "value": "yes" }
+            }
+          ]
+        }
       },
       {
         "text": "Are there any other settlements around?",
         "topic": "TALK_GREAT_LIBRARY_LIBRARIAN_OutsideWorld2",
-        "condition": { "compare_string": [ "yes", { "u_val": "general_free_merchants_u_hub01_breadcrumb_accepted" } ] }
+        "condition": {
+          "or": [
+            { "u_has_var": "u_hub01_breadcrumb_accepted", "type": "general", "context": "free_merchants", "value": "yes" },
+            { "u_has_var": "completed_robofac_intercom_2", "type": "dialogue", "context": "intercom", "value": "yes" }
+          ]
+        }
       },
       { "text": "That's fine for now.", "topic": "TALK_GREAT_LIBRARY_LIBRARIAN_Talk" }
     ]

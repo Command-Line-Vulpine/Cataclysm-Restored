@@ -18,8 +18,7 @@
 #include "string_formatter.h"
 #include "translations.h"
 
-ter_furn_id::ter_furn_id() : ter( ter_str_id::NULL_ID().id() ),
-    furn( furn_str_id::NULL_ID().id() ) { }
+ter_furn_id::ter_furn_id() : ter( t_null ), furn( f_null ) { }
 
 template<typename T>
 void read_and_set_or_throw( const JsonObject &jo, const std::string &member, T &target,
@@ -173,29 +172,19 @@ static void load_forest_mapgen_settings( const JsonObject &jo,
                 if( forest_biome_ter_keys.empty() ) {
                     forest_biome_jo.throw_error( "Biome is not associated with any terrains." );
                 }
-                std::string default_ter_name = member.name();
-                auto default_ter_it = forest_mapgen_settings.unfinalized_biomes.find( default_ter_name );
-                if( default_ter_it == forest_mapgen_settings.unfinalized_biomes.end() ) {
-                    if( overlay ) {
-                        forest_biome_jo.throw_error( "Terrain " + default_ter_name +
-                                                     " is not defined, cannot be used for forest biome." );
-                    }
-                    default_ter_it = forest_mapgen_settings.unfinalized_biomes.emplace( default_ter_name, forest_biome{} ).first;
-                }
-                forest_biome &default_ter = default_ter_it->second;
-                load_forest_biome( forest_biome_jo, default_ter, overlay );
-                for( size_t biome_ter_idx = 0; biome_ter_idx < forest_biome_ter_keys.size(); biome_ter_idx++ ) {
-                    std::string biome_ter_name = forest_biome_ter_keys.get_string( biome_ter_idx );
-                    if( biome_ter_name == default_ter_name ) {
-                        continue;
-                    }
+                std::string first_ter = forest_biome_ter_keys.get_string( 0 );
+                load_forest_biome( forest_biome_jo, forest_mapgen_settings.unfinalized_biomes[first_ter],
+                                   overlay );
+                for( size_t biome_ter_idx = 1; biome_ter_idx < forest_biome_ter_keys.size(); biome_ter_idx++ ) {
                     forest_mapgen_settings.unfinalized_biomes.insert( std::pair<std::string, forest_biome>
-                            ( forest_biome_ter_keys.get_string( biome_ter_idx ), default_ter ) );
+                            ( forest_biome_ter_keys.get_string( biome_ter_idx ),
+                              forest_mapgen_settings.unfinalized_biomes[first_ter] ) );
                 }
             } else {
                 load_forest_biome( forest_biome_jo, forest_mapgen_settings.unfinalized_biomes[member.name()],
                                    overlay );
             }
+
         }
     }
 }
@@ -330,33 +319,6 @@ static void load_overmap_ravine_settings(
                                     overmap_ravine_settings.ravine_width, !overlay );
         read_and_set_or_throw<int>( overmap_ravine_settings_jo, "ravine_depth",
                                     overmap_ravine_settings.ravine_depth, !overlay );
-    }
-}
-
-static void load_overmap_connection_settings(
-    const JsonObject &jo, overmap_connection_settings &overmap_connection_settings, const bool strict,
-    const bool overlay )
-{
-    if( !jo.has_object( "overmap_connection_settings" ) ) {
-        if( strict ) {
-            jo.throw_error( "\"overmap_connection_settings\": { … } required for default" );
-        }
-    } else {
-        JsonObject overmap_connection_settings_jo = jo.get_object( "overmap_connection_settings" );
-        read_and_set_or_throw<overmap_connection_id>( overmap_connection_settings_jo, "trail_connection",
-                overmap_connection_settings.trail_connection, !overlay );
-        read_and_set_or_throw<overmap_connection_id>( overmap_connection_settings_jo, "sewer_connection",
-                overmap_connection_settings.sewer_connection, !overlay );
-        read_and_set_or_throw<overmap_connection_id>( overmap_connection_settings_jo, "subway_connection",
-                overmap_connection_settings.subway_connection, !overlay );
-        read_and_set_or_throw<overmap_connection_id>( overmap_connection_settings_jo, "rail_connection",
-                overmap_connection_settings.rail_connection, !overlay );
-        read_and_set_or_throw<overmap_connection_id>( overmap_connection_settings_jo,
-                "intra_city_road_connection",
-                overmap_connection_settings.intra_city_road_connection, !overlay );
-        read_and_set_or_throw<overmap_connection_id>( overmap_connection_settings_jo,
-                "inter_city_road_connection",
-                overmap_connection_settings.inter_city_road_connection, !overlay );
     }
 }
 
@@ -587,12 +549,13 @@ void load_region_settings( const JsonObject &jo )
         load_building_types( "parks", new_region.city_spec.parks );
     }
 
-    // TODO: Support overwriting only some values in non default regions
-    if( strict && !jo.has_object( "weather" ) ) {
-        jo.throw_error( "\"weather\": { … } required for default" );
+    if( !jo.has_object( "weather" ) ) {
+        if( strict ) {
+            jo.throw_error( "\"weather\": { … } required for default" );
+        }
     } else {
         JsonObject wjo = jo.get_object( "weather" );
-        new_region.weather.load( wjo, false );
+        new_region.weather = weather_generator::load( wjo );
     }
 
     load_overmap_feature_flag_settings( jo, new_region.overmap_feature_flag, strict, false );
@@ -604,8 +567,6 @@ void load_region_settings( const JsonObject &jo )
     load_overmap_ocean_settings( jo, new_region.overmap_ocean, strict, false );
 
     load_overmap_ravine_settings( jo, new_region.overmap_ravine, strict, false );
-
-    load_overmap_connection_settings( jo, new_region.overmap_connection, strict, false );
 
     load_region_terrain_and_furniture_settings( jo, new_region.region_terrain_and_furniture, strict,
             false );
@@ -746,22 +707,13 @@ void apply_region_overlay( const JsonObject &jo, regional_settings &region )
     load_building_types( "shops", region.city_spec.shops );
     load_building_types( "parks", region.city_spec.parks );
 
-    if( jo.has_object( "weather" ) ) {
-        JsonObject wjo = jo.get_object( "weather" );
-        region.weather.load( wjo, true );
-    }
-
     load_overmap_feature_flag_settings( jo, region.overmap_feature_flag, false, true );
 
     load_overmap_forest_settings( jo, region.overmap_forest, false, true );
 
     load_overmap_lake_settings( jo, region.overmap_lake, false, true );
 
-    load_overmap_ocean_settings( jo, region.overmap_ocean, false, true );
-
     load_overmap_ravine_settings( jo, region.overmap_ravine, false, true );
-
-    load_overmap_connection_settings( jo, region.overmap_connection, false, true );
 
     load_region_terrain_and_furniture_settings( jo, region.region_terrain_and_furniture, false, true );
 }
@@ -776,8 +728,8 @@ void groundcover_extra::finalize()   // FIXME: return bool for failure
 
     for( std::map<std::string, double>::const_iterator it = percent_str.begin();
          it != percent_str.end(); ++it ) {
-        tf_id.ter = ter_str_id::NULL_ID().id();
-        tf_id.furn = furn_str_id::NULL_ID();
+        tf_id.ter = t_null;
+        tf_id.furn = f_null;
         if( it->second < 0.0001 ) {
             continue;
         }
@@ -797,8 +749,8 @@ void groundcover_extra::finalize()   // FIXME: return bool for failure
 
     for( std::map<std::string, double>::const_iterator it = boosted_percent_str.begin();
          it != boosted_percent_str.end(); ++it ) {
-        tf_id.ter = ter_str_id::NULL_ID().id();
-        tf_id.furn = furn_str_id::NULL_ID();
+        tf_id.ter = t_null;
+        tf_id.furn = f_null;
         if( it->second < 0.0001 ) {
             continue;
         }
@@ -838,7 +790,7 @@ void groundcover_extra::finalize()   // FIXME: return bool for failure
         debugmsg( "boosted plant coverage total (%s=%de-4) exceeds 100%%", ss.str(), btotal );
     }
 
-    tf_id.furn = furn_str_id::NULL_ID();
+    tf_id.furn = f_null;
     tf_id.ter = default_ter;
     weightlist[ 1000000 ] = tf_id;
     boosted_weightlist[ 1000000 ] = tf_id;
@@ -859,8 +811,8 @@ void forest_biome_component::finalize()
 {
     for( const std::pair<const std::string, int> &pr : unfinalized_types ) {
         ter_furn_id tf_id;
-        tf_id.ter = ter_str_id::NULL_ID().id();
-        tf_id.furn = furn_str_id::NULL_ID();
+        tf_id.ter = t_null;
+        tf_id.furn = f_null;
         const ter_str_id tid( pr.first );
         const furn_str_id fid( pr.first );
         if( tid.is_valid() ) {
@@ -937,7 +889,7 @@ void forest_mapgen_settings::finalize()
 {
     for( auto &pr : unfinalized_biomes ) {
         pr.second.finalize();
-        const oter_type_id ot( pr.first );
+        const oter_id ot( pr.first );
         biomes[ot] = pr.second;
     }
 }

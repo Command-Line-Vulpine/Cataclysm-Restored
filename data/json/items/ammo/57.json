@@ -8,8 +8,8 @@
     "weight": "6 g",
     "volume": "121 ml",
     "longest_side": "41 mm",
-    "price": "3 USD 50 cent",
-    "price_postapoc": "16 USD",
+    "price": 350,
+    "price_postapoc": 1600,
     "flags": [ "IRREPLACEABLE_CONSUMABLE" ],
     "material": [ "steel", "brass", "lead", "powder" ],
     "symbol": "=",
@@ -21,7 +21,7 @@
     "range": 14,
     "damage": { "damage_type": "bullet", "amount": 20, "armor_penetration": 18 },
     "dispersion": 40,
-    "recoil": 515,
+    "recoil": 90,
     "effects": [ "COOKOFF" ]
   },
   {
@@ -32,7 +32,7 @@
     "description": "A subsonic cartridge derived from the 5.7x28mm, designed for silenced firearms.  It offers good armor penetration at the cost of slightly less damage.",
     "ascii_picture": "57mm_ss",
     "relative": {
-      "price": "1 USD",
+      "price": 100,
       "range": -1,
       "damage": { "damage_type": "bullet", "amount": -10, "armor_penetration": -6 },
       "recoil": -40

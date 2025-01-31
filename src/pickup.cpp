@@ -1,40 +1,59 @@
 #include "pickup.h"
 
 #include <algorithm>
+#include <cstddef>
+#include <functional>
+#include <iosfwd>
+#include <list>
 #include <map>
 #include <memory>
+#include <new>
 #include <optional>
 #include <string>
+#include <type_traits>
 #include <utility>
 #include <vector>
 
 #include "activity_actor_definitions.h"
 #include "auto_pickup.h"
+#include "cata_utility.h"
+#include "catacharset.h"
 #include "character.h"
 #include "colony.h"
+#include "color.h"
+#include "cursesdef.h"
 #include "debug.h"
 #include "enums.h"
 #include "game.h"
 #include "input.h"
-#include "input_context.h"
 #include "item.h"
 #include "item_location.h"
+#include "item_search.h"
 #include "item_stack.h"
 #include "line.h"
 #include "map.h"
+#include "map_selector.h"
 #include "mapdata.h"
 #include "messages.h"
 #include "options.h"
+#include "output.h"
+#include "panels.h"
 #include "player_activity.h"
 #include "point.h"
 #include "popup.h"
 #include "ret_val.h"
+#include "sdltiles.h"
 #include "string_formatter.h"
+#include "string_input_popup.h"
 #include "translations.h"
 #include "type_id.h"
 #include "ui.h"
+#include "ui_manager.h"
 #include "units.h"
 #include "units_utility.h"
+#include "vehicle.h"
+#include "vehicle_selector.h"
+#include "vpart_position.h"
 
 using ItemCount = std::pair<item, int>;
 using PickupMap = std::map<std::string, ItemCount>;
@@ -269,7 +288,7 @@ static bool pick_one_up( item_location &loc, int quantity, bool &got_water, bool
                 newit = it;
                 newit.invlet = invlet;
             }
-            [[fallthrough]];
+        // Intentional fallthrough
         case STASH: {
             int last_charges = newit.charges;
             ret_val<item_location> ret = player_character.i_add_or_fill( newit, true, nullptr, &it,
@@ -309,11 +328,11 @@ static bool pick_one_up( item_location &loc, int quantity, bool &got_water, bool
         info.total_bulk_volume += loc->volume( false, false, quantity );
         if( !is_bulk_load( pre_info, info ) ) {
             // Cost to take an item from a container or map
-            player_character.mod_moves( -loc.obtain_cost( player_character, quantity ) );
+            player_character.moves -= loc.obtain_cost( player_character, quantity );
         } else {
             // Pure cost to handling item excluding overhead.
-            player_character.mod_moves( -std::max( player_character.item_handling_cost( *loc, true, 0, quantity,
-                                                   true ), 1 ) );
+            player_character.moves -= std::max( player_character.item_handling_cost( *loc, true, 0, quantity,
+                                                true ), 1 );
         }
         contents_change_handler handler;
         handler.unseal_pocket_containing( loc );
@@ -348,7 +367,7 @@ bool Pickup::do_pickup( std::vector<item_location> &targets, std::vector<int> &q
     PickupMap mapPickup;
 
     bool problem = false;
-    while( !problem && player_character.get_moves() >= 0 && !targets.empty() ) {
+    while( !problem && player_character.moves >= 0 && !targets.empty() ) {
         item_location target = std::move( targets.back() );
         int quantity = quantities.back();
         // Whether we pick the item up or not, we're done trying to do so,
@@ -400,7 +419,6 @@ void Pickup::autopickup( const tripoint &p )
     // which items are we grabbing?
     std::vector<item_stack::iterator> here;
     const map_stack mapitems = local.i_at( p );
-    here.reserve( mapitems.size() );
     for( item_stack::iterator it = mapitems.begin(); it != mapitems.end(); ++it ) {
         here.push_back( it );
     }
@@ -422,25 +440,23 @@ void Pickup::autopickup( const tripoint &p )
         }
     }
     // Bail out if this square cannot be auto-picked-up
-    if( g->check_zone( zone_type_NO_AUTO_PICKUP, tripoint_bub_ms( p ) ) ||
+    if( g->check_zone( zone_type_NO_AUTO_PICKUP, p ) ||
         local.has_flag( ter_furn_flag::TFLAG_SEALED, p ) ) {
         return;
     }
-    drop_locations selected_items = auto_pickup::select_items( here, tripoint_bub_ms( p ) );
+    drop_locations selected_items = auto_pickup::select_items( here, p );
     if( selected_items.empty() ) {
         return;
     }
     // At this point we've selected our items, register an activity to pick them up.
     std::vector<int> quantities;
     std::vector<item_location> target_items;
-    target_items.reserve( selected_items.size() );
-    quantities.reserve( selected_items.size() );
     for( drop_location selected : selected_items ) {
         item *it = selected.first.get_item();
         target_items.push_back( selected.first );
         quantities.push_back( it->count_by_charges() ? it->charges : 0 );
     }
-    pickup_activity_actor actor( target_items, quantities, player.pos_bub(), true );
+    pickup_activity_actor actor( target_items, quantities, player.pos(), true );
     player.assign_activity( actor );
 
     // Auto pickup will need to auto resume since there can be several of them on the stack.

@@ -23,10 +23,9 @@
     "comestible_type": "DRINK",
     "name": { "str_sp": "hot sauce" },
     "description": "Flamin' hot sauce.  It'd be a bad idea to drink it on its own.  You should probably wash your hands after handling it, too.",
-    "weight": "5 g",
+    "weight": "6 g",
     "charges": 50,
     "volume": "250 ml",
-    "material": [ "veggy", "water" ],
     "//": "hot sauces are very salty, hence the negative quench",
     "quench": -2,
     "calories": 5,
@@ -61,25 +60,6 @@
     "color": "dark_gray"
   },
   {
-    "id": "spicebush_berries",
-    "copy-from": "spice",
-    "type": "COMESTIBLE",
-    "name": { "str_sp": "spicebush berries" },
-    "description": "Small, red berries with a pungent aroma.  It is said they are comparable to allspice, but also boasting their own flavor profile.",
-    "smoking_result": "spicebush_berries_smoked",
-    "spoils_in": "4 days",
-    "extend": { "flags": [ "SMOKABLE" ] },
-    "color": "red"
-  },
-  {
-    "id": "spicebush_berries_smoked",
-    "copy-from": "spice",
-    "type": "COMESTIBLE",
-    "name": { "str_sp": "dry spicebush berries" },
-    "description": "These formerly red berries now have a stronger aroma after being dehydrated.",
-    "color": "brown"
-  },
-  {
     "id": "salt",
     "copy-from": "spice",
     "type": "COMESTIBLE",
@@ -106,21 +86,23 @@
     "color": "brown"
   },
   {
-    "//": "Our recipes have traditionally been standardized against sugar units of 5 mg. Refer also to the sugar_standard item group for more sugar-related items and their ratios to one another. Density is now accurate.",
     "type": "COMESTIBLE",
     "id": "sugar",
     "name": { "str_sp": "sugar" },
-    "weight": "5 g",
+    "weight": "2 g",
     "color": "white",
+    "container": "box_small",
     "comestible_type": "FOOD",
     "symbol": "%",
     "description": "Sweet, sweet sugar.  Bad for your teeth and surprisingly not very tasty on its own.",
     "price": "5 cent",
     "price_postapoc": "4 cent",
     "material": [ "sugar" ],
-    "volume": "6 ml",
+    "volume": "3 ml",
     "calories": 19,
-    "flags": [ "EDIBLE_FROZEN", "NUTRIENT_OVERRIDE" ]
+    "flags": [ "EDIBLE_FROZEN", "NUTRIENT_OVERRIDE" ],
+    "//2": "originally was 5g 3ml, and recipes probably use this ratio still;",
+    "//": "a tbsp is 4.2g of sugar, meaning the volume needed to be adjusted."
   },
   {
     "type": "COMESTIBLE",
@@ -151,8 +133,7 @@
     "material": [ "veggy" ],
     "volume": "2 ml",
     "flags": [ "EDIBLE_FROZEN", "RAW" ],
-    "fun": -1,
-    "vitamins": [ [ "veggy_allergen", 1 ] ]
+    "fun": -1
   },
   {
     "id": "soysauce",
@@ -161,11 +142,10 @@
     "color": "brown",
     "name": { "str_sp": "soy sauce" },
     "description": "Salty fermented soybean sauce.",
-    "price": "1 USD 90 cent",
-    "price_postapoc": "25 cent",
+    "price": 190,
+    "price_postapoc": 25,
     "weight": "24 g",
     "volume": "250 ml",
-    "material": [ "water" ],
     "calories": 17,
     "comestible_type": "DRINK",
     "container": "bottle_glass",
@@ -185,13 +165,13 @@
     "calories": 9,
     "fun": -4,
     "weight": "40 g",
+    "to_hit": -3,
     "color": "magenta",
     "symbol": ",",
     "material": [ "veggy" ],
     "volume": "250 ml",
-    "price": "0 cent",
-    "price_postapoc": "10 cent",
-    "vitamins": [ [ "veggy_allergen", 1 ] ]
+    "price": 0,
+    "price_postapoc": 10
   },
   {
     "id": "mustard_powder",

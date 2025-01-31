@@ -6,7 +6,7 @@
 #include <optional>
 #include <vector>
 
-#include "coords_fwd.h"
+#include "coordinates.h"
 #include "type_id.h"
 #include "weighted_list.h"
 

@@ -11,7 +11,7 @@
       "THRESH_SPECIES_ELF",
       "ANIMALEMPATH2",
       "ELVEN_BUILD",
-      "ELVEN_SIGHT",
+      "ELFA_NV",
       "ELVEN_BEAUTY",
       "ELVEN_SLEEP",
       "ELFA_EARS",
@@ -19,7 +19,9 @@
       "LIGHTSTEP",
       "WILDWALKER",
       "ANTIJUNK",
+      "FLIMSY",
       "WEAKSTOMACH",
+      "PALE",
       "DISIMMUNE",
       "PICKYEATER"
     ]
@@ -64,7 +66,7 @@
       "DARKSIGHT",
       "GOBLIN_BUILD",
       "GOBLIN_TEETH",
-      "GOBLIN_EYES",
+      "NIGHTVISION3",
       "SAPROVORE",
       "SNOUT",
       "NAILS",
@@ -74,6 +76,7 @@
       "EATPOISON",
       "TUNNEL_FIGHTER",
       "NOCTURNAL",
+      "NOCTURNAL_DAY",
       "MOODSWINGS",
       "TROGLO2"
     ]
@@ -101,7 +104,7 @@
       "RESISTWARM",
       "LIZ_EYE",
       "REGEN_LIZ",
-      "MUZZLE_LONG_LIZ",
+      "MUZZLE_LONG",
       "WEBBED_LIZ_FEET",
       "TALONS",
       "SLIT_NOSTRILS",
@@ -119,7 +122,7 @@
     "traits": [
       "THRESH_SPECIES_RAVENFOLK",
       "RAVENFOLK_BUILD",
-      "RAVENFOLK_WINGS",
+      "WINGS_BIRD",
       "DOWN",
       "BEAK_RAVEN",
       "RAVENFOLK_LEGS",

@@ -3,11 +3,10 @@
     "type": "overmap_terrain",
     "abstract": "generic_lake",
     "copy-from": "generic_water",
-    "vision_levels": "water_body",
     "name": "lake",
     "sym": "#",
     "color": "blue",
-    "see_cost": "none",
+    "see_cost": 1,
     "flags": [ "NO_ROTATE", "LAKE", "SOURCE_DRINK", "WATER" ]
   },
   {
@@ -26,15 +25,13 @@
     "type": "overmap_terrain",
     "id": "lake_surface",
     "copy-from": "generic_lake",
-    "travel_cost_type": "water",
-    "uniform_terrain": "t_water_dp"
+    "travel_cost_type": "water"
   },
   {
     "type": "overmap_terrain",
     "id": "lake_water_cube",
     "copy-from": "generic_lake",
-    "name": "lake (submerged)",
-    "uniform_terrain": "t_water_cube"
+    "name": "lake (submerged)"
   },
   {
     "type": "overmap_terrain",
@@ -46,11 +43,10 @@
     "type": "overmap_terrain",
     "abstract": "generic_ocean",
     "copy-from": "generic_water",
-    "vision_levels": "water_body",
     "name": "ocean",
     "sym": "#",
     "color": "blue",
-    "see_cost": "none",
+    "see_cost": 1,
     "flags": [ "NO_ROTATE", "OCEAN" ]
   },
   {
@@ -69,21 +65,18 @@
     "type": "overmap_terrain",
     "id": "ocean_surface",
     "copy-from": "generic_ocean",
-    "travel_cost_type": "water",
-    "uniform_terrain": "t_swater_dp"
+    "travel_cost_type": "water"
   },
   {
     "type": "overmap_terrain",
     "id": "ocean_water_cube",
     "copy-from": "generic_ocean",
-    "name": "ocean (submerged)",
-    "uniform_terrain": "t_saltwater_cube"
+    "name": "ocean (submerged)"
   },
   {
     "type": "overmap_terrain",
     "id": "ocean_bed",
     "copy-from": "generic_ocean",
-    "name": "ocean bed (submerged)",
-    "extras": "ocean_bed"
+    "name": "ocean bed (submerged)"
   }
 ]

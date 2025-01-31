@@ -39,8 +39,10 @@ static const itype_id itype_char_forge( "char_forge" );
 static const itype_id itype_crucible( "crucible" );
 static const itype_id itype_fire( "fire" );
 static const itype_id itype_forge( "forge" );
+static const itype_id itype_mold_plastic( "mold_plastic" );
 static const itype_id itype_oxy_torch( "oxy_torch" );
 static const itype_id itype_press( "press" );
+static const itype_id itype_sewing_kit( "sewing_kit" );
 static const itype_id itype_welder( "welder" );
 static const itype_id itype_welder_crude( "welder_crude" );
 
@@ -158,17 +160,17 @@ std::string tool_comp::to_string( const int batch, const int ) const
         //~ %1$s: tool name, %2$d: charge requirement
         return string_format( npgettext( "requirement", "%1$s (%2$d charge)", "%1$s (%2$d charges)",
                                          charge_total ),
-                              item::tname( type, 1, tname::base_item_name ), charge_total );
+                              item::nname( type ), charge_total );
     } else {
-        return item::tname( type, std::abs( count ), tname::base_item_name );
+        return item::nname( type, std::abs( count ) );
     }
 }
 
 std::string item_comp::to_string( const int batch, const int avail ) const
 {
     const int c = std::abs( count ) * batch;
-    const item item_temp = item( type );
-    if( item_temp.count_by_charges() ) {
+    const itype *type_ptr = item::find_type( type );
+    if( type_ptr->count_by_charges() ) {
         // Count-by-charge
 
         if( avail == item::INFINITE_CHARGES ) {
@@ -176,16 +178,16 @@ std::string item_comp::to_string( const int batch, const int avail ) const
             return string_format( npgettext( "requirement", "%2$d %1$s (have infinite)",
                                              "%2$d %1$s (have infinite)",
                                              c ),
-                                  item_temp.tname( 1, tname::base_item_name ), c );
+                                  type_ptr->nname( 1 ), c );
         } else if( avail > 0 ) {
             //~ %1$s: item name, %2$d: charge requirement, %3%d: available charges
             return string_format( npgettext( "requirement", "%2$d %1$s (have %3$d)",
                                              "%2$d %1$s (have %3$d)", c ),
-                                  item_temp.tname( 1, tname::base_item_name ), c, avail );
+                                  type_ptr->nname( 1 ), c, avail );
         } else {
             //~ %1$s: item name, %2$d: charge requirement
             return string_format( npgettext( "requirement", "%2$d %1$s", "%2$d %1$s", c ),
-                                  item_temp.tname( 1, tname::base_item_name ), c );
+                                  type_ptr->nname( 1 ), c );
         }
     } else {
         if( avail == item::INFINITE_CHARGES ) {
@@ -193,16 +195,16 @@ std::string item_comp::to_string( const int batch, const int avail ) const
             return string_format( npgettext( "requirement", "%2$d %1$s (have infinite)",
                                              "%2$d %1$s (have infinite)",
                                              c ),
-                                  item_temp.tname( c, tname::base_item_name ), c );
+                                  type_ptr->nname( c ), c );
         } else if( avail > 0 ) {
             //~ %1$s: item name, %2$d: required count, %3%d: available count
             return string_format( npgettext( "requirement", "%2$d %1$s (have %3$d)",
                                              "%2$d %1$s (have %3$d)", c ),
-                                  item_temp.tname( c, tname::base_item_name ), c, avail );
+                                  type_ptr->nname( c ), c, avail );
         } else {
             //~ %1$s: item name, %2$d: required count
             return string_format( npgettext( "requirement", "%2$d %1$s", "%2$d %1$s", c ),
-                                  item_temp.tname( c, tname::base_item_name ), c );
+                                  type_ptr->nname( c ), c );
         }
     }
 }
@@ -243,9 +245,6 @@ void tool_comp::load( const JsonValue &value )
         comp.read( 0, type, true );
         count = comp.get_int( 1 );
         requirement = comp.size() > 2 && comp.get_string( 2 ) == "LIST";
-        if( comp.size() > 2 && comp.get_string( 2 ) != "LIST" ) {
-            value.throw_error( R"(expected "LIST")" );
-        }
     }
     if( count == 0 ) {
         value.throw_error( "tool count must not be 0" );
@@ -276,8 +275,6 @@ void item_comp::load( const JsonValue &value )
             recoverable = false;
         } else if( flag == "LIST" ) {
             requirement = true;
-        } else {
-            value.throw_error( R"(expected "LIST" or "NO_RECOVER")" );
         }
     }
     if( count <= 0 ) {
@@ -603,20 +600,13 @@ template<typename T>
 void requirement_data::check_consistency( const std::vector< std::vector<T> > &vec,
         const std::string &display_name )
 {
-
     for( const auto &list : vec ) {
-        bool requirement_was_empty = true;
         for( const auto &comp : list ) {
-            requirement_was_empty = false;
             if( comp.requirement ) {
                 debugmsg( "Finalization failed to inline %s in %s", comp.type.c_str(), display_name );
             }
 
             comp.check_consistency( display_name );
-        }
-        if( requirement_was_empty ) {
-            debugmsg( "Requirement %s is empty, recipes using it have no valid results.  Some input must be invalid.",
-                      display_name );
         }
     }
 }
@@ -723,10 +713,6 @@ void requirement_data::finalize()
         } );
         requirement_data::alter_tool_comp_vector &vec = r.second.tools;
         for( auto &list : vec ) {
-            if( list.empty() ) {
-                debugmsg( "Requirements data %s tools vector contains impossible requirements.  Recipes using this requirement set will be impossible to make.",
-                          r.first.c_str() );
-            }
             std::vector<tool_comp> new_list;
             for( tool_comp &comp : list ) {
                 const auto replacements = item_controller->subtype_replacement( comp.type );
@@ -836,7 +822,6 @@ std::vector<std::string> requirement_data::get_folded_tools_list( int width, nc_
         const read_only_visitable &crafting_inv, int batch ) const
 {
     std::vector<std::string> output_buffer;
-    output_buffer.reserve( 2 );
     output_buffer.push_back( colorize( _( "Tools required:" ), col ) );
     if( tools.empty() && qualities.empty() ) {
         output_buffer.push_back( colorize( "> ", col ) + colorize( _( "NONE" ), c_green ) );
@@ -1008,9 +993,6 @@ nc_color item_comp::get_color( bool has_one, const read_only_visitable &crafting
         if( std::any_of( type->pockets.begin(), type->pockets.end(), []( const pocket_data & d ) {
         return d.type == pocket_type::CONTAINER && d.watertight;
     } ) && inv != nullptr && inv->must_use_liq_container( type, count * batch ) ) {
-            return c_magenta;
-        }
-        if( inv != nullptr && inv->must_use_hallu_poison( type, count * batch ) ) {
             return c_magenta;
         }
         // Will use favorited component
@@ -1208,6 +1190,14 @@ requirement_data requirement_data::disassembly_requirements() const
                 replaced = true;
                 break;
             }
+            //This only catches instances where the two tools are explicitly stated, and not just the required sewing quality
+            if( type == itype_sewing_kit ||
+                type == itype_mold_plastic ) {
+                new_qualities.emplace_back( qual_CUT, 1, 1 );
+                replaced = true;
+                break;
+            }
+
             if( type == itype_crucible ) {
                 replaced = true;
                 break;
@@ -1324,7 +1314,7 @@ requirement_data requirement_data::continue_requirements( const std::vector<item
             std::vector<item *> del;
             craft_components.visit_items( [&comp, &qty, &del]( item * e, item * ) {
                 std::list<item> used;
-                if( e->use_charges( comp.type, qty, used, tripoint_bub_ms::zero ) ) {
+                if( e->use_charges( comp.type, qty, used, tripoint_zero ) ) {
                     del.push_back( e );
                 }
                 return qty > 0 ? VisitResponse::SKIP : VisitResponse::ABORT;

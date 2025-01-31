@@ -14,7 +14,7 @@
 
 snippet_library SNIPPET;
 
-void snippet_library::load_snippet( const JsonObject &jsobj, const std::string &src )
+void snippet_library::load_snippet( const JsonObject &jsobj )
 {
     if( hash_to_id_migration.has_value() ) {
         debugmsg( "snippet_library::load_snippet called after snippet_library::migrate_hash_to_id." );
@@ -22,14 +22,13 @@ void snippet_library::load_snippet( const JsonObject &jsobj, const std::string &
     hash_to_id_migration = std::nullopt;
     const std::string category = jsobj.get_string( "category" );
     if( jsobj.has_array( "text" ) ) {
-        add_snippets_from_json( category, jsobj.get_array( "text" ), src );
+        add_snippets_from_json( category, jsobj.get_array( "text" ) );
     } else {
-        add_snippet_from_json( category, jsobj, src );
+        add_snippet_from_json( category, jsobj );
     }
 }
 
-void snippet_library::add_snippets_from_json( const std::string &category, const JsonArray &jarr,
-        const std::string &src )
+void snippet_library::add_snippets_from_json( const std::string &category, const JsonArray &jarr )
 {
     if( hash_to_id_migration.has_value() ) {
         debugmsg( "snippet_library::add_snippets_from_json called after snippet_library::migrate_hash_to_id." );
@@ -46,13 +45,12 @@ void snippet_library::add_snippets_from_json( const std::string &category, const
             no_id.emplace_back( weighted_translation{ weight_acc, text } );
         } else {
             JsonObject jo = entry.get_object();
-            add_snippet_from_json( category, jo, src );
+            add_snippet_from_json( category, jo );
         }
     }
 }
 
-void snippet_library::add_snippet_from_json( const std::string &category, const JsonObject &jo,
-        const std::string &src )
+void snippet_library::add_snippet_from_json( const std::string &category, const JsonObject &jo )
 {
     if( hash_to_id_migration.has_value() ) {
         debugmsg( "snippet_library::add_snippet_from_json called after snippet_library::migrate_hash_to_id." );
@@ -76,7 +74,7 @@ void snippet_library::add_snippet_from_json( const std::string &category, const 
         ids.emplace_back( weighted_id{ weight_acc, id } );
         snippets_by_id[id] = text;
         if( jo.has_member( "effect_on_examine" ) ) {
-            EOC_by_id[id] = talk_effect_t( jo, "effect_on_examine", src );
+            EOC_by_id[id] = talk_effect_t( jo, "effect_on_examine" );
         }
         translation name;
         optional( jo, false, "name", name );

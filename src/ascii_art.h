@@ -2,9 +2,7 @@
 #ifndef CATA_SRC_ASCII_ART_H
 #define CATA_SRC_ASCII_ART_H
 
-#include <string>
-#include <string_view>
-#include <utility>
+#include <iosfwd>
 #include <vector>
 
 #include "type_id.h"

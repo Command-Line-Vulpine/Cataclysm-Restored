@@ -90,8 +90,7 @@
     "move_cost_mod": 2,
     "coverage": 30,
     "required_str": -1,
-    "liquid_source": { "id": "water", "count": 24 },
-    "flags": [ "TRANSPARENT", "FLAMMABLE_HARD", "MOUNTABLE", "LIQUIDCONT" ],
+    "flags": [ "TRANSPARENT", "FLAMMABLE_HARD", "MOUNTABLE", "LIQUIDCONT", "TOILET_WATER" ],
     "examine_action": "finite_water_source",
     "bash": {
       "str_min": 8,

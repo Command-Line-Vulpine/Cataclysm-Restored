@@ -82,21 +82,14 @@ void scent_map::draw( const catacurses::window &win, const int div, const tripoi
 
 void scent_map::shift( const point &sm_shift )
 {
-    // Set up iteration such that we ensure data has been moved before
-    // it's overwritten.
-    const int x_start = sm_shift.x >= 0 ? 0 : MAPSIZE_X - 1;
-    const int x_stop = sm_shift.x >= 0 ? MAPSIZE_X : -1;
-    const int x_step = sm_shift.x >= 0 ? 1 : -1;
-    const int y_start = sm_shift.y >= 0 ? 0 : MAPSIZE_Y - 1;
-    const int y_stop = sm_shift.y >= 0 ? MAPSIZE_Y : -1;
-    const int y_step = sm_shift.y >= 0 ? 1 : -1;
-
-    for( int x = x_start; x != x_stop; x += x_step ) {
-        for( int y = y_start; y != y_stop; y += y_step ) {
+    scent_array<int> new_scent;
+    for( size_t x = 0; x < MAPSIZE_X; ++x ) {
+        for( size_t y = 0; y < MAPSIZE_Y; ++y ) {
             const point p = point( x, y ) + sm_shift;
-            grscent[x][y] = inbounds( p ) ? grscent[p.x][p.y] : 0;
+            new_scent[x][y] = inbounds( p ) ? grscent[ p.x ][ p.y ] : 0;
         }
     }
+    grscent = new_scent;
 }
 
 int scent_map::get( const tripoint &p ) const
@@ -105,11 +98,6 @@ int scent_map::get( const tripoint &p ) const
         return get_unsafe( p );
     }
     return 0;
-}
-
-int scent_map::get( const tripoint_bub_ms &p ) const
-{
-    return scent_map::get( p.raw() );
 }
 
 void scent_map::set( const tripoint &p, int value, const scenttype_id &type )
@@ -205,8 +193,8 @@ void scent_map::update( const tripoint &center, map &m )
     const int diffusivity = 100;
 
     // The new scent flag searching function. Should be wayyy faster than the old one.
-    m.scent_blockers( blocks_scent, reduces_scent, point_bub_ms( scentmap_minx - 1, scentmap_miny - 1 ),
-                      point_bub_ms( scentmap_maxx + 1, scentmap_maxy + 1 ) );
+    m.scent_blockers( blocks_scent, reduces_scent, point( scentmap_minx - 1, scentmap_miny - 1 ),
+                      point( scentmap_maxx + 1, scentmap_maxy + 1 ) );
     // Sum neighbors in the y direction.  This way, each square gets called 3 times instead of 9
     // times. This cost us an extra loop here, but it also eliminated a loop at the end, so there
     // is a net performance improvement over the old code. Could probably still be better.

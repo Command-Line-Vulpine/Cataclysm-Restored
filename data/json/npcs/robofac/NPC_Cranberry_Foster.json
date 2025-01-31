@@ -3,7 +3,7 @@
     "type": "npc",
     "id": "robofac_merc_1",
     "name_unique": "Cranberry Foster",
-    "//": "Appears in the surface of Hub 01 as an external mercenary.",
+    "//": "Appears in the the surface of Hub 01 as an external mercenary.",
     "name_suffix": "Hub Mercenary",
     "mission_offered": "MISSION_ROBOFAC_MERC_1_RADIO",
     "class": "NC_ROBOFAC_MERC_1",
@@ -30,7 +30,6 @@
       { "trait": "PACIFIST" },
       { "trait": "TRUTHTELLER" },
       { "trait": "hair_medium", "variant": "blond" },
-      { "trait": "natural_hair_color_blond" },
       { "trait": "eye_color", "variant": "blue" },
       { "trait": "SKIN_PINK" }
     ],
@@ -105,13 +104,22 @@
     "id": "TALK_ROBOFAC_MERC_1",
     "type": "talk_topic",
     "dynamic_line": {
-      "compare_string": [ "yes", { "u_val": "general_meeting_u_met_Cranberry" } ],
+      "u_has_var": "u_met_Cranberry",
+      "type": "general",
+      "context": "meeting",
+      "value": "yes",
       "no": "&There's a person reclined on the sofa here.  They're very tall, with their legs reaching to the other armrest, and they're wearing a set of Hub 01's modular armor.  An environmental suit in blue-and-brown is crumpled in a misshapen heap on the floor near the table, and leaning against the far armrest is a rifle looking like nothing you've seen before.\n\nThey look up towards you as you come through the door and wave a hand.  \"Placeholder text.\"",
       "yes": {
-        "compare_string": [ "yes", { "u_val": "dialogue_robofac_merc_1_robofac_merc_1_stay" } ],
+        "u_has_var": "robofac_merc_1_stay",
+        "type": "dialogue",
+        "context": "robofac_merc_1",
+        "value": "yes",
         "no": [ "Did I scare you off the first time?", "Hi again, other person.", "*waves." ],
         "yes": {
-          "compare_string": [ "yes", { "npc_val": "general_robofac_merc_1_temporal_follower" } ],
+          "npc_has_var": "temporal_follower",
+          "type": "general",
+          "context": "robofac_merc_1",
+          "value": "yes",
           "yes": [
             "Better keep our eyes on the road.",
             "*looks at you expectantly.",
@@ -132,7 +140,7 @@
       }
     },
     "speaker_effect": {
-      "effect": { "u_add_var": "general_meeting_u_met_Cranberry", "value": "yes" },
+      "effect": { "u_add_var": "u_met_Cranberry", "type": "general", "context": "meeting", "value": "yes" },
       "sentinel": "robofac_merc_1_first_meeting"
     },
     "responses": [
@@ -141,8 +149,10 @@
         "topic": "TALK_ROBOFAC_MERC_1_PLACEHOLDER_TEXT",
         "condition": {
           "and": [
-            { "not": { "compare_string": [ "yes", { "u_val": "general_meeting_u_met_Cranberry" } ] } },
-            { "not": { "compare_string": [ "yes", { "u_val": "dialogue_robofac_merc_1_robofac_merc_1_stay" } ] } }
+            { "not": { "u_has_var": "u_met_Cranberry", "type": "general", "context": "meeting", "value": "yes" } },
+            {
+              "not": { "u_has_var": "robofac_merc_1_stay", "type": "dialogue", "context": "robofac_merc_1", "value": "yes" }
+            }
           ]
         }
       },
@@ -151,8 +161,10 @@
         "topic": "TALK_ROBOFAC_MERC_1_WHO",
         "condition": {
           "and": [
-            { "not": { "compare_string": [ "yes", { "u_val": "general_meeting_u_met_Cranberry" } ] } },
-            { "not": { "compare_string": [ "yes", { "u_val": "dialogue_robofac_merc_1_robofac_merc_1_stay" } ] } }
+            { "not": { "u_has_var": "u_met_Cranberry", "type": "general", "context": "meeting", "value": "yes" } },
+            {
+              "not": { "u_has_var": "robofac_merc_1_stay", "type": "dialogue", "context": "robofac_merc_1", "value": "yes" }
+            }
           ]
         }
       },
@@ -161,8 +173,10 @@
         "topic": "TALK_ROBOFAC_MERC_1_WHO",
         "condition": {
           "and": [
-            { "compare_string": [ "yes", { "u_val": "general_meeting_u_met_Cranberry" } ] },
-            { "not": { "compare_string": [ "yes", { "u_val": "dialogue_robofac_merc_1_robofac_merc_1_stay" } ] } }
+            { "u_has_var": "u_met_Cranberry", "type": "general", "context": "meeting", "value": "yes" },
+            {
+              "not": { "u_has_var": "robofac_merc_1_stay", "type": "dialogue", "context": "robofac_merc_1", "value": "yes" }
+            }
           ]
         }
       },
@@ -176,8 +190,10 @@
         "text": "I wanted to talk.",
         "condition": {
           "and": [
-            { "compare_string": [ "yes", { "u_val": "dialogue_robofac_merc_1_robofac_merc_1_stay" } ] },
-            { "not": { "compare_string": [ "yes", { "npc_val": "general_robofac_merc_1_temporal_follower" } ] } }
+            { "u_has_var": "robofac_merc_1_stay", "type": "dialogue", "context": "robofac_merc_1", "value": "yes" },
+            {
+              "not": { "npc_has_var": "temporal_follower", "type": "general", "context": "robofac_merc_1", "value": "yes" }
+            }
           ]
         },
         "topic": "TALK_ROBOFAC_MERC_1_MAIN"
@@ -186,8 +202,10 @@
         "text": "Want help with something else?",
         "condition": {
           "and": [
-            { "compare_string": [ "yes", { "u_val": "general_robofac_merc_1_helped_with_missions" } ] },
-            { "not": { "compare_string": [ "yes", { "npc_val": "general_robofac_merc_1_temporal_follower" } ] } },
+            { "u_has_var": "helped_with_missions", "type": "general", "context": "robofac_merc_1", "value": "yes" },
+            {
+              "not": { "npc_has_var": "temporal_follower", "type": "general", "context": "robofac_merc_1", "value": "yes" }
+            },
             { "not": "has_many_assigned_mission" },
             { "not": "has_assigned_mission" }
           ]
@@ -196,11 +214,10 @@
       },
       {
         "text": "Let's set up a combat strategy.",
-        "condition": { "compare_string": [ "yes", { "npc_val": "general_robofac_merc_1_temporal_follower" } ] },
-        "topic": "TALK_DONE",
-        "effect": "npc_rules_menu"
+        "condition": { "npc_has_var": "temporal_follower", "type": "general", "context": "robofac_merc_1", "value": "yes" },
+        "topic": "TALK_COMBAT_COMMANDS"
       },
-      { "text": "<end_talking_nevermind>", "topic": "TALK_DONE" }
+      { "text": "Never mind.", "topic": "TALK_DONE" }
     ]
   },
   {
@@ -219,7 +236,7 @@
         "text": "Anything on your mind?",
         "condition": {
           "and": [
-            { "not": { "compare_string": [ "yes", { "u_val": "general_robofac_merc_1_has_gold_deal" } ] } },
+            { "not": { "u_has_var": "has_gold_deal", "type": "general", "context": "robofac_merc_1", "value": "yes" } },
             { "not": "has_many_assigned_mission" },
             { "not": "has_assigned_mission" }
           ]
@@ -228,27 +245,29 @@
       },
       {
         "text": "Anything on your mind?",
-        "condition": { "compare_string": [ "yes", { "u_val": "general_robofac_merc_1_has_gold_deal" } ] },
+        "condition": { "u_has_var": "has_gold_deal", "type": "general", "context": "robofac_merc_1", "value": "yes" },
         "topic": "TALK_ROBOFAC_MERC_1_RANDOM_THOUGHTS"
       },
       {
         "text": "What was <the_cataclysm> like for you?",
-        "condition": { "not": { "compare_string": [ "yes", { "u_val": "general_robofac_merc_1_helped_with_missions" } ] } },
+        "condition": { "not": { "u_has_var": "helped_with_missions", "type": "general", "context": "robofac_merc_1", "value": "yes" } },
         "topic": "TALK_ROBOFAC_MERC_1_BACKGROUND_NO"
       },
       {
         "text": "What was <the_cataclysm> like for you?",
         "condition": {
           "and": [
-            { "compare_string": [ "yes", { "u_val": "general_robofac_merc_1_helped_with_missions" } ] },
-            { "not": { "compare_string": [ "yes", { "u_val": "general_robofac_merc_1_heard_backstory" } ] } }
+            { "u_has_var": "helped_with_missions", "type": "general", "context": "robofac_merc_1", "value": "yes" },
+            {
+              "not": { "u_has_var": "heard_backstory", "type": "general", "context": "robofac_merc_1", "value": "yes" }
+            }
           ]
         },
         "topic": "TALK_ROBOFAC_MERC_1_BACKGROUND"
       },
       {
         "text": "Want help with something?",
-        "condition": { "not": { "compare_string": [ "yes", { "u_val": "general_robofac_merc_1_helped_with_missions" } ] } },
+        "condition": { "not": { "u_has_var": "helped_with_missions", "type": "general", "context": "robofac_merc_1", "value": "yes" } },
         "topic": "TALK_MISSION_LIST"
       },
       { "text": "What do you know about our employers?", "topic": "TALK_ROBOFAC_MERC_1_ASK_HUB" },
@@ -257,9 +276,15 @@
         "condition": {
           "and": [
             {
-              "or": [ { "u_has_perception": 10 }, { "math": [ "u_skill('mechanics') >= 4" ] }, { "math": [ "u_skill('gun') >= 2" ] } ]
+              "or": [
+                { "u_has_perception": 10 },
+                { "math": [ "u_skill('mechanics')", ">=", "4" ] },
+                { "math": [ "u_skill('gun')", ">=", "2" ] }
+              ]
             },
-            { "not": { "compare_string": [ "yes", { "u_val": "dialogue_robofac_merc_1_robofac_merc_1_HWP" } ] } }
+            {
+              "not": { "u_has_var": "robofac_merc_1_HWP", "type": "dialogue", "context": "robofac_merc_1", "value": "yes" }
+            }
           ]
         },
         "topic": "TALK_ROBOFAC_MERC_1_HWP"
@@ -268,8 +293,10 @@
         "text": "What's the deal with your gun again?",
         "condition": {
           "and": [
-            { "compare_string": [ "yes", { "u_val": "dialogue_robofac_merc_1_robofac_merc_1_HWP" } ] },
-            { "not": { "compare_string": [ "yes", { "u_val": "dialogue_hub_rnd_u_can_research_rifle" } ] } }
+            { "u_has_var": "robofac_merc_1_HWP", "type": "dialogue", "context": "robofac_merc_1", "value": "yes" },
+            {
+              "not": { "u_has_var": "u_can_research_rifle", "type": "dialogue", "context": "hub_rnd", "value": "yes" }
+            }
           ]
         },
         "topic": "TALK_ROBOFAC_MERC_1_HWP_EXPLANATION"
@@ -278,9 +305,11 @@
         "text": "I've helped you out now.  Do you think you could vouch for me with our employers?",
         "condition": {
           "and": [
-            { "compare_string": [ "yes", { "u_val": "dialogue_robofac_merc_1_robofac_merc_1_HWP" } ] },
-            { "compare_string": [ "1", { "u_val": "favor_owed_to_u_robofac_merc_1_favor" } ] },
-            { "not": { "compare_string": [ "yes", { "u_val": "dialogue_hub_rnd_u_can_research_rifle" } ] } }
+            { "u_has_var": "robofac_merc_1_HWP", "type": "dialogue", "context": "robofac_merc_1", "value": "yes" },
+            { "u_has_var": "favor", "type": "favor_owed_to_u", "context": "robofac_merc_1", "value": "1" },
+            {
+              "not": { "u_has_var": "u_can_research_rifle", "type": "dialogue", "context": "hub_rnd", "value": "yes" }
+            }
           ]
         },
         "topic": "TALK_ROBOFAC_MERC_1_HWP_YES"
@@ -289,9 +318,11 @@
         "text": "How can I get a gun like that?",
         "condition": {
           "and": [
-            { "compare_string": [ "yes", { "u_val": "dialogue_robofac_merc_1_robofac_merc_1_HWP" } ] },
-            { "not": { "compare_string": [ "1", { "u_val": "favor_owed_to_u_robofac_merc_1_favor" } ] } },
-            { "not": { "compare_string": [ "yes", { "u_val": "dialogue_hub_rnd_u_can_research_rifle" } ] } }
+            { "u_has_var": "robofac_merc_1_HWP", "type": "dialogue", "context": "robofac_merc_1", "value": "yes" },
+            { "not": { "u_has_var": "favor", "type": "favor_owed_to_u", "context": "robofac_merc_1", "value": "1" } },
+            {
+              "not": { "u_has_var": "u_can_research_rifle", "type": "dialogue", "context": "hub_rnd", "value": "yes" }
+            }
           ]
         },
         "topic": "TALK_ROBOFAC_MERC_1_HWP_NO"
@@ -300,18 +331,18 @@
         "text": "I just realized, we've been in touch for a while now and I don't actually know; are you a man or a woman?",
         "condition": {
           "and": [
-            { "not": { "compare_string": [ "yes", { "u_val": "dialogue_robofac_merc_1_asked_gender" } ] } },
-            { "math": [ "n_npc_trust() >= 3" ] }
+            { "not": { "u_has_var": "asked_gender", "type": "dialogue", "context": "robofac_merc_1", "value": "yes" } },
+            { "compare_num": [ { "npc_val": "npc_trust" }, ">=", { "const": 3 } ] }
           ]
         },
         "topic": "TALK_ROBOFAC_MERC_1_GENDER"
       },
       {
         "text": "About the gold you wanted…",
-        "condition": { "compare_string": [ "yes", { "u_val": "general_robofac_merc_1_has_gold_deal" } ] },
+        "condition": { "u_has_var": "has_gold_deal", "type": "general", "context": "robofac_merc_1", "value": "yes" },
         "topic": "TALK_ROBOFAC_MERC_1_GOLD_MISSION_QUERY"
       },
-      { "text": "<end_talking_leave>", "topic": "TALK_DONE" }
+      { "text": "Well, I should get going.", "topic": "TALK_DONE" }
     ]
   },
   {
@@ -319,7 +350,7 @@
     "type": "talk_topic",
     "dynamic_line": "Yes.",
     "speaker_effect": {
-      "effect": { "u_add_var": "dialogue_robofac_merc_1_asked_gender", "value": "yes" },
+      "effect": { "u_add_var": "asked_gender", "type": "dialogue", "context": "robofac_merc_1", "value": "yes" },
       "sentinel": "robofac_merc_1_asked_gender"
     },
     "responses": [ { "text": "I don't know what I was expecting.", "topic": "TALK_ROBOFAC_MERC_1_MAIN" } ]
@@ -345,10 +376,7 @@
   {
     "id": "TALK_ROBOFAC_MERC_1_OTHER_MERCS",
     "type": "talk_topic",
-    "dynamic_line": {
-      "gendered_line": "Surprise!\"  They do jazz hands.  \"Sorry.  Well, I'm told that I'm part of a small group right now.  Maybe you were the first.",
-      "relevant_genders": [ "u" ]
-    }
+    "dynamic_line": "Surprise!\"  They do jazz hands.  \"Sorry.  Well, I'm told that I'm part of a small group right now.  Maybe you were the first."
   },
   {
     "id": "TALK_ROBOFAC_MERC_1_WHO",
@@ -364,7 +392,7 @@
     "type": "talk_topic",
     "dynamic_line": "I guess so.\"  They beam sheepishly.  \"Uh, call me Cranberry.  Cran is fine too.  It's nice to meet someone else from here.  I guess having some company for once wouldn't be awful.",
     "speaker_effect": {
-      "effect": { "u_add_var": "dialogue_robofac_merc_1_robofac_merc_1_stay", "value": "yes" },
+      "effect": { "u_add_var": "robofac_merc_1_stay", "type": "dialogue", "context": "robofac_merc_1", "value": "yes" },
       "sentinel": "robofac_merc_1_stay"
     },
     "responses": [
@@ -410,10 +438,7 @@
   {
     "id": "TALK_ROBOFAC_MERC_1_COINS",
     "type": "talk_topic",
-    "dynamic_line": {
-      "gendered_line": "Yeah.  Have you noticed how they pay us in these tiny little gold coins?\"  Cranberry holds one up for emphasis.  \"It's bizarre.  You'd think they have a gold mine in there, but no, they don't, so they make me cross the damn world grabbing gold bars.  As far as scrip goes, it seems inconvenient as hell to make.",
-      "relevant_genders": [ "u" ]
-    },
+    "dynamic_line": "Yeah.  Have you noticed how they pay us in these tiny little gold coins?\"  Cranberry holds one up for emphasis.  \"It's bizarre.  You'd think they have a gold mine in there, but no, they don't, so they make me cross the damn world grabbing gold bars.  As far as scrip goes, it seems inconvenient as hell to make.",
     "responses": [
       { "text": "You sound frustrated about it.", "topic": "TALK_ROBOFAC_MERC_1_GOLD_MISSION" },
       { "text": "Now that you mention it, it does seem rather strange.", "topic": "TALK_ROBOFAC_MERC_1_MAIN" }
@@ -426,12 +451,9 @@
       "Thinking I should go hunt something soon…",
       "Just wondering if things will get better someday.",
       "Hmm?  Nothing, I guess I just like resting in this place.  I feel good today.",
-      { "gendered_line": "Have you ever noticed how… wait no, never mind.", "relevant_genders": [ "u" ] },
+      "Have you ever noticed how… wait no, never mind.",
       "Wondering if the whole world is like this now.  It has to be, right?  I was watching some foreign news channels when everything was going down, and it sounded like things were just as bad there…",
-      {
-        "gendered_line": "Hey, did you notice that there's working wi-fi here?  Not that anything else is online anymore, but still.",
-        "relevant_genders": [ "u" ]
-      },
+      "Hey, did you notice that there's working wi-fi here?  Not that anything else is online anymore, but still.",
       "Just vibing."
     ],
     "responses": [ { "text": "I see.", "topic": "TALK_ROBOFAC_MERC_1_MAIN" } ]
@@ -451,16 +473,11 @@
     "type": "talk_topic",
     "dynamic_line": "It's from our employers.  Apparently, it's a custom platform they make for field agents.  It's got quick swap barrels for 9mm, the standard NATO cartridges, and shotgun shells too.  It's great for if you're on a long field mission and run out of ammo.  A lot of dudes bit the dust on their way home from the gun store with a box of nine-mil.  I guess it's better them than us; they don't need it now.",
     "speaker_effect": {
-      "effect": { "u_add_var": "dialogue_robofac_merc_1_robofac_merc_1_HWP", "value": "yes" },
+      "effect": { "u_add_var": "robofac_merc_1_HWP", "type": "dialogue", "context": "robofac_merc_1", "value": "yes" },
       "sentinel": "robofac_merc_1_HWP"
     },
     "responses": [
       { "text": "Damn.  Where can I get one of those?", "topic": "TALK_ROBOFAC_MERC_1_HWP_EXPLANATION_WHERE" },
-      {
-        "text": "I've helped you out now.  Do you think you could vouch for me with our employers?",
-        "condition": { "compare_string": [ "1", { "u_val": "favor_owed_to_u_robofac_merc_1_favor" } ] },
-        "topic": "TALK_ROBOFAC_MERC_1_HWP_YES"
-      },
       { "text": "I see.", "topic": "TALK_ROBOFAC_MERC_1_MAIN" }
     ]
   },
@@ -472,12 +489,8 @@
   {
     "id": "TALK_ROBOFAC_MERC_1_HWP_YES",
     "type": "talk_topic",
-    "dynamic_line": {
-      "compare_string": [ "yes", { "u_val": "dialogue_hub_merc_promised_u" } ],
-      "no": "I do owe you one.  Tell you what: I'll let the Hub know that you're worth manufacturing some proper gear for.  Let 'em know that I sent you next time you talk with them and I'm sure they'll help you.",
-      "yes": "As promised earlier, I'll let the Hub know that you're worth manufacturing some proper gear for.  Let 'em know that I sent you next time you talk with them and I'm sure they'll help you."
-    },
-    "speaker_effect": { "effect": { "u_add_var": "dialogue_hub_rnd_u_can_research_rifle", "value": "yes" } },
+    "dynamic_line": "I do owe you one.  Tell you what: I'll let the Hub know that you're worth manufacturing some proper gear for.  Let 'em know that I sent you next time you talk with them and I'm sure they'll help you.",
+    "speaker_effect": { "effect": { "u_add_var": "u_can_research_rifle", "type": "dialogue", "context": "hub_rnd", "value": "yes" } },
     "responses": [ { "text": "Thanks.", "topic": "TALK_ROBOFAC_MERC_1_MAIN" } ]
   },
   {
@@ -502,7 +515,6 @@
     "id": "TALK_ROBOFAC_MERC_1_HWP_IF_I_OWE_YOU",
     "type": "talk_topic",
     "dynamic_line": "Once we finish up this job, I'll vouch for you.  Pinkie promise.",
-    "speaker_effect": { "effect": { "u_add_var": "dialogue_hub_merc_promised_u", "value": "yes" } },
     "responses": [ { "text": "Alright.", "topic": "TALK_ROBOFAC_MERC_1_MAIN" } ]
   },
   {
@@ -657,7 +669,7 @@
     "type": "talk_topic",
     "dynamic_line": "*smiles at you, genuine and warm.  \"It feels nice to tell it.  You're welcome.\"",
     "speaker_effect": {
-      "effect": { "u_add_var": "general_robofac_merc_1_heard_backstory", "value": "yes" },
+      "effect": { "u_add_var": "heard_backstory", "type": "general", "context": "robofac_merc_1", "value": "yes" },
       "sentinel": "robofac_merc_1_background_shared"
     },
     "responses": [ { "text": "[Spend a while in silence.]", "topic": "TALK_DONE" }, { "text": "[Leave.]", "topic": "TALK_DONE" } ]
@@ -675,7 +687,7 @@
     "responses": [
       {
         "text": "You got it.  I'll let you know if I find any gold.",
-        "effect": { "u_add_var": "general_robofac_merc_1_has_gold_deal", "value": "yes" },
+        "effect": { "u_add_var": "has_gold_deal", "type": "general", "context": "robofac_merc_1", "value": "yes" },
         "topic": "TALK_ROBOFAC_MERC_1_GOLD_MISSION_ACCEPTED"
       },
       { "text": "Actually, I don't think I have time for that, sorry.", "topic": "TALK_ROBOFAC_MERC_1_MAIN" }
@@ -697,8 +709,8 @@
         "effect": [
           { "u_consume_item": "gold_small", "count": 200 },
           { "u_spawn_item": "RobofacCoin", "count": 8 },
-          { "math": [ "n_npc_trust()++" ] },
-          { "math": [ "n_npc_value()++" ] }
+          { "arithmetic": [ { "npc_val": "npc_trust" }, "++" ] },
+          { "arithmetic": [ { "npc_val": "npc_value" }, "++" ] }
         ],
         "topic": "TALK_ROBOFAC_MERC_1_GOLD_MISSION_TRADE"
       },
@@ -716,8 +728,8 @@
     ],
     "speaker_effect": {
       "effect": [
-        { "u_add_var": "general_robofac_merc_1_gold_mission_complete", "value": "yes" },
-        { "u_add_var": "general_robofac_merc_1_helped_with_missions", "value": "yes" }
+        { "u_add_var": "gold_mission_complete", "type": "general", "context": "robofac_merc_1", "value": "yes" },
+        { "u_add_var": "helped_with_missions", "type": "general", "context": "robofac_merc_1", "value": "yes" }
       ],
       "sentinel": "robofac_merc_1_first_gold_trade"
     }
@@ -731,7 +743,10 @@
     "difficulty": 5,
     "value": 0,
     "start": {
-      "effect": [ "follow_only", { "npc_add_var": "general_robofac_merc_1_temporal_follower", "value": "yes" } ],
+      "effect": [
+        "follow_only",
+        { "npc_add_var": "temporal_follower", "type": "general", "context": "robofac_merc_1", "value": "yes" }
+      ],
       "assign_mission_target": { "om_terrain": "radio_tower_1", "om_special": "hub_01", "reveal_radius": 1, "random": true, "search_range": 10 },
       "update_mapgen": [
         { "place_monster": [ { "monster": "mon_leech_radio", "x": 12, "y": 10, "target": true } ] },
@@ -768,11 +783,11 @@
     "end": {
       "effect": [
         "stop_following",
-        { "math": [ "u_favor_owed_to_u_robofac_merc_1_favor++" ] },
-        { "npc_lose_var": "general_robofac_merc_1_temporal_follower" },
-        { "u_add_var": "general_robofac_merc_1_helped_with_missions", "value": "yes" },
-        { "math": [ "n_npc_trust()", "+=", "2" ] },
-        { "math": [ "n_npc_value()", "+=", "2" ] }
+        { "u_adjust_var": "favor", "type": "favor_owed_to_u", "context": "robofac_merc_1", "adjustment": 1 },
+        { "npc_lose_var": "temporal_follower", "type": "general", "context": "robofac_merc_1" },
+        { "u_add_var": "helped_with_missions", "type": "general", "context": "robofac_merc_1", "value": "yes" },
+        { "arithmetic": [ { "npc_val": "npc_trust" }, "+=", { "const": 2 } ] },
+        { "arithmetic": [ { "npc_val": "npc_value" }, "+=", { "const": 2 } ] }
       ]
     },
     "origins": [ "ORIGIN_SECONDARY" ],

@@ -206,11 +206,6 @@ struct final_result {
     bool sealed;
     bool parent_pocket_sealed;
     std::vector<final_result> contents;
-
-    explicit final_result( const itype_id id, const bool sealed, const bool parent_pocket_sealed,
-                           std::vector<final_result> contents ) :
-        id( id ), sealed( sealed ), parent_pocket_sealed( parent_pocket_sealed ),
-        contents( std::move( contents ) ) {}
 };
 
 item *item_pointer( item *const it )
@@ -440,12 +435,12 @@ void test_scenario::run()
             break;
         }
         case container_location::vehicle: {
-            vehicle *veh = here.add_vehicle( vehicle_prototype_test_cargo_space, guy.pos_bub(),
+            vehicle *veh = here.add_vehicle( vehicle_prototype_test_cargo_space, guy.pos(),
                                              -90_degrees, 0, 0 );
             REQUIRE( veh );
-            here.board_vehicle( guy.pos_bub(), &guy );
+            here.board_vehicle( guy.pos(), &guy );
             std::optional<vpart_reference> vp =
-                here.veh_at( guy.pos_bub() ).part_with_feature( vpart_bitflags::VPFLAG_CARGO, true );
+                here.veh_at( guy.pos() ).part_with_feature( vpart_bitflags::VPFLAG_CARGO, true );
             REQUIRE( vp.has_value() );
             std::optional<vehicle_stack::iterator> added = veh->add_item( vp->part(), it );
             REQUIRE( added.has_value() );
@@ -453,8 +448,8 @@ void test_scenario::run()
             break;
         }
         case container_location::ground: {
-            item &added = here.add_item( guy.pos_bub(), it );
-            it_loc = item_location( map_cursor( guy.get_location() ), &added );
+            item &added = here.add_item( guy.pos(), it );
+            it_loc = item_location( map_cursor( guy.pos() ), &added );
             break;
         }
         default: {
@@ -469,7 +464,7 @@ void test_scenario::run()
     }
 
     std::string player_action_str;
-    restore_on_out_of_scope restore_test_mode_spilling(
+    restore_on_out_of_scope<test_mode_spilling_action_t> restore_test_mode_spilling(
         test_mode_spilling_action );
     switch( cur_player_action ) {
         case player_action::spill_all: {
@@ -810,19 +805,19 @@ void test_scenario::run()
             break;
         case container_location::inventory:
             if( original_location ) {
-                worn_results.emplace_back(
+                worn_results.emplace_back( final_result {
                     itype_test_restricted_container_holder,
                     false,
                     false,
-                    std::vector<final_result> { *original_location }
-                );
+                    { *original_location }
+                } );
             } else {
-                worn_results.emplace_back(
+                worn_results.emplace_back( final_result {
                     itype_test_restricted_container_holder,
                     false,
                     false,
-                    std::vector<final_result> {}
-                );
+                    {}
+                } );
             }
             break;
         case container_location::worn:
@@ -862,9 +857,9 @@ void test_scenario::run()
         REQUIRE( !it_loc );
     }
     INFO( "checking ground items" );
-    match( map_cursor( guy.get_location() ), here.i_at( guy.pos_bub() ), ground );
+    match( map_cursor( guy.pos() ), here.i_at( guy.pos() ), ground );
     INFO( "checking vehicle items" );
-    std::optional<vpart_reference> vp = here.veh_at( guy.pos_bub() )
+    std::optional<vpart_reference> vp = here.veh_at( guy.pos() )
                                         .part_with_feature( vpart_bitflags::VPFLAG_CARGO, true );
     if( cur_container_loc == container_location::vehicle ) {
         REQUIRE( vp.has_value() );

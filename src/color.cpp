@@ -1,38 +1,28 @@
 #include "color.h"
 
-#include <algorithm>
-#include <cstddef>
-#include <filesystem>
+#include <algorithm> // for std::count
+#include <functional>
 #include <iterator>
 #include <map>
-#include <memory>
 #include <utility>
 #include <vector>
+
+#include <ghc/fs_std_fwd.hpp>
 
 #include "cata_path.h"
 #include "cata_utility.h"
 #include "cursesdef.h"
 #include "debug.h"
 #include "filesystem.h"
-#include "flexbuffer_json-inl.h"
-#include "flexbuffer_json.h"
-#include "imgui/imgui.h"
-#include "input_context.h"
+#include "input.h"
 #include "json.h"
 #include "output.h"
 #include "path_info.h"
 #include "point.h"
 #include "rng.h"
 #include "string_formatter.h"
-#include "translations.h"
 #include "ui.h"
 #include "ui_manager.h"
-#include "cata_imgui.h"
-
-nc_color::operator ImVec4()
-{
-    return cataimgui::imvec4_from_color( *this );
-}
 
 void nc_color::serialize( JsonOut &jsout ) const
 {
@@ -403,9 +393,6 @@ void color_manager::load_default()
         add_color( def_c_dark_gray_yellow, "c_dark_gray_yellow", color_pair( 78 ), def_c_yellow );
         add_color( def_c_dark_gray_magenta, "c_dark_gray_magenta", color_pair( 77 ), def_c_pink );
         add_color( def_c_dark_gray_cyan, "c_dark_gray_cyan", color_pair( 76 ), def_c_light_cyan );
-#if !(defined(TILES) || defined(WIN32))
-        imclient->set_alloced_pair_count( 79 );
-#endif
     } else {
         add_color( def_c_dark_gray, "c_dark_gray", color_pair( 30 ).bold(), def_i_dark_gray );
         add_color( def_h_dark_gray, "h_dark_gray", color_pair( 20 ).bold(), def_c_light_blue );
@@ -416,9 +403,6 @@ void color_manager::load_default()
         add_color( def_c_dark_gray_yellow, "c_dark_gray_yellow", color_pair( 48 ).bold(), def_c_yellow );
         add_color( def_c_dark_gray_magenta, "c_dark_gray_magenta", color_pair( 56 ).bold(), def_c_pink );
         add_color( def_c_dark_gray_cyan, "c_dark_gray_cyan", color_pair( 64 ).bold(), def_c_light_cyan );
-#if !(defined(TILES) || defined(WIN32))
-        imclient->set_alloced_pair_count( 71 );
-#endif
     }
 }
 
@@ -821,10 +805,8 @@ static void draw_header( const catacurses::window &w )
     // NOLINTNEXTLINE(cata-use-named-point-constants)
     mvwprintz( w, point( 0, 2 ), c_white, _( "Some color changes may require a restart." ) );
 
-    wattron( w, BORDER_COLOR );
     mvwhline( w, point( 0, 3 ), LINE_OXOX, getmaxx( w ) ); // Draw line under header
-    mvwaddch( w, point( 48, 3 ), LINE_OXXX ); //^|^
-    wattroff( w, BORDER_COLOR );
+    mvwputch( w, point( 48, 3 ), BORDER_COLOR, LINE_OXXX ); //^|^
 
     mvwprintz( w, point( 3, 4 ), c_white, _( "Colorname" ) );
     mvwprintz( w, point( 21, 4 ), c_white, _( "Normal" ) );
@@ -841,7 +823,6 @@ void color_manager::show_gui()
     point iOffset;
 
     std::vector<int> vLines;
-    vLines.reserve( 2 );
     vLines.push_back( -1 );
     vLines.push_back( 48 );
 
@@ -865,7 +846,7 @@ void color_manager::show_gui()
         w_colors_border = catacurses::newwin( FULL_SCREEN_HEIGHT, FULL_SCREEN_WIDTH,
                                               iOffset );
         w_colors_header = catacurses::newwin( iHeaderHeight, FULL_SCREEN_WIDTH - 2,
-                                              iOffset + point::south_east );
+                                              iOffset + point_south_east );
         w_colors = catacurses::newwin( iContentHeight, FULL_SCREEN_WIDTH - 2,
                                        iOffset + point( 1, iHeaderHeight + 1 ) );
 
@@ -897,25 +878,32 @@ void color_manager::show_gui()
 
     ui.on_redraw( [&]( const ui_adaptor & ) {
         draw_border( w_colors_border, BORDER_COLOR, _( "Color manager" ) );
-        wattron( w_colors_border, BORDER_COLOR );
-        mvwaddch( w_colors_border, point( 0, 4 ), LINE_XXXO ); // |-
-        mvwaddch( w_colors_border, point( getmaxx( w_colors_border ) - 1, 4 ), LINE_XOXX ); // -|
+        mvwputch( w_colors_border, point( 0, 3 ), BORDER_COLOR, LINE_XXXO ); // |-
+        mvwputch( w_colors_border, point( getmaxx( w_colors_border ) - 1, 3 ), BORDER_COLOR,
+                  LINE_XOXX ); // -|
 
-        for( const int &iCol : vLines ) {
+        for( int &iCol : vLines ) {
             if( iCol > -1 ) {
-                mvwaddch( w_colors_border, point( iCol + 1, FULL_SCREEN_HEIGHT - 1 ), LINE_XXOX ); // _|_
-                mvwaddch( w_colors_header, point( iCol, 4 ), LINE_XOXO );
+                mvwputch( w_colors_border, point( iCol + 1, FULL_SCREEN_HEIGHT - 1 ), BORDER_COLOR,
+                          LINE_XXOX ); // _|_
+                mvwputch( w_colors_header, point( iCol, 3 ), BORDER_COLOR, LINE_XOXO );
             }
         }
-        wattroff( w_colors_border, BORDER_COLOR );
         wnoutrefresh( w_colors_border );
 
         draw_header( w_colors_header );
 
         // Clear all lines
-        mvwrectf( w_colors, point::zero, c_black, ' ', 79, iContentHeight );
-        for( int &iCol : vLines ) {
-            mvwvline( w_colors, point( iCol, 0 ), BORDER_COLOR, LINE_XOXO, iContentHeight );
+        for( int i = 0; i < iContentHeight; i++ ) {
+            for( int j = 0; j < 79; j++ ) {
+                mvwputch( w_colors, point( j, i ), c_black, ' ' );
+
+                for( int &iCol : vLines ) {
+                    if( iCol == j ) {
+                        mvwputch( w_colors, point( j, i ), BORDER_COLOR, LINE_XOXO );
+                    }
+                }
+            }
         }
 
         calcStartPos( iStartPos, iCurrentLine, iContentHeight, iMaxColors );
@@ -988,6 +976,11 @@ void color_manager::show_gui()
 
             if( !vFiles.empty() ) {
                 uilist ui_templates;
+                ui_templates.w_y_setup = [&]( int ) -> int {
+                    return iHeaderHeight + 1 + calc_offset_y();
+                };
+                ui_templates.w_height_setup = 18;
+
                 ui_templates.text = _( "Color templates:" );
 
                 for( const cata_path &file : vFiles ) {
@@ -1018,6 +1011,11 @@ void color_manager::show_gui()
 
             if( !vFiles.empty() ) {
                 uilist ui_templates;
+                ui_templates.w_y_setup = [&]( int ) -> int {
+                    return iHeaderHeight + 1 + calc_offset_y();
+                };
+                ui_templates.w_height_setup = 18;
+
                 ui_templates.text = _( "Color themes:" );
 
                 for( const cata_path &filename : vFiles ) {
@@ -1032,6 +1030,10 @@ void color_manager::show_gui()
             }
         } else if( action == "CONFIRM" ) {
             uilist ui_colors;
+            ui_colors.w_y_setup = [&]( int ) -> int {
+                return iHeaderHeight + 1 + calc_offset_y();
+            };
+            ui_colors.w_height_setup = 18;
 
             const color_manager::color_struct &entry = std::next( name_color_map.begin(),
                     iCurrentLine )->second;

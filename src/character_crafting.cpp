@@ -6,11 +6,9 @@
 #include <utility>
 #include <vector>
 
-#include "cached_options.h"
 #include "character.h"
 #include "inventory.h"
 #include "item.h"
-#include "item_contents.h"
 #include "itype.h"
 #include "pimpl.h"
 #include "recipe.h"
@@ -19,9 +17,10 @@
 #include "type_id.h"
 #include "value_ptr.h"
 
-bool Character::has_recipe( const recipe *r ) const
+bool Character::has_recipe( const recipe *r, const inventory &crafting_inv,
+                            const std::vector<Character *> &helpers ) const
 {
-    return knows_recipe( r ) || get_group_available_recipes().contains( r );
+    return knows_recipe( r ) || get_available_recipes( crafting_inv, &helpers ).contains( r );
 }
 
 bool Character::knows_recipe( const recipe *rec ) const
@@ -29,9 +28,9 @@ bool Character::knows_recipe( const recipe *rec ) const
     return get_learned_recipes().contains( rec );
 }
 
-void Character::learn_recipe( const recipe *const rec, bool override_never_learn )
+void Character::learn_recipe( const recipe *const rec )
 {
-    if( rec->never_learn && !override_never_learn ) {
+    if( rec->never_learn ) {
         return;
     }
     learned_recipes->include( rec );
@@ -180,22 +179,6 @@ recipe_subset Character::get_available_recipes( const inventory &crafting_inv,
     res.include( get_available_nested( res ) );
 
     return res;
-}
-
-recipe_subset &Character::get_group_available_recipes() const
-{
-    if( !test_mode && calendar::turn == cached_recipe_turn && cached_recipe_subset->size() > 0 ) {
-        return *cached_recipe_subset;
-    }
-
-    cached_recipe_turn = calendar::turn;
-    cached_recipe_subset->clear();
-
-    for( const Character *guy : get_crafting_group() ) {
-        cached_recipe_subset->include( guy->get_available_recipes( crafting_inventory() ) );
-    }
-
-    return *cached_recipe_subset;
 }
 
 std::set<itype_id> Character::get_books_for_recipe( const inventory &crafting_inv,

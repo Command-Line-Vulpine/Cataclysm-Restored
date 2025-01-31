@@ -116,7 +116,7 @@
     "melee_damage": [ { "damage_type": "cut", "amount": 0 } ],
     "vision_day": 50,
     "vision_night": 4,
-    "harvest": "zombie_leather",
+    "harvest": "zombie",
     "special_attacks": [ [ "SMASH", 28 ] ],
     "death_drops": "xl_uplift_death_drop",
     "flags": [
@@ -168,6 +168,7 @@
       "SEES",
       "HEARS",
       "GOODHEARING",
+      "SWIMS",
       "WARM",
       "GROUP_BASH",
       "POISON",
@@ -213,6 +214,7 @@
       "SEES",
       "HEARS",
       "GOODHEARING",
+      "SWIMS",
       "WARM",
       "BASHES",
       "GROUP_BASH",
@@ -253,7 +255,7 @@
     "death_drops": "default_moxie_human_death_drops",
     "grab_strength": 20,
     "special_attacks": [
-      { "id": "longswipe", "cooldown": 20 },
+      [ "LONGSWIPE", 20 ],
       { "id": "grab", "cooldown": 20 },
       {
         "id": "scratch",
@@ -269,6 +271,7 @@
       "SEES",
       "HEARS",
       "GOODHEARING",
+      "SWIMS",
       "WARM",
       "GRABS",
       "BASHES",
@@ -318,6 +321,7 @@
       "SEES",
       "HEARS",
       "GOODHEARING",
+      "SWIMS",
       "WARM",
       "BASHES",
       "GROUP_BASH",
@@ -362,6 +366,7 @@
       "SEES",
       "HEARS",
       "GOODHEARING",
+      "SWIMS",
       "WARM",
       "GRABS",
       "BASHES",
@@ -406,16 +411,15 @@
       "SEES",
       "HEARS",
       "GOODHEARING",
+      "SWIMS",
       "WARM",
-      "HAS_MIND",
       "BASHES",
       "GROUP_BASH",
       "POISON",
       "NO_BREATHE",
       "REVIVES",
       "PUSH_MON",
-      "FILTHY",
-      "GUILT_OTHERS"
+      "FILTHY"
     ]
   },
   {
@@ -446,7 +450,7 @@
     "harvest": "alien_moxphore",
     "grab_strength": 50,
     "special_attacks": [
-      { "id": "longswipe", "cooldown": 20 },
+      [ "LONGSWIPE", 20 ],
       { "id": "grab", "cooldown": 20 },
       {
         "id": "scratch",
@@ -463,6 +467,7 @@
       "HEARS",
       "GOODHEARING",
       "KEENNOSE",
+      "SWIMS",
       "WARM",
       "GRABS",
       "BASHES",
@@ -512,6 +517,7 @@
       "HEARS",
       "GOODHEARING",
       "KEENNOSE",
+      "SWIMS",
       "WARM",
       "BASHES",
       "GROUP_BASH",
@@ -526,7 +532,7 @@
   {
     "id": "mon_moxphore_emetic",
     "type": "MONSTER",
-    "name": { "str": "MoxPhore Emetic" },
+    "name": { "str": "Moxphore Emetic" },
     "description": "Unidentifiable walking remains, hunched and wandering in apparent pain.  An alien plant peeks meekly from its open mouth, leaking green liquid as its host stumbles.",
     "default_faction": "moxie",
     "bodytype": "human",

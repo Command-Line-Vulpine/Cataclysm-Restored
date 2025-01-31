@@ -19,8 +19,7 @@
         "fbml_rammed_earth_palette": "Rammed earth walls",
         "fbml_rock_palette": "Rock walls",
         "fbml_wad_palette": "Wattle-and-daub walls",
-        "fbml_wood_palette": "Wooden walls",
-        "fbml_brick_palette": "Brick walls"
+        "fbml_wood_palette": "Wooden walls"
       }
     },
     "blueprint_requires": [ { "id": "fbml_0" } ],
@@ -47,8 +46,7 @@
         "fbml_rammed_earth_palette": "Rammed earth walls",
         "fbml_rock_palette": "Rock walls",
         "fbml_wad_palette": "Wattle-and-daub walls",
-        "fbml_wood_palette": "Wooden walls",
-        "fbml_brick_palette": "Brick walls"
+        "fbml_wood_palette": "Wooden walls"
       }
     },
     "blueprint_requires": [ { "id": "fbml_0" } ],
@@ -75,8 +73,7 @@
         "fbml_rammed_earth_palette": "Rammed earth walls",
         "fbml_rock_palette": "Rock walls",
         "fbml_wad_palette": "Wattle-and-daub walls",
-        "fbml_wood_palette": "Wooden walls",
-        "fbml_brick_palette": "Brick walls"
+        "fbml_wood_palette": "Wooden walls"
       }
     },
     "blueprint_requires": [ { "id": "fbml_0" } ],
@@ -103,8 +100,7 @@
         "fbml_rammed_earth_palette": "Rammed earth walls",
         "fbml_rock_palette": "Rock walls",
         "fbml_wad_palette": "Wattle-and-daub walls",
-        "fbml_wood_palette": "Wooden walls",
-        "fbml_brick_palette": "Brick walls"
+        "fbml_wood_palette": "Wooden walls"
       }
     },
     "blueprint_requires": [ { "id": "fbml_southwest" } ],
@@ -131,8 +127,7 @@
         "fbml_rammed_earth_palette": "Rammed earth walls",
         "fbml_rock_palette": "Rock walls",
         "fbml_wad_palette": "Wattle-and-daub walls",
-        "fbml_wood_palette": "Wooden walls",
-        "fbml_brick_palette": "Brick walls"
+        "fbml_wood_palette": "Wooden walls"
       }
     },
     "blueprint_requires": [ { "id": "fbml_west" } ],

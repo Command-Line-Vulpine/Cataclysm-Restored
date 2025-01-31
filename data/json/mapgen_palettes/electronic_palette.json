@@ -2,7 +2,6 @@
   {
     "type": "palette",
     "id": "electro_palette",
-    "palettes": [ "parametrized_walls_palette" ],
     "terrain": {
       " ": "t_region_groundcover_urban",
       ",": "t_floor",
@@ -11,16 +10,17 @@
       "C": "t_carpet_yellow",
       "!": "t_concrete",
       "+": "t_door_c",
+      "-": "t_brick_wall",
       "=": "t_door_metal_c",
       "D": "t_door_locked_interior",
       "G": "t_door_glass_c",
       "W": "t_wall_glass",
       "w": "t_window",
       "s": "t_sidewalk",
-      "f": "t_chainfence",
+      "f": "t_chainfence_v",
       "g": "t_chaingate_c",
       "<": "t_stairs_up",
-      "H": "t_ladder_up",
+      "|": "t_ladder_up",
       "O": "t_thconc_floor",
       "(": "t_concrete"
     },

@@ -7,8 +7,7 @@
     "symbol": "~",
     "color": "light_blue",
     "move_cost": 5,
-    "liquid_source": { "id": "liquid_cacao", "min_temp": 4.4 },
-    "flags": [ "TRANSPARENT", "LIQUID", "NO_SCENT", "SWIMMABLE", "FISHABLE", "SHALLOW_WATER" ],
+    "flags": [ "TRANSPARENT", "LIQUID", "NO_SCENT", "SWIMMABLE", "FISHABLE", "SHALLOW_WATER", "CHOCOLATE" ],
     "connect_groups": "WATER",
     "connects_to": "WATER",
     "examine_action": "water_source"
@@ -21,8 +20,7 @@
     "symbol": "~",
     "color": "light_blue",
     "move_cost": 5,
-    "liquid_source": { "id": "liquid_cacao", "min_temp": 4.4 },
-    "flags": [ "TRANSPARENT", "LIQUID", "NO_SCENT", "SWIMMABLE", "FISHABLE" ],
+    "flags": [ "TRANSPARENT", "LIQUID", "NO_SCENT", "SWIMMABLE", "FISHABLE", "CHOCOLATE" ],
     "connect_groups": "WATER",
     "connects_to": "WATER",
     "examine_action": "water_source"

@@ -1,9 +1,8 @@
-#include "coordinates.h"
 #include "scent_block.h"
 
 scent_block::scent_block( const tripoint &sub, scent_map &scents )
 // NOLINTNEXTLINE(cata-use-named-point-constants)
-    : origin( coords::project_to<coords::ms>( tripoint_bub_sm( sub ) ).raw() + point( -1, -1 ) )
+    : origin( sm_to_ms_copy( sub ) + point( -1, -1 ) )
     , scents( scents )
     , modification_count( 0 )
 {
@@ -44,9 +43,9 @@ void scent_block::commit_modifications()
 }
 
 // We should be working entirely within the range, so don't range check here
-void scent_block::apply_gas( const tripoint_bub_ms &p, const int nintensity )
+void scent_block::apply_gas( const tripoint &p, const int nintensity )
 {
-    const point ndx = index( p.raw() );
+    const point ndx = index( p );
     assignment[ndx.x][ndx.y].mode = data_mode::SET;
     assignment[ndx.x][ndx.y].intensity = std::max( 0, assignment[ndx.x][ndx.y].intensity - nintensity );
     ++modification_count;

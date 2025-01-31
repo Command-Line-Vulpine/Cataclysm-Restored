@@ -23,13 +23,5 @@
     "name": [ "Rapid Healing" ],
     "max_duration": "6 s",
     "base_mods": { "hurt_amount": [ -10 ] }
-  },
-  {
-    "type": "effect_type",
-    "id": "iso_eff_geas_buff",
-    "rating": "good",
-    "int_dur_factor": "1 s",
-    "max_duration": "6 s",
-    "show_in_info": false
   }
 ]

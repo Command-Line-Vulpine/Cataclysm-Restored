@@ -6,7 +6,7 @@
     "name": "drylands",
     "sym": ".",
     "color": "yellow",
-    "see_cost": "none",
+    "see_cost": 2,
     "extras": "field",
     "flags": [ "NO_ROTATE" ]
   },
@@ -17,7 +17,7 @@
     "name": "shrubland",
     "sym": "*",
     "color": "green",
-    "see_cost": "low",
+    "see_cost": 1,
     "extras": "forest",
     "spawns": { "group": "GROUP_FOREST", "population": [ 0, 3 ], "chance": 13 },
     "flags": [ "NO_ROTATE", "SOURCE_FORAGE" ]
@@ -29,9 +29,10 @@
     "name": "woodland",
     "sym": "F",
     "color": "green",
-    "see_cost": "spaced_high",
+    "see_cost": 4,
     "extras": "forest_thick",
     "spawns": { "group": "GROUP_FOREST", "population": [ 0, 6 ], "chance": 15 },
+    "mapgen": [ { "method": "builtin", "name": "forest" } ],
     "flags": [ "NO_ROTATE", "SOURCE_FORAGE" ]
   },
   {
@@ -41,9 +42,10 @@
     "name": "desert pavement",
     "sym": ",",
     "color": "dark_gray",
-    "see_cost": "spaced_high",
+    "see_cost": 2,
     "extras": "forest_water",
     "spawns": { "group": "GROUP_SWAMP", "population": [ 1, 4 ], "chance": 16 },
+    "mapgen": [ { "method": "builtin", "name": "forest" } ],
     "flags": [ "NO_ROTATE" ]
   },
   {
@@ -52,9 +54,8 @@
     "name": "sandstone",
     "sym": "%",
     "color": "brown",
-    "see_cost": "opaque",
-    "flags": [ "NO_ROTATE" ],
-    "uniform_terrain": "t_sandstone"
+    "see_cost": 5,
+    "flags": [ "NO_ROTATE" ]
   },
   {
     "type": "overmap_terrain",
@@ -62,7 +63,7 @@
     "name": "mesa",
     "sym": "%",
     "color": "i_brown",
-    "see_cost": "full_high",
+    "see_cost": 5,
     "flags": [ "NO_ROTATE" ]
   },
   {
@@ -80,7 +81,7 @@
     "name": "mesa",
     "sym": "%",
     "color": "brown",
-    "see_cost": "full_high",
+    "see_cost": 5,
     "flags": [ "REQUIRES_PREDECESSOR" ]
   },
   {
@@ -98,7 +99,7 @@
     "name": "drylands",
     "sym": ".",
     "color": "brown",
-    "see_cost": "none"
+    "see_cost": 1
   },
   {
     "type": "overmap_terrain",
@@ -122,8 +123,7 @@
     ],
     "name": "canyon",
     "sym": "V",
-    "color": "light_gray",
-    "see_cost": "full_high"
+    "color": "light_gray"
   },
   {
     "type": "overmap_terrain",
@@ -140,7 +140,7 @@
     "name": "canyon",
     "sym": "V",
     "color": "light_gray",
-    "see_cost": "all_clear",
+    "see_cost": 5,
     "flags": [ "REQUIRES_PREDECESSOR" ]
   },
   {
@@ -150,7 +150,7 @@
     "name": "lake bed",
     "sym": "#",
     "color": "dark_gray",
-    "see_cost": "full_high",
+    "see_cost": 1,
     "flags": [ "NO_ROTATE", "LAKE" ]
   },
   {
@@ -161,7 +161,19 @@
     "color": "light_gray",
     "delete": { "flags": [ "LAKE" ] },
     "extend": { "flags": [ "LAKE_SHORE", "IGNORE_ROTATION_FOR_ADJACENCY" ] },
-    "extras": "lake_shore"
+    "extras": "lake_shore",
+    "mapgen": [ { "method": "builtin", "name": "lake_shore" } ]
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "lake_surface",
+    "copy-from": "generic_lake"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "lake_water_cube",
+    "copy-from": "generic_lake",
+    "name": "lake"
   },
   {
     "type": "overmap_terrain",
@@ -176,7 +188,7 @@
     "name": "riverbed",
     "sym": "R",
     "color": "dark_gray",
-    "see_cost": "none",
+    "see_cost": 1,
     "flags": [ "RIVER", "NO_ROTATE" ]
   },
   {
@@ -189,25 +201,29 @@
   {
     "type": "overmap_terrain",
     "id": "river_center",
-    "copy-from": "generic_river"
+    "copy-from": "generic_river",
+    "mapgen": [ { "method": "builtin", "name": "river_center" } ]
   },
   {
     "type": "overmap_terrain",
     "id": "river",
     "copy-from": "generic_river_bank",
     "extras": "river",
+    "mapgen": [ { "method": "builtin", "name": "river_straight" } ],
     "delete": { "flags": [ "NO_ROTATE" ] }
   },
   {
     "type": "overmap_terrain",
     "id": [ "river_c_not_ne", "river_c_not_nw", "river_c_not_se", "river_c_not_sw" ],
     "copy-from": "generic_river_bank",
-    "extras": "river"
+    "extras": "river",
+    "mapgen": [ { "method": "builtin", "name": "river_curved_not" } ]
   },
   {
     "type": "overmap_terrain",
     "id": [ "river_ne", "river_nw", "river_se", "river_sw" ],
     "extras": "river",
-    "copy-from": "generic_river_bank"
+    "copy-from": "generic_river_bank",
+    "mapgen": [ { "method": "builtin", "name": "river_curved" } ]
   }
 ]
