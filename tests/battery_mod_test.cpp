@@ -24,8 +24,14 @@
 static const ammotype ammo_battery( "battery" );
 static const itype_id itype_battery( "battery" );
 static const itype_id itype_heavy_plus_battery_cell( "heavy_plus_battery_cell" );
+static const itype_id itype_light_atomic_battery_cell( "light_atomic_battery_cell" );
 static const itype_id itype_light_battery_cell( "light_battery_cell" );
+static const itype_id itype_light_disposable_cell( "light_disposable_cell" );
+static const itype_id itype_light_plus_battery_cell( "light_plus_battery_cell" );
+static const itype_id itype_medium_atomic_battery_cell( "medium_atomic_battery_cell" );
 static const itype_id itype_medium_battery_cell( "medium_battery_cell" );
+static const itype_id itype_medium_disposable_cell( "medium_disposable_cell" );
+static const itype_id itype_medium_plus_battery_cell( "medium_plus_battery_cell" );
 
 // Includes functions:
 // item::magazine_compatible
@@ -93,7 +99,7 @@ TEST_CASE( "battery_tool_mod_test", "[battery][mod]" )
     }
 
     GIVEN( "tool compatible with light batteries" ) {
-        item flashlight( "diving_flashlight_small_hipower" );
+        item flashlight( "flashlight" );
         REQUIRE( flashlight.is_reloadable() );
         REQUIRE( flashlight.can_reload_with( item( itype_light_battery_cell ), true ) );
 
@@ -111,7 +117,7 @@ TEST_CASE( "battery_tool_mod_test", "[battery][mod]" )
                 CHECK_FALSE( flashlight.toolmods().empty() );
                 CHECK_FALSE( flashlight.get_contents().magazine_flag_restrictions().empty() );
 
-                CHECK( flashlight.tname() == "high-power mini diving flashlight (off)+1" );
+                CHECK( flashlight.tname() == "flashlight (off)+1" );
             }
 
             THEN( "tool contents remain empty unless you count the mod" ) {
@@ -124,6 +130,10 @@ TEST_CASE( "battery_tool_mod_test", "[battery][mod]" )
             THEN( "medium batteries can be installed" ) {
                 CHECK( flashlight.is_reloadable() );
                 CHECK( flashlight.can_reload_with( item( itype_medium_battery_cell ), true ) );
+                CHECK( flashlight.can_reload_with( item( itype_medium_battery_cell ), true ) );
+                CHECK( flashlight.can_reload_with( item( itype_medium_plus_battery_cell ), true ) );
+                CHECK( flashlight.can_reload_with( item( itype_medium_atomic_battery_cell ), true ) );
+                CHECK( flashlight.can_reload_with( item( itype_medium_disposable_cell ), true ) );
                 CHECK( flashlight.has_pocket_type( pocket_type::MAGAZINE_WELL ) );
             }
 
@@ -174,7 +184,7 @@ TEST_CASE( "battery_tool_mod_test", "[battery][mod]" )
 
                     Character *dummy = &get_avatar();
                     clear_avatar();
-                    actor->use( dummy, flashlight, dummy->pos_bub() );
+                    actor->use( dummy, flashlight, dummy->pos() );
 
                     // Regression tests for #42764 / #42854
                     THEN( "mod remains installed" ) {
@@ -210,7 +220,7 @@ TEST_CASE( "battery_tool_mod_test", "[battery][mod]" )
 TEST_CASE( "battery_and_tool_properties", "[battery][tool][properties]" )
 {
     const item bat_cell( "light_battery_cell" );
-    const item flashlight( "diving_flashlight_small_hipower" );
+    const item flashlight( "flashlight" );
 
     SECTION( "battery cell" ) {
         SECTION( "is a magazine" ) {
@@ -265,10 +275,14 @@ TEST_CASE( "battery_and_tool_properties", "[battery][tool][properties]" )
         SECTION( "is reloadable with a magazine" ) {
             CHECK( flashlight.is_reloadable() );
             CHECK( flashlight.can_reload_with( item( itype_light_battery_cell ), true ) );
+            CHECK( flashlight.can_reload_with( item( itype_light_disposable_cell ), true ) );
         }
 
         SECTION( "has compatible magazines" ) {
             CHECK( flashlight.can_contain( *itype_light_battery_cell ).success() );
+            CHECK( flashlight.can_contain( *itype_light_disposable_cell ).success() );
+            CHECK( flashlight.can_contain( *itype_light_plus_battery_cell ).success() );
+            CHECK( flashlight.can_contain( *itype_light_atomic_battery_cell ).success() );
         }
 
         SECTION( "Does not fit medium or large magazines" ) {
@@ -279,7 +293,7 @@ TEST_CASE( "battery_and_tool_properties", "[battery][tool][properties]" )
         SECTION( "has a default magazine" ) {
             itype_id mag_default = flashlight.magazine_default( false );
             CHECK_FALSE( mag_default.is_null() );
-            CHECK( mag_default.str() == "light_battery_cell" );
+            CHECK( mag_default.str() == "light_disposable_cell" );
         }
 
         SECTION( "can use battery ammo" ) {
@@ -305,7 +319,7 @@ TEST_CASE( "battery_and_tool_properties", "[battery][tool][properties]" )
 TEST_CASE( "installing_battery_in_tool", "[battery][tool][install]" )
 {
     item bat_cell( "light_battery_cell" );
-    item flashlight( "diving_flashlight_small_hipower" );
+    item flashlight( "flashlight" );
 
     const int bat_charges = bat_cell.ammo_capacity( ammo_battery );
     REQUIRE( bat_charges > 0 );

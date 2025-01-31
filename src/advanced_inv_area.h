@@ -3,12 +3,12 @@
 #define CATA_SRC_ADVANCED_INV_AREA_H
 
 #include <array>
-#include <string>
+#include <iosfwd>
 #include <vector>
 
 #include "item_location.h"
 #include "point.h"
-#include "units.h"
+#include "units.h" // IWYU pragma: keep
 
 enum aim_location : char {
     AIM_INVENTORY = 0,
@@ -27,13 +27,12 @@ enum aim_location : char {
     AIM_PARENT,
     AIM_WORN,
     NUM_AIM_LOCATIONS,
-    // cannot be selected, destination for when wearing item fails but item can be WIELDed
-    AIM_WIELD,
     // only useful for AIM_ALL
     AIM_AROUND_BEGIN = AIM_SOUTHWEST,
     AIM_AROUND_END = AIM_NORTHEAST
 };
 
+class advanced_inv_listitem;
 class item;
 class vehicle;
 class vehicle_stack;
@@ -49,16 +48,16 @@ class advanced_inv_area
 
         const aim_location id;
         // Used for the small overview 3x3 grid
-        point hscreen = point::zero;
+        point hscreen = point_zero;
         // relative (to the player) position of the map point
-        tripoint_rel_ms off;
+        tripoint off;
         /** Long name, displayed, translated */
         const std::string name = "fake";
         /** Shorter name (2 letters) */
         // FK in my coffee
         const std::string shortname = "FK";
         // absolute position of the map point.
-        tripoint_bub_ms pos;
+        tripoint pos;
         /** Can we put items there? Only checks if location is valid, not if
             selected container in pane is. For full check use canputitems() **/
         bool canputitemsloc = false;

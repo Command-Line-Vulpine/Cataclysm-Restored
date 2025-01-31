@@ -3,30 +3,33 @@
     "type": "talk_topic",
     "id": "TALK_NPC_HOMELESS_GROUP_SURVIVOR",
     "dynamic_line": {
-      "compare_string": [ "yes", { "npc_val": "dialogue_first_meeting_talked_to_homeless" } ],
+      "npc_has_var": "talked_to_homeless",
+      "type": "dialogue",
+      "context": "first_meeting",
+      "value": "yes",
       "yes": "Hello there.  Nice to see you again.",
       "no": "Who are you, and what are you doing here?"
     },
-    "speaker_effect": { "effect": { "npc_add_var": "dialogue_first_meeting_talked_to_homeless", "value": "yes" } },
+    "speaker_effect": { "effect": { "npc_add_var": "talked_to_homeless", "type": "dialogue", "context": "first_meeting", "value": "yes" } },
     "responses": [
       {
         "text": "Nice to meet you.  I mean no harm.",
         "topic": "TALK_NPC_HOMELESS_GROUP_SURVIVOR_INTRO",
-        "condition": { "not": { "compare_string": [ "yes", { "npc_val": "dialogue_first_meeting_talked_to_homeless" } ] } }
+        "condition": { "not": { "npc_has_var": "talked_to_homeless", "type": "dialogue", "context": "first_meeting", "value": "yes" } }
       },
       {
         "text": "Hand over your stuff!  Don't make any sudden moves, or you die!",
         "trial": { "type": "INTIMIDATE", "difficulty": 30 },
         "success": { "topic": "TALK_WEAPON_DROPPED", "effect": "drop_weapon", "opinion": { "trust": 4, "fear": -3 } },
         "failure": { "topic": "TALK_DONE", "effect": "hostile" },
-        "condition": { "not": { "compare_string": [ "yes", { "npc_val": "dialogue_first_meeting_talked_to_homeless" } ] } }
+        "condition": { "not": { "npc_has_var": "talked_to_homeless", "type": "dialogue", "context": "first_meeting", "value": "yes" } }
       },
       {
         "text": "Pleasure to see you again.",
         "topic": "TALK_NPC_HOMELESS_GROUP_SURVIVOR_INTRO",
-        "condition": { "compare_string": [ "yes", { "npc_val": "dialogue_first_meeting_talked_to_homeless" } ] }
+        "condition": { "npc_has_var": "talked_to_homeless", "type": "dialogue", "context": "first_meeting", "value": "yes" }
       },
-      { "text": "<end_talking_bye>", "topic": "TALK_DONE" }
+      { "text": "See ya.", "topic": "TALK_DONE" }
     ]
   },
   {
@@ -36,24 +39,19 @@
     "responses": [
       { "text": "What are you doing here?", "topic": "TALK_NPC_HOMELESS_BROKER_STORY" },
       {
-        "text": "I'd like to ask you a few questions.",
-        "topic": "TALK_FRIEND_CONVERSATION",
-        "condition": { "compare_string": [ "yes", { "npc_val": "dialogue_first_meeting_talked_to_homeless" } ] }
-      },
-      {
         "text": "Where might your friends be?",
         "topic": "TALK_NPC_HOMELESS_GROUP_SURVIVOR_FRIENDS",
-        "condition": { "compare_string": [ "yes", { "npc_val": "dialogue_first_meeting_told_about_buddies" } ] }
+        "condition": { "npc_has_var": "told_about_buddies", "type": "dialogue", "context": "first_meeting", "value": "yes" }
       },
       {
         "text": "Can I stay here?",
         "topic": "TALK_NPC_HOMELESS_BROKER_STAY",
-        "condition": { "compare_string": [ "yes", { "npc_val": "dialogue_first_meeting_told_about_buddies" } ] }
+        "condition": { "npc_has_var": "told_about_buddies", "type": "dialogue", "context": "first_meeting", "value": "yes" }
       },
       {
         "text": "What's with that guy in the tent?",
         "topic": "TALK_NPC_HOMELESS_GROUP_SURVIVOR_BROKER",
-        "condition": { "compare_string": [ "yes", { "npc_val": "dialogue_first_meeting_told_about_buddies" } ] }
+        "condition": { "npc_has_var": "told_about_buddies", "type": "dialogue", "context": "first_meeting", "value": "yes" }
       },
       { "text": "Want to trade?", "topic": "TALK_NPC_HOMELESS_GROUP_SURVIVOR_NOTRADE" },
       {
@@ -61,7 +59,7 @@
         "condition": { "and": [ { "not": "has_assigned_mission" }, { "not": "has_many_assigned_missions" } ] },
         "topic": "TALK_MISSION_LIST"
       },
-      { "text": "<end_talking_leave>", "topic": "TALK_DONE" }
+      { "text": "I gotta go.", "topic": "TALK_DONE" }
     ]
   },
   {

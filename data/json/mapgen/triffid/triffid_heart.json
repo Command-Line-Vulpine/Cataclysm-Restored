@@ -2,7 +2,8 @@
   {
     "type": "mapgen",
     "method": "json",
-    "om_terrain": "triffid_finale",
+    "om_terrain": [ "triffid_finale" ],
+    "weight": 100,
     "object": {
       "fill_ter": "t_root_floor",
       "rows": [

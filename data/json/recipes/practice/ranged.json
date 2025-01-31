@@ -20,13 +20,12 @@
         "baseball",
         "football",
         "golf_ball",
+        "marble",
+        "metal_RPG_die",
+        "RPG_die",
         "rock",
         "sharp_rock",
-        "rock_flaking",
-        "brick",
-        "wood_block",
-        "lawn_dart",
-        "weighted_dart"
+        "bearing"
       ]
     ]
   },
@@ -231,7 +230,7 @@
     "time": "1 h",
     "practice_data": { "min_difficulty": 0, "max_difficulty": 2, "skill_limit": 3 },
     "autolearn": [ [ "pistol", 0 ] ],
-    "tools": [ [ [ "aim_game", 5 ] ] ],
+    "tools": [ [ [ "aim_game", 50 ] ] ],
     "qualities": [ { "id": "PISTOL", "level": 1 } ]
   },
   {
@@ -247,7 +246,7 @@
     "time": "1 h",
     "practice_data": { "min_difficulty": 0, "max_difficulty": 2, "skill_limit": 3 },
     "autolearn": [ [ "rifle", 0 ] ],
-    "tools": [ [ [ "aim_game", 5 ] ] ],
+    "tools": [ [ [ "aim_game", 50 ] ] ],
     "qualities": [ { "id": "RIFLE", "level": 1 } ]
   },
   {
@@ -263,7 +262,7 @@
     "time": "1 h",
     "practice_data": { "min_difficulty": 0, "max_difficulty": 2, "skill_limit": 3 },
     "autolearn": [ [ "shotgun", 0 ] ],
-    "tools": [ [ [ "aim_game", 5 ] ] ],
+    "tools": [ [ [ "aim_game", 50 ] ] ],
     "qualities": [ { "id": "SHOTGUN", "level": 1 } ]
   },
   {
@@ -279,7 +278,7 @@
     "time": "1 h",
     "practice_data": { "min_difficulty": 0, "max_difficulty": 2, "skill_limit": 3 },
     "autolearn": [ [ "smg", 0 ] ],
-    "tools": [ [ [ "aim_game", 5 ] ] ],
+    "tools": [ [ [ "aim_game", 50 ] ] ],
     "qualities": [ { "id": "SMG", "level": 1 } ]
   },
   {

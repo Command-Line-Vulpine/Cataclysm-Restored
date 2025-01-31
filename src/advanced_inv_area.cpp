@@ -1,15 +1,19 @@
-#include "advanced_inv_area.h"
-
+#include <cstddef>
+#include <iterator>
+#include <list>
+#include <map>
 #include <memory>
+#include <new>
 #include <optional>
 #include <set>
 #include <unordered_map>
 #include <utility>
 
+#include "advanced_inv_area.h"
+#include "advanced_inv_listitem.h"
 #include "avatar.h"
+#include "cata_assert.h"
 #include "character.h"
-#include "character_attire.h"
-#include "debug.h"
 #include "enums.h"
 #include "field.h"
 #include "field_type.h"
@@ -17,8 +21,8 @@
 #include "inventory.h"
 #include "item.h"
 #include "map.h"
+#include "map_selector.h"
 #include "mapdata.h"
-#include "mdarray.h"
 #include "pimpl.h"
 #include "translations.h"
 #include "trap.h"
@@ -27,6 +31,7 @@
 #include "units.h"
 #include "veh_type.h"
 #include "vehicle.h"
+#include "vehicle_selector.h"
 #include "vpart_position.h"
 
 int advanced_inv_area::get_item_count() const
@@ -60,7 +65,7 @@ advanced_inv_area::advanced_inv_area( aim_location id, const point &h, tripoint 
 void advanced_inv_area::init()
 {
     avatar &player_character = get_avatar();
-    pos = player_character.pos_bub() + off;
+    pos = player_character.pos() + off;
     veh = nullptr;
     vstor = -1;
     // must update in main function
@@ -84,7 +89,7 @@ void advanced_inv_area::init()
             // offset for dragged vehicles is not statically initialized, so get it
             off = player_character.grab_point;
             // Reset position because offset changed
-            pos = player_character.pos_bub() + off;
+            pos = player_character.pos() + off;
             if( const std::optional<vpart_reference> vp = here.veh_at( pos ).cargo() ) {
                 veh = &vp->vehicle();
                 vstor = vp->part_index();
@@ -134,7 +139,6 @@ void advanced_inv_area::init()
             desc[0] = here.has_graffiti_at( pos ) ?
                       here.graffiti_at( pos ) : here.name( pos );
         }
-        break;
         default:
             break;
     }
@@ -194,27 +198,27 @@ bool advanced_inv_area::canputitems( const item_location &container ) const
     return id != AIM_CONTAINER ? canputitemsloc : container && container.get_item()->is_container();
 }
 
-static tripoint_rel_ms aim_vector( aim_location id )
+static tripoint aim_vector( aim_location id )
 {
     switch( id ) {
         case AIM_SOUTHWEST:
-            return tripoint_rel_ms::south_west;
+            return tripoint_south_west;
         case AIM_SOUTH:
-            return tripoint_rel_ms::south;
+            return tripoint_south;
         case AIM_SOUTHEAST:
-            return tripoint_rel_ms::south_east;
+            return tripoint_south_east;
         case AIM_WEST:
-            return tripoint_rel_ms::west;
+            return tripoint_west;
         case AIM_EAST:
-            return tripoint_rel_ms::east;
+            return tripoint_east;
         case AIM_NORTHWEST:
-            return tripoint_rel_ms::north_west;
+            return tripoint_north_west;
         case AIM_NORTH:
-            return tripoint_rel_ms::north;
+            return tripoint_north;
         case AIM_NORTHEAST:
-            return tripoint_rel_ms::north_east;
+            return tripoint_north_east;
         default:
-            return tripoint_rel_ms::zero;
+            return tripoint_zero;
     }
 }
 
@@ -228,7 +232,7 @@ void advanced_inv_area::set_container_position()
         off = aim_vector( static_cast<aim_location>( uistate.adv_inv_container_location ) );
     }
     // update the absolute position
-    pos = player_character.pos_bub() + off;
+    pos = player_character.pos() + off;
     // update vehicle information
     if( const std::optional<vpart_reference> vp = get_map().veh_at( pos ).cargo() ) {
         veh = &vp->vehicle();
@@ -241,12 +245,12 @@ void advanced_inv_area::set_container_position()
 
 aim_location advanced_inv_area::offset_to_location() const
 {
-    static constexpr cata::mdarray<aim_location, point_rel_ms, 3, 3> loc_array = {
+    static constexpr cata::mdarray<aim_location, point, 3, 3> loc_array = {
         {AIM_NORTHWEST,     AIM_NORTH,      AIM_NORTHEAST},
         {AIM_WEST,          AIM_CENTER,     AIM_EAST},
         {AIM_SOUTHWEST,     AIM_SOUTH,      AIM_SOUTHEAST}
     };
-    return loc_array[off.xy() + point_rel_ms::south_east];
+    return loc_array[off.xy() + point_south_east];
 }
 
 bool advanced_inv_area::can_store_in_vehicle() const

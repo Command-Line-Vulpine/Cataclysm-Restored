@@ -7,27 +7,24 @@
     "clauses": [
       {
         "id": "light",
-        "text": { "str": "]>=---=---=---=< >=---=----=<>=----=---=< >=---=---=---=<[", "//~": "NO_I18N" },
+        "text": "]>=---=---=---=< >=---=----=<>=----=---=< >=---=---=---=<[",
         "color": "yellow",
-        "condition": { "and": [ { "math": [ "u_pain() >= 3" ] }, { "math": [ "u_pain() < 40" ] } ] }
+        "condition": { "and": [ { "math": [ "u_pain()", ">=", "3" ] }, { "math": [ "u_pain()", "<", "40" ] } ] }
       },
       {
         "id": "mid",
-        "text": { "str": "]>=---=---=<>=---=<<>>=----=<>=----=<<>>=---=<>=---=---=<[", "//~": "NO_I18N" },
+        "text": "]>=---=---=<>=---=<<>>=----=<>=----=<<>>=---=<>=---=---=<[",
         "color": "light_red",
-        "condition": { "and": [ { "math": [ "u_pain() >= 40" ] }, { "math": [ "u_pain() < 60" ] } ] }
+        "condition": { "and": [ { "math": [ "u_pain()", ">=", "40" ] }, { "math": [ "u_pain()", "<", "60" ] } ] }
       },
       {
         "id": "haevy",
-        "text": { "str": "]>=---=---=<>=---=<<>>=---=<<>>=---=<<>>=---=<>=---=---=<[", "//~": "NO_I18N" },
+        "text": "]>=---=---=<>=---=<<>>=---=<<>>=---=<<>>=---=<>=---=---=<[",
         "color": "red",
-        "condition": { "math": [ "u_pain() >= 60" ] }
+        "condition": { "math": [ "u_pain()", ">=", "60" ] }
       }
     ],
-    "default_clause": {
-      "text": { "str": "]>=---=---=---=---=---=---=----=---=---=---=---=---=---=<[", "//~": "NO_I18N" },
-      "color": "dark_gray"
-    },
+    "default_clause": { "text": "]>=---=---=---=---=---=---=----=---=---=---=---=---=---=<[", "color": "dark_gray" },
     "flags": [ "W_LABEL_NONE" ]
   },
   {
@@ -37,30 +34,30 @@
     "clauses": [
       {
         "id": "light",
-        "text": { "str": "]>=---=---=---=---=<<>>=---=---=---=---=<[", "//~": "NO_I18N" },
+        "text": "]>=---=---=---=---=<<>>=---=---=---=---=<[",
         "color": "yellow",
-        "condition": { "and": [ { "math": [ "u_pain() >= 3" ] }, { "math": [ "u_pain() < 40" ] } ] }
+        "condition": { "and": [ { "math": [ "u_pain()", ">=", "3" ] }, { "math": [ "u_pain()", "<", "40" ] } ] }
       },
       {
         "id": "mid",
-        "text": { "str": "]>=---=---=<<>>=----<>----=<<>>=---=---=<[", "//~": "NO_I18N" },
+        "text": "]>=---=---=<<>>=----<>----=<<>>=---=---=<[",
         "color": "light_red",
-        "condition": { "and": [ { "math": [ "u_pain() >= 40" ] }, { "math": [ "u_pain() < 60" ] } ] }
+        "condition": { "and": [ { "math": [ "u_pain()", ">=", "40" ] }, { "math": [ "u_pain()", "<", "60" ] } ] }
       },
       {
         "id": "haevy",
-        "text": { "str": "]>=--=---=<<>>=---=<<>>=---=<<>>=---=--=<[", "//~": "NO_I18N" },
+        "text": "]>=--=---=<<>>=---=<<>>=---=<<>>=---=--=<[",
         "color": "red",
-        "condition": { "math": [ "u_pain() >= 60" ] }
+        "condition": { "math": [ "u_pain()", ">=", "60" ] }
       }
     ],
-    "default_clause": { "text": { "str": "]>=---=---=---=---=----=---=---=---=---=<[", "//~": "NO_I18N" }, "color": "dark_gray" }
+    "default_clause": { "text": "]>=---=---=---=---=----=---=---=---=---=<[", "color": "dark_gray" }
   },
   {
     "id": "spacebar_separator_2",
     "type": "widget",
     "style": "text",
-    "string": { "str": "x", "//~": "NO_I18N" },
+    "string": "x",
     "width": 2,
     "height": 1,
     "colors": [ "c_black" ]
@@ -69,7 +66,7 @@
     "id": "spacebar_separator_4",
     "type": "widget",
     "style": "text",
-    "string": { "str": "x", "//~": "NO_I18N" },
+    "string": "x",
     "width": 4,
     "height": 1,
     "colors": [ "c_black" ]

@@ -129,8 +129,7 @@
         "2   1"
       ],
       "palettes": [ "lab_common_palette" ],
-      "terrain": { "1": "t_slot_machine" },
-      "furniture": { "2": "f_atm_off" },
+      "terrain": { "2": "t_atm", "1": "t_slot_machine" },
       "items": {
         "s": [ { "item": "beauty", "chance": 30, "repeat": [ 1, 2 ] } ],
         "q": [ { "item": "dollar_food", "chance": 30, "repeat": [ 1, 2 ] } ],

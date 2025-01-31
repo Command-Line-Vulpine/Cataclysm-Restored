@@ -79,7 +79,15 @@
         { "monster": "mon_turret_searchlight", "x": 1, "y": 22 },
         { "monster": "mon_turret_searchlight", "x": 22, "y": 1 }
       ],
-      "monster": { ".": [ { "group": "GROUP_MIL_BASE", "chance": 9 } ] }
+      "monster": {
+        ".": [
+          { "monster": "mon_zombie_soldier", "chance": 1 },
+          { "monster": "mon_zombie_bio_op", "chance": 1 },
+          { "monster": "mon_dispatch", "chance": 1 },
+          { "monster": "mon_dispatch_military", "chance": 1 },
+          { "monster": "mon_secubot", "chance": 5 }
+        ]
+      }
     }
   },
   {
@@ -92,7 +100,7 @@
       "rows": [
         "                        ",
         "                        ",
-        "    ......    .....     ",
+        "                        ",
         "    ...............     ",
         "    ...............     ",
         "    ...............     ",
@@ -203,7 +211,15 @@
         { "monster": "mon_turret_searchlight", "x": 1, "y": 22 },
         { "monster": "mon_turret_searchlight", "x": 22, "y": 1 }
       ],
-      "monster": { ".": [ { "group": "GROUP_MIL_BASE", "chance": 9 } ] }
+      "monster": {
+        ".": [
+          { "monster": "mon_zombie_soldier", "chance": 1 },
+          { "monster": "mon_zombie_bio_op", "chance": 1 },
+          { "monster": "mon_dispatch", "chance": 1 },
+          { "monster": "mon_dispatch_military", "chance": 1 },
+          { "monster": "mon_secubot", "chance": 5 }
+        ]
+      }
     }
   },
   {

@@ -2,12 +2,13 @@
 #ifndef CATA_SRC_CITY_H
 #define CATA_SRC_CITY_H
 
-#include <string>
-#include <string_view>
-#include <vector>
+#include <string>         // for string, basic_string
+#include <vector>         // for vector
 
-#include "coordinates.h"
-#include "type_id.h"
+#include "coordinates.h"  // for operator==, point_om_omt, point_abs_om, coo...
+#include "overmap_types.h"
+#include "point.h"        // for point
+#include "type_id.h"      // for city_id, string_id
 
 class JsonObject;
 template <typename T> class generic_factory;

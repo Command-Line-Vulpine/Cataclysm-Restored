@@ -3,7 +3,7 @@
     "id": "anesthetic",
     "type": "requirement",
     "//": "Anesthetic cost removed in this mod, as autodocs do all the heavy lifting.",
-    "tools": [ [  ] ]
+    "tools": [  ]
   },
   {
     "type": "EXTERNAL_OPTION",
@@ -16,11 +16,5 @@
     "name": "EMP_DISABLE_ELECTRONICS",
     "stype": "bool",
     "value": false
-  },
-  {
-    "type": "EXTERNAL_OPTION",
-    "name": "CAPITALISM",
-    "stype": "bool",
-    "value": true
   }
 ]

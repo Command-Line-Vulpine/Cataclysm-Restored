@@ -7,7 +7,6 @@
 #include <map>
 #include <set>
 #include <string>
-#include <type_traits>
 
 // Some older standard libraries don't have all their classes
 // nothrow-move-assignable when you might expect them to be.

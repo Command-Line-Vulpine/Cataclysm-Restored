@@ -38,7 +38,7 @@ bool test_string_ends_with( const std::string &s1, const char( &s2 )[N] )
     return r1;
 }
 
-TEST_CASE( "string_starts_with", "[utility][nogame]" )
+TEST_CASE( "string_starts_with", "[utility]" )
 {
     CHECK( test_string_starts_with( "", "" ) );
     CHECK( test_string_starts_with( "a", "" ) );
@@ -48,7 +48,7 @@ TEST_CASE( "string_starts_with", "[utility][nogame]" )
     CHECK_FALSE( test_string_starts_with( "a", "ab" ) );
 }
 
-TEST_CASE( "string_ends_with", "[utility][nogame]" )
+TEST_CASE( "string_ends_with", "[utility]" )
 {
     CHECK( test_string_ends_with( "", "" ) );
     CHECK( test_string_ends_with( "a", "" ) );
@@ -58,7 +58,7 @@ TEST_CASE( "string_ends_with", "[utility][nogame]" )
     CHECK_FALSE( test_string_ends_with( "a", "ba" ) );
 }
 
-TEST_CASE( "string_ends_with_benchmark", "[.][utility][benchmark][nogame]" )
+TEST_CASE( "string_ends_with_benchmark", "[.][utility][benchmark]" )
 {
     const std::string s1 = "long_string_with_suffix";
 
@@ -70,7 +70,7 @@ TEST_CASE( "string_ends_with_benchmark", "[.][utility][benchmark][nogame]" )
     };
 }
 
-TEST_CASE( "string_ends_with_season_suffix", "[utility][nogame]" )
+TEST_CASE( "string_ends_with_season_suffix", "[utility]" )
 {
     constexpr size_t suffix_len = 15;
     // NOLINTNEXTLINE(cata-use-mdarray,modernize-avoid-c-arrays)
@@ -84,7 +84,7 @@ TEST_CASE( "string_ends_with_season_suffix", "[utility][nogame]" )
     CHECK_FALSE( test_string_ends_with( "t_tile_season_spring1", season_suffix[0] ) );
 }
 
-TEST_CASE( "divide_round_up", "[utility][nogame]" )
+TEST_CASE( "divide_round_up", "[utility]" )
 {
     CHECK( divide_round_up( 0, 5 ) == 0 );
     CHECK( divide_round_up( 1, 5 ) == 1 );
@@ -93,7 +93,7 @@ TEST_CASE( "divide_round_up", "[utility][nogame]" )
     CHECK( divide_round_up( 6, 5 ) == 2 );
 }
 
-TEST_CASE( "divide_round_up_units", "[utility][nogame]" )
+TEST_CASE( "divide_round_up_units", "[utility]" )
 {
     CHECK( divide_round_up( 0_ml, 5_ml ) == 0 );
     CHECK( divide_round_up( 1_ml, 5_ml ) == 1 );
@@ -102,7 +102,7 @@ TEST_CASE( "divide_round_up_units", "[utility][nogame]" )
     CHECK( divide_round_up( 6_ml, 5_ml ) == 2 );
 }
 
-TEST_CASE( "erase_if", "[utility][nogame]" )
+TEST_CASE( "erase_if", "[utility]" )
 {
     std::set<int> s{1, 2, 3, 4, 5};
     SECTION( "erase none" ) {
@@ -147,7 +147,7 @@ TEST_CASE( "erase_if", "[utility][nogame]" )
     }
 }
 
-TEST_CASE( "equal_ignoring_elements", "[utility][nogame]" )
+TEST_CASE( "equal_ignoring_elements", "[utility]" )
 {
     SECTION( "empty sets" ) {
         CHECK( equal_ignoring_elements<std::set<int>>(
@@ -235,7 +235,7 @@ TEST_CASE( "equal_ignoring_elements", "[utility][nogame]" )
     }
 }
 
-TEST_CASE( "map_without_keys", "[map][filter][nogame]" )
+TEST_CASE( "map_without_keys", "[map][filter]" )
 {
     std::map<std::string, std::string> map_empty;
     std::map<std::string, std::string> map_name_a = {
@@ -278,7 +278,7 @@ TEST_CASE( "map_without_keys", "[map][filter][nogame]" )
     CHECK_FALSE( map_without_keys( map_dirt_2, dirt ) == map_without_keys( map_name_a_dirt_2, dirt ) );
 }
 
-TEST_CASE( "map_equal_ignoring_keys", "[map][filter][nogame]" )
+TEST_CASE( "map_equal_ignoring_keys", "[map][filter]" )
 {
     std::map<std::string, std::string> map_empty;
     std::map<std::string, std::string> map_name_a = {
@@ -348,7 +348,7 @@ TEST_CASE( "map_equal_ignoring_keys", "[map][filter][nogame]" )
     CHECK_FALSE( map_equal_ignoring_keys( lagers_are_best, beer_and_stone, rock_and_stone ) );
 }
 
-TEST_CASE( "check_debug_menu_string_methods", "[debug_menu][nogame]" )
+TEST_CASE( "check_debug_menu_string_methods", "[debug_menu]" )
 {
     std::map<std::string, std::vector<std::string>> split_expect = {
         { "", { } },
@@ -380,7 +380,7 @@ TEST_CASE( "check_debug_menu_string_methods", "[debug_menu][nogame]" )
     }
 }
 
-TEST_CASE( "lcmatch", "[utility][nogame]" )
+TEST_CASE( "lcmatch", "[utility]" )
 {
     CHECK( lcmatch( "bo", "bo" ) == true );
     CHECK( lcmatch( "Bo", "bo" ) == true );

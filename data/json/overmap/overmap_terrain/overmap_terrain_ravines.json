@@ -2,11 +2,10 @@
   {
     "type": "overmap_terrain",
     "abstract": "generic_ravine",
-    "vision_levels": "always_full",
     "name": "ravine",
     "sym": ".",
     "color": "blue",
-    "see_cost": "all_clear"
+    "see_cost": 1
   },
   {
     "type": "overmap_terrain",

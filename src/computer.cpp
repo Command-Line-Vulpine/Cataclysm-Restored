@@ -1,19 +1,14 @@
 #include "computer.h"
 
-#include <locale>
+#include <clocale>
+#include <cstdlib>
 #include <sstream>
-#include <utility>
 
 #include "debug.h"
 #include "enum_conversions.h"
-#include "flexbuffer_json-inl.h"
-#include "flexbuffer_json.h"
 #include "json.h"
-#include "json_error.h"
 #include "output.h"
-#include "talker.h"
 #include "talker_furniture.h"
-#include "translation.h"
 #include "translations.h"
 
 template <typename E> struct enum_traits;
@@ -63,7 +58,7 @@ void computer_failure::deserialize( const JsonObject &jo )
     type = jo.get_enum_value<computer_failure_type>( "action" );
 }
 
-computer::computer( const std::string &new_name, int new_security, tripoint_bub_ms new_loc )
+computer::computer( const std::string &new_name, int new_security, tripoint new_loc )
     : name( new_name ), mission_id( -1 ), security( new_security ), alerts( 0 ),
       next_attempt( calendar::before_time_starts ),
       access_denied( _( "ERROR!  Access denied!" ) )
@@ -128,10 +123,10 @@ void computer::remove_value( const std::string &key )
     values.erase( key );
 }
 
-std::optional<std::string> computer::maybe_get_value( const std::string &key ) const
+std::string computer::get_value( const std::string &key ) const
 {
     auto it = values.find( key );
-    return it == values.end() ? std::nullopt : std::optional<std::string> { it->second };
+    return ( it == values.end() ) ? "" : it->second;
 }
 
 static computer_action computer_action_from_legacy_enum( int val );
@@ -344,7 +339,6 @@ std::string enum_to_string<computer_action>( const computer_action act )
         case COMPACT_GEIGER: return "geiger";
         case COMPACT_IRRADIATOR: return "irradiator";
         case COMPACT_LIST_BIONICS: return "list_bionics";
-        case COMPACT_LIST_MUTATIONS: return "list_mutations";
         case COMPACT_LOCK: return "lock";
         case COMPACT_MAP_SEWER: return "map_sewer";
         case COMPACT_MAP_SUBWAY: return "map_subway";

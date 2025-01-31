@@ -28,7 +28,7 @@
         if( expression ) { \
             break; \
         } \
-        (void) fprintf( stderr, "%s at %s:%d: Assertion `%s` failed.\n", __func__, __FILE__, __LINE__, #expression ); \
+        fprintf( stderr, "%s at %s:%d: Assertion `%s` failed.\n", __func__, __FILE__, __LINE__, #expression ); \
         std::abort(); \
     } while( false )
 #else

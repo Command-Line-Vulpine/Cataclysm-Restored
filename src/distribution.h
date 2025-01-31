@@ -2,10 +2,9 @@
 #ifndef CATA_SRC_DISTRIBUTION_H
 #define CATA_SRC_DISTRIBUTION_H
 
-#include <memory>
 #include <string>
 
-#include "memory_fast.h"  // IWYU pragma: keep
+#include "memory_fast.h"
 
 struct int_distribution_impl;
 class JsonValue;

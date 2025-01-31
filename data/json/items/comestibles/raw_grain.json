@@ -3,39 +3,39 @@
     "type": "COMESTIBLE",
     "id": "corn",
     "name": { "str": "corn cob" },
-    "weight": "140 g",
+    "weight": "690 g",
     "color": "light_green",
     "spoils_in": "5 days",
     "comestible_type": "FOOD",
     "symbol": "%",
     "calories": 132,
     "description": "A corn cob full of delicious golden kernels.  You can eat them on the cob or shell it for cooking.",
-    "price": "1 USD 70 cent",
+    "price": 170,
     "//": "Thinking this is a single ear here.",
-    "price_postapoc": "50 cent",
+    "price_postapoc": 50,
     "material": [ "veggy" ],
-    "volume": "195 ml",
+    "volume": "750 ml",
     "flags": [ "EATEN_HOT", "RAW" ],
-    "vitamins": [ [ "vitC", 12 ], [ "iron", 4 ], [ "veggy_allergen", 1 ] ],
+    "vitamins": [ [ "vitC", 12 ], [ "iron", 4 ] ],
     "use_action": { "type": "consume_drug", "used_up_item": "empty_corn_cob", "moves": 500 }
   },
   {
     "type": "COMESTIBLE",
     "id": "corn_kernels",
     "name": { "str_sp": "corn kernels" },
-    "weight": "60 g",
+    "weight": "210 g",
     "color": "yellow",
     "spoils_in": "5 days",
     "comestible_type": "FOOD",
     "symbol": "%",
     "calories": 132,
     "description": "Delicious golden kernels of corn.",
-    "price": "2 USD",
-    "price_postapoc": "60 cent",
+    "price": 200,
+    "price_postapoc": 60,
     "material": [ "veggy" ],
-    "volume": "83 ml",
+    "volume": "285 ml",
     "smoking_result": "dry_corn",
-    "vitamins": [ [ "vitC", 12 ], [ "iron", 4 ], [ "veggy_allergen", 1 ] ],
+    "vitamins": [ [ "vitC", 12 ], [ "iron", 4 ] ],
     "petfood": [ "CATTLEFOOD" ],
     "flags": [ "EDIBLE_FROZEN", "EATEN_HOT", "SMOKABLE", "RAW", "INEDIBLE", "CATTLE", "PLANTABLE_SEED", "BIRD", "RAT", "MOUSE" ],
     "seed_data": { "plant_name": "corn", "fruit": "corn", "seeds": false, "byproducts": [ "withered" ], "grow": "80 days" }
@@ -44,75 +44,68 @@
     "type": "COMESTIBLE",
     "id": "empty_corn_cob",
     "name": { "str": "empty corn cob" },
-    "weight": "80 g",
+    "weight": "480 g",
     "color": "yellow",
     "spoils_in": "5 days",
     "comestible_type": "FOOD",
     "symbol": "%",
     "description": "An empty corn cob.  No longer contains any edible kernels, but it can be used to make stock or as fuel.",
-    "price": "1 cent",
-    "price_postapoc": "1 cent",
+    "price": 1,
+    "price_postapoc": 1,
     "material": [ "veggy", "wood" ],
-    "volume": "111 ml",
+    "volume": "465 ml",
     "fun": -8,
-    "flags": [ "RAW" ],
-    "vitamins": [ [ "veggy_allergen", 1 ] ]
-  },
-  {
-    "type": "COMESTIBLE",
-    "id": "popcorn_cob",
-    "name": { "str": "popcorn cob" },
-    "comestible_type": "FOOD",
-    "copy-from": "corn",
-    "fun": -2,
-    "description": "A popcorn cob full of popcorn kernels.  You can eat them on the cob or shell it for cooking.",
-    "use_action": { "type": "consume_drug", "used_up_item": "empty_corn_cob", "moves": 500 }
+    "flags": [ "RAW" ]
   },
   {
     "type": "COMESTIBLE",
     "id": "popcorn_raw",
     "name": { "str_sp": "raw popcorn" },
-    "copy-from": "corn_kernels",
+    "weight": "153 g",
     "color": "light_green",
+    "spoils_in": "5 days",
     "comestible_type": "FOOD",
+    "symbol": "%",
     "calories": 120,
     "description": "A special variety of corn which could be used for making popcorn, after it's dried.  Unlike normal corn, it's not sweet and is more dry.",
-    "price": "1 USD 70 cent",
+    "price": 170,
+    "material": [ "veggy" ],
+    "volume": "750 ml",
     "fun": -2,
+    "vitamins": [ [ "vitC", 12 ], [ "iron", 4 ] ],
     "smoking_result": "kernels",
     "petfood": [ "CATTLEFOOD", "BIRDFOOD" ],
     "flags": [ "NUTRIENT_OVERRIDE", "EATEN_HOT", "SMOKABLE", "RAW", "PLANTABLE_SEED", "CATTLE", "BIRD", "RAT", "MOUSE" ],
-    "seed_data": { "plant_name": "popcorn", "fruit": "popcorn_cob", "seeds": false, "byproducts": [ "withered" ], "grow": "91 days" }
+    "seed_data": { "plant_name": "popcorn", "fruit": "popcorn_raw", "seeds": false, "byproducts": [ "withered" ], "grow": "91 days" }
   },
   {
     "type": "COMESTIBLE",
     "id": "kernels",
     "name": { "str_sp": "popcorn kernels" },
-    "weight": "45 g",
+    "weight": "32 g",
     "color": "brown",
-    "container": "bag_plastic_small",
+    "container": "bag_plastic",
     "comestible_type": "FOOD",
     "symbol": "%",
     "calories": 120,
     "description": "Dried kernels from a particular type of corn.  Inedible raw, they can be cooked to make a tasty snack.",
-    "price": "1 USD",
-    "price_postapoc": "4 USD",
+    "price": 100,
+    "price_postapoc": 400,
     "material": [ "junk" ],
-    "volume": "83 ml",
+    "volume": "250 ml",
     "fun": -6,
     "petfood": [ "CATTLEFOOD", "BIRDFOOD" ],
     "flags": [ "NUTRIENT_OVERRIDE", "EDIBLE_FROZEN", "PLANTABLE_SEED", "INEDIBLE", "CATTLE", "BIRD", "RAT", "MOUSE" ],
-    "seed_data": { "plant_name": "popcorn", "fruit": "popcorn_cob", "seeds": false, "byproducts": [ "withered" ], "grow": "91 days" },
-    "vitamins": [ [ "junk_allergen", 1 ] ]
+    "seed_data": { "plant_name": "popcorn", "fruit": "popcorn_raw", "seeds": false, "byproducts": [ "withered" ], "grow": "91 days" }
   },
   {
     "type": "COMESTIBLE",
     "id": "popcorn",
     "name": { "str_sp": "popcorn" },
-    "weight": "11 g",
+    "weight": "8 g",
     "color": "white",
     "spoils_in": "360 days",
-    "container": "bag_plastic_small",
+    "container": "bag_plastic",
     "comestible_type": "FOOD",
     "symbol": "%",
     "quench": -1,
@@ -124,7 +117,7 @@
     "volume": "62 ml",
     "flags": [ "EATEN_HOT", "FREEZERBURN" ],
     "fun": 4,
-    "vitamins": [ [ "iron", 2 ], [ "veggy_allergen", 1 ] ]
+    "vitamins": [ [ "iron", 2 ] ]
   },
   {
     "type": "COMESTIBLE",
@@ -135,8 +128,7 @@
     "healthy": -1,
     "description": "Popcorn with salt added for extra flavor.",
     "material": [ "junk" ],
-    "fun": 8,
-    "vitamins": [ [ "junk_allergen", 1 ] ]
+    "fun": 8
   },
   {
     "type": "COMESTIBLE",
@@ -147,8 +139,7 @@
     "calories": 50,
     "description": "Popcorn with a light covering of butter for extra flavor.",
     "material": [ "junk" ],
-    "fun": 10,
-    "vitamins": [ [ "junk_allergen", 1 ] ]
+    "fun": 10
   },
   {
     "type": "COMESTIBLE",
@@ -160,16 +151,15 @@
     "symbol": ",",
     "description": "A sheaf of freshly-cut wheat, now ready for drying in a stook or smoker.",
     "spoils_in": "22 days",
-    "price": "25 cent",
+    "price": 25,
     "calories": 707,
     "//": "Wheatstraw has about 4410 kcal/kg, about 30 kcal will be lost when the wheat is threshed, and another 10 when it's winnowed. Humans can't digest wheatstraw, but many herbivores can.",
-    "price_postapoc": "20 cent",
+    "price_postapoc": 20,
     "material": [ "veggy" ],
     "flags": [ "SMOKABLE", "FRESH_GRAIN", "INEDIBLE", "CATTLE" ],
     "petfood": [ "CATTLEFOOD" ],
     "smoking_result": "dry_wheat_stalks",
-    "volume": "1 L",
-    "vitamins": [ [ "veggy_allergen", 1 ] ]
+    "volume": "1 L"
   },
   {
     "type": "COMESTIBLE",
@@ -186,10 +176,9 @@
     "description": "A sheaf of dried wheat stalks.  These will require threshing before anything can be done with them.",
     "flags": [ "INEDIBLE", "CATTLE", "SMOKED" ],
     "petfood": [ "CATTLEFOOD" ],
-    "price": "25 cent",
-    "price_postapoc": "20 cent",
-    "volume": "900 ml",
-    "vitamins": [ [ "veggy_allergen", 1 ] ]
+    "price": 25,
+    "price_postapoc": 20,
+    "volume": "900 ml"
   },
   {
     "type": "COMESTIBLE",
@@ -205,10 +194,9 @@
     "flags": [ "INEDIBLE", "CATTLE", "BIRD", "RAT", "MOUSE" ],
     "petfood": [ "CATTLEFOOD" ],
     "description": "Wheat with the chaff still mixed in.  It will have to be winnowed before it's usable.",
-    "price": "25 cent",
-    "price_postapoc": "20 cent",
-    "volume": "252 ml",
-    "vitamins": [ [ "wheat_allergen", 1 ] ]
+    "price": 25,
+    "price_postapoc": 20,
+    "volume": "252 ml"
   },
   {
     "type": "COMESTIBLE",
@@ -225,10 +213,9 @@
     "calories": 10,
     "flags": [ "INEDIBLE", "CATTLE", "BIRD" ],
     "description": "Loose bits of dried straw and seed casings from winnowed grain.  There are a few fragments of seeds still mixed in, a big enough pile of this stuff could be made into bird food or cattle fodder.",
-    "price": "0 cent",
-    "price_postapoc": "0 cent",
-    "volume": "2 ml",
-    "vitamins": [ [ "veggy_allergen", 1 ] ]
+    "price": 0,
+    "price_postapoc": 0,
+    "volume": "2 ml"
   },
   {
     "type": "COMESTIBLE",
@@ -241,13 +228,13 @@
     "quench": -10,
     "calories": 667,
     "description": "A heap of dried wheatberries, ready for planting.  They're hard as gravel, but could be boiled for food or ground into flour.",
-    "price": "1 USD 20 cent",
-    "price_postapoc": "1 USD",
+    "price": 120,
+    "price_postapoc": 100,
     "material": [ "wheat" ],
     "//": "These things are rock-hard and not digestible by humans, but birds and cattle can eat them just fine.",
-    "milling": { "into": "flour", "recipe": "flour_mill_1_15" },
+    "milling": { "into": "flour", "conversion_rate": 15 },
     "volume": "250 ml",
-    "vitamins": [ [ "calcium", 4 ], [ "iron", 40 ], [ "wheat_allergen", 1 ] ],
+    "vitamins": [ [ "calcium", 4 ], [ "iron", 40 ] ],
     "petfood": [ "CATTLEFOOD", "BIRDFOOD" ],
     "flags": [ "EDIBLE_FROZEN", "RAW", "INEDIBLE", "CATTLE", "PLANTABLE_SEED", "CUT_HARVEST", "BIRD", "RAT", "MOUSE" ],
     "seed_data": { "plant_name": "wheat", "fruit": "wheat_stalks", "seeds": false, "grow": "120 days" }
@@ -292,8 +279,8 @@
     "price_postapoc": "62 cent",
     "material": [ "veggy" ],
     "volume": "250 ml",
-    "milling": { "into": "flour", "recipe": "flour_mill_1_15" },
-    "vitamins": [ [ "calcium", 6 ], [ "iron", 29 ], [ "veggy_allergen", 1 ] ],
+    "milling": { "into": "flour", "conversion_rate": 15 },
+    "vitamins": [ [ "calcium", 6 ], [ "iron", 29 ] ],
     "petfood": [ "CATTLEFOOD", "BIRDFOOD" ],
     "flags": [ "EDIBLE_FROZEN", "RAW", "INEDIBLE", "CATTLE", "PLANTABLE_SEED", "CUT_HARVEST", "BIRD", "RAT", "MOUSE" ],
     "seed_data": { "plant_name": "barley", "fruit": "barley_stalks", "seeds": false, "grow": "70 days" }
@@ -304,9 +291,9 @@
     "name": { "str_sp": "oat stalks" },
     "copy-from": "wheat_stalks",
     "description": "A sheaf of freshly-cut oats, now ready for drying in a stook or smoker.",
-    "price": "12 cent",
+    "price": 12,
     "calories": 355,
-    "price_postapoc": "10 cent",
+    "price_postapoc": 10,
     "smoking_result": "dry_oat_stalks"
   },
   {
@@ -317,8 +304,8 @@
     "quench": -5,
     "calories": 355,
     "description": "A sheaf of dried oat stalks.  These will require threshing before anything can be done with them.",
-    "price": "12 cent",
-    "price_postapoc": "10 cent"
+    "price": 12,
+    "price_postapoc": 10
   },
   {
     "type": "COMESTIBLE",
@@ -328,8 +315,8 @@
     "quench": -5,
     "calories": 340,
     "description": "Oats with the chaff still mixed in.  They will have to be winnowed before they're usable.",
-    "price": "12 cent",
-    "price_postapoc": "10 cent"
+    "price": 12,
+    "price_postapoc": 10
   },
   {
     "type": "COMESTIBLE",
@@ -342,12 +329,12 @@
     "quench": -5,
     "calories": 335,
     "description": "A pile of raw oats.",
-    "price": "1 USD 20 cent",
-    "price_postapoc": "1 USD",
+    "price": 120,
+    "price_postapoc": 100,
     "material": [ "wheat" ],
     "volume": "250 ml",
-    "milling": { "into": "flour_wheat_free", "recipe": "flour_wheat_free_mill_4_15" },
-    "vitamins": [ [ "calcium", 3 ], [ "iron", 20 ], [ "wheat_allergen", 1 ] ],
+    "milling": { "into": "flour_wheat_free", "conversion_rate": 3.75 },
+    "vitamins": [ [ "calcium", 3 ], [ "iron", 20 ] ],
     "petfood": [ "CATTLEFOOD", "BIRDFOOD" ],
     "flags": [
       "EDIBLE_FROZEN",
@@ -371,8 +358,8 @@
     "quench": -5,
     "calories": 135,
     "description": "A sheaf of wild rice stalks, ready for drying.",
-    "price": "12 cent",
-    "price_postapoc": "10 cent",
+    "price": 12,
+    "price_postapoc": 10,
     "smoking_result": "dry_wild_rice_stalks"
   },
   {
@@ -383,18 +370,17 @@
     "quench": -5,
     "calories": 135,
     "description": "A bunch of dry wild rice stalks.  Threshing these would knock the grains loose.",
-    "price": "12 cent",
-    "price_postapoc": "10 cent"
+    "price": 12,
+    "price_postapoc": 10
   },
   {
     "type": "COMESTIBLE",
     "id": "wild_rice",
     "name": { "str_sp": "wild rice" },
     "copy-from": "oats",
-    "material": [ "veggy" ],
     "calories": 120,
     "description": "Raw wild rice, still in its fibrous shell.  It'll need to be milled before it's edible for humans.",
-    "milling": { "into": "dry_wild_rice", "recipe": "dry_wild_rice_mill_1_5" },
+    "milling": { "into": "dry_wild_rice", "conversion_rate": 5 },
     "fun": -20,
     "petfood": [ "CATTLEFOOD", "BIRDFOOD" ],
     "flags": [ "EDIBLE_FROZEN", "RAW", "INEDIBLE", "CATTLE", "PLANTABLE_SEED", "CUT_HARVEST", "BIRD", "RAT", "MOUSE" ],
@@ -415,8 +401,8 @@
     "price_postapoc": "2 USD",
     "material": [ "veggy" ],
     "volume": "250 ml",
-    "milling": { "into": "flour_wheat_free", "recipe": "flour_wheat_free_mill_1_15" },
-    "vitamins": [ [ "calcium", 3 ], [ "iron", 22 ], [ "veggy_allergen", 1 ] ],
+    "milling": { "into": "flour_wheat_free", "conversion_rate": 15 },
+    "vitamins": [ [ "calcium", 3 ], [ "iron", 22 ] ],
     "petfood": [ "CATTLEFOOD", "BIRDFOOD" ],
     "flags": [ "EDIBLE_FROZEN", "RAW", "INEDIBLE", "CATTLE", "PLANTABLE_SEED", "CUT_HARVEST", "BIRD", "RAT", "MOUSE" ],
     "seed_data": { "plant_name": "buckwheat", "fruit": "buckwheat_stalks", "seeds": false, "grow": "91 days" }
@@ -430,8 +416,8 @@
     "quench": -5,
     "calories": 247,
     "description": "A sheaf of tall grass with slender little seed pods, now ready for drying.",
-    "price": "12 cent",
-    "price_postapoc": "10 cent",
+    "price": 12,
+    "price_postapoc": 10,
     "smoking_result": "dry_canola_stalks",
     "volume": "315 ml"
   },
@@ -444,8 +430,8 @@
     "quench": -5,
     "calories": 247,
     "description": "A sheaf of dry grass, it must be threshed to separate out the seeds.",
-    "price": "12 cent",
-    "price_postapoc": "10 cent",
+    "price": 12,
+    "price_postapoc": 10,
     "volume": "315 ml"
   },
   {
@@ -457,8 +443,8 @@
     "quench": -5,
     "calories": 235,
     "description": "Round black seeds mixed in with dry chaff.",
-    "price": "12 cent",
-    "price_postapoc": "10 cent",
+    "price": 12,
+    "price_postapoc": 10,
     "volume": "252 ml"
   },
   {
@@ -473,11 +459,11 @@
     "quench": -10,
     "calories": 230,
     "description": "A heap of round black seeds, typically milled and pressed for their oil.",
-    "price": "20 cent",
-    "price_postapoc": "1 USD 50 cent",
+    "price": 20,
+    "price_postapoc": 150,
     "material": [ "veggy" ],
     "volume": "250 ml",
-    "vitamins": [ [ "calcium", 4 ], [ "iron", 47 ], [ "vitC", 7 ], [ "veggy_allergen", 1 ] ],
+    "vitamins": [ [ "calcium", 4 ], [ "iron", 47 ], [ "vitC", 7 ] ],
     "petfood": [ "CATTLEFOOD", "BIRDFOOD" ],
     "flags": [
       "EDIBLE_FROZEN",
@@ -492,7 +478,7 @@
       "MOUSE"
     ],
     "seed_data": { "plant_name": "canola", "fruit": "canola_stalks", "seeds": false, "grow": "91 days" },
-    "milling": { "into": "paste_seed", "recipe": "paste_seed_mill_1_1" }
+    "milling": { "into": "paste_seed", "conversion_rate": 0.02 }
   },
   {
     "type": "COMESTIBLE",
@@ -503,8 +489,8 @@
     "quench": -5,
     "calories": 247,
     "description": "A pile of short stalks with lentils rattling in their pods.  These plants dried in the field and didn't need a tool to harvest, but they'll still need to be threshed and winnowed.",
-    "price": "12 cent",
-    "price_postapoc": "10 cent",
+    "price": 12,
+    "price_postapoc": 10,
     "volume": "315 ml"
   },
   {
@@ -516,8 +502,8 @@
     "quench": -5,
     "calories": 235,
     "description": "Lentils with chaff mixed in.  These will have to be winnowed before they're usable.",
-    "price": "12 cent",
-    "price_postapoc": "10 cent",
+    "price": 12,
+    "price_postapoc": 10,
     "volume": "252 ml"
   },
   {
@@ -526,7 +512,7 @@
     "name": { "str_sp": "dried lentils" },
     "weight": "132 g",
     "color": "light_gray",
-    "container": "bag_plastic_small",
+    "container": "bag_plastic",
     "comestible_type": "FOOD",
     "symbol": ",",
     "quench": -10,
@@ -536,7 +522,7 @@
     "price_postapoc": "75 cent",
     "material": [ "veggy" ],
     "volume": "125 ml",
-    "vitamins": [ [ "calcium", 4 ], [ "iron", 47 ], [ "vitC", 7 ], [ "veggy_allergen", 1 ] ],
+    "vitamins": [ [ "calcium", 4 ], [ "iron", 47 ], [ "vitC", 7 ] ],
     "petfood": [ "CATTLEFOOD", "BIRDFOOD" ],
     "flags": [ "EDIBLE_FROZEN", "RAW", "INEDIBLE", "NUTRIENT_OVERRIDE", "CATTLE", "PLANTABLE_SEED", "BIRD", "RAT", "MOUSE" ],
     "seed_data": { "plant_name": "lentils", "fruit": "dry_lentil_stalks", "seeds": false, "grow": "91 days" }
@@ -551,15 +537,14 @@
     "symbol": ",",
     "description": "These leafy stalks only get about waist-high and technically aren't a grass, but thanks to their long stems and nutritious seeds, they can still be farmed like any other cereal crop.",
     "spoils_in": "22 days",
-    "price": "25 cent",
+    "price": 25,
     "calories": 679,
-    "price_postapoc": "20 cent",
+    "price_postapoc": 20,
     "material": [ "veggy" ],
     "flags": [ "SMOKABLE", "FRESH_GRAIN", "INEDIBLE", "CATTLE" ],
     "petfood": [ "CATTLEFOOD" ],
     "smoking_result": "dry_buckwheat_stalks",
-    "volume": "315 ml",
-    "vitamins": [ [ "veggy_allergen", 1 ] ]
+    "volume": "315 ml"
   },
   {
     "type": "COMESTIBLE",
@@ -576,10 +561,9 @@
     "description": "A heap of dried buckwheat.  It'll need to be threshed before eating, unless you're a cow.",
     "flags": [ "INEDIBLE", "CATTLE", "SMOKED" ],
     "petfood": [ "CATTLEFOOD" ],
-    "price": "25 cent",
-    "price_postapoc": "20 cent",
-    "volume": "315 ml",
-    "vitamins": [ [ "veggy_allergen", 1 ] ]
+    "price": 25,
+    "price_postapoc": 20,
+    "volume": "315 ml"
   },
   {
     "type": "COMESTIBLE",
@@ -595,9 +579,8 @@
     "flags": [ "INEDIBLE", "CATTLE", "BIRD", "RAT", "MOUSE" ],
     "petfood": [ "CATTLEFOOD" ],
     "description": "A pile of buckwheat seeds with some chaff still mixed in.  Once it's winnowed, it'll be ready for use.",
-    "price": "25 cent",
-    "price_postapoc": "20 cent",
-    "volume": "290 ml",
-    "vitamins": [ [ "wheat_allergen", 1 ] ]
+    "price": 25,
+    "price_postapoc": 20,
+    "volume": "290 ml"
   }
 ]

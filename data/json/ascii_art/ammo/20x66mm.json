@@ -25,5 +25,14 @@
       "<color_light_red>││",
       "╙╜"
     ]
+  },
+  {
+    "type": "ascii_art",
+    "id": "20x66_inc",
+    "picture": [
+      "<color_red>╒╕",
+      "<color_light_red>││",
+      "╙╜"
+    ]
   }
 ]

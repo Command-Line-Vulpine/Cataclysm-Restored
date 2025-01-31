@@ -2,9 +2,7 @@
 #ifndef CATA_SRC_ADDICTION_H
 #define CATA_SRC_ADDICTION_H
 
-#include <string>
-#include <string_view>
-#include <vector>
+#include <iosfwd>
 
 #include "calendar.h"
 #include "translation.h"
@@ -13,6 +11,7 @@
 class Character;
 class JsonObject;
 class JsonOut;
+class time_duration;
 
 struct add_type {
     private:

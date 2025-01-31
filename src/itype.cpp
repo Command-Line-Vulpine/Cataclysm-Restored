@@ -38,8 +38,6 @@ std::string enum_to_string<condition_type>( condition_type data )
     switch( data ) {
         case condition_type::FLAG:
             return "FLAG";
-        case condition_type::VITAMIN:
-            return "VITAMIN";
         case condition_type::COMPONENT_ID:
             return "COMPONENT_ID";
         case condition_type::COMPONENT_ID_SUBSTRING:
@@ -62,8 +60,6 @@ std::string enum_to_string<itype_variant_kind>( itype_variant_kind data )
             return "gun";
         case itype_variant_kind::generic:
             return "generic";
-        case itype_variant_kind::drug:
-            return "drug";
         case itype_variant_kind::last:
             debugmsg( "Invalid variant type!" );
             return "";
@@ -184,10 +180,9 @@ const use_function *itype::get_use( const std::string &iuse_name ) const
 
 int itype::tick( Character *p, item &it, const tripoint &pos ) const
 {
-    const tripoint_bub_ms position{pos}; // TODO: Get rid of this when operation typified
     int charges_to_use = 0;
     for( const auto &method : tick_action ) {
-        charges_to_use += method.second.call( p, it, position ).value_or( 0 );
+        charges_to_use += method.second.call( p, it, pos ).value_or( 0 );
     }
 
     return charges_to_use;
@@ -199,7 +194,7 @@ std::optional<int> itype::invoke( Character *p, item &it, const tripoint &pos ) 
         return 0;
     }
     if( use_methods.find( "transform" ) != use_methods.end() ) {
-        return invoke( p, it, pos, "transform" );
+        return  invoke( p, it, pos, "transform" );
     } else {
         return invoke( p, it, pos, use_methods.begin()->first );
     }
@@ -208,7 +203,6 @@ std::optional<int> itype::invoke( Character *p, item &it, const tripoint &pos ) 
 std::optional<int> itype::invoke( Character *p, item &it, const tripoint &pos,
                                   const std::string &iuse_name ) const
 {
-    const tripoint_bub_ms position{ pos }; // TODO: Get rid of this when operation typified.
     const use_function *use = get_use( iuse_name );
     if( use == nullptr ) {
         debugmsg( "Tried to invoke %s on a %s, which doesn't have this use_function",
@@ -216,7 +210,7 @@ std::optional<int> itype::invoke( Character *p, item &it, const tripoint &pos,
         return 0;
     }
     if( p ) {
-        const auto ret = use->can_call( *p, it, position );
+        const auto ret = use->can_call( *p, it, pos );
 
         if( !ret.success() ) {
             p->add_msg_if_player( m_info, ret.str() );
@@ -224,7 +218,7 @@ std::optional<int> itype::invoke( Character *p, item &it, const tripoint &pos,
         }
     }
 
-    return use->call( p, it, position );
+    return use->call( p, it, pos );
 }
 
 std::string gun_type_type::name() const
@@ -423,19 +417,4 @@ const itype_id &itype::tool_slot_first_ammo() const
         }
     }
     return itype_id::NULL_ID();
-}
-
-int islot_ammo::dispersion_considering_length( units::length barrel_length ) const
-{
-
-    if( disp_mod_by_barrels.empty() ) {
-        return  dispersion;
-    }
-    std::vector<std::pair<float, float>> lerp_points;
-    lerp_points.reserve( disp_mod_by_barrels.size() );
-    for( const disp_mod_by_barrel &b : disp_mod_by_barrels ) {
-        lerp_points.emplace_back( static_cast<float>( b.barrel_length.value() ),
-                                  static_cast<float>( b.dispersion_modifier ) );
-    }
-    return multi_lerp( lerp_points, barrel_length.value() ) + dispersion;
 }

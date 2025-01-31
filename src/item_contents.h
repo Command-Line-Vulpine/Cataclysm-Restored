@@ -12,7 +12,6 @@
 #include <utility>
 #include <vector>
 
-#include "coords_fwd.h"
 #include "enums.h"
 #include "item_pocket.h"
 #include "ret_val.h"
@@ -27,13 +26,6 @@ class item_location;
 class iteminfo_query;
 struct iteminfo;
 struct tripoint;
-
-/// NEW!ness to player, if they seen such item already
-enum class content_newness {
-    NEW,  // at least one item is new
-    MIGHT_BE_HIDDEN,  // at least one item might be hidden and none are NEW
-    SEEN
-};
 
 class item_contents
 {
@@ -133,9 +125,6 @@ class item_contents
         // returns all the ablative armor in pockets
         std::list<item *> all_ablative_armor();
         std::list<const item *> all_ablative_armor() const;
-
-        /// don't check top level item, do check its pockets, do check all nested
-        content_newness get_content_newness( const std::set<itype_id> &read_items ) const;
 
         /** gets all gunmods in the item */
         std::vector<item *> gunmods();
@@ -248,8 +237,6 @@ class item_contents
         /** True if every pocket is rigid or we have no pockets */
         bool all_pockets_rigid() const;
 
-        bool container_type_pockets_empty() const;
-
         /** returns the best quality of the id that's contained in the item in CONTAINER pockets */
         int best_quality( const quality_id &id ) const;
 
@@ -313,9 +300,7 @@ class item_contents
         // heats up the contents if they have temperature
         void heat_up();
         // returns amount of ammo consumed
-        // TODO: Get rid of untyped overload.
         int ammo_consume( int qty, const tripoint &pos, float fuel_efficiency = -1.0 );
-        int ammo_consume( int qty, const tripoint_bub_ms &pos, float fuel_efficiency = -1.0 );
         item *magazine_current();
         std::set<ammotype> ammo_types() const;
         int ammo_capacity( const ammotype &ammo ) const;
@@ -355,8 +340,7 @@ class item_contents
          * NOTE: this destroys the items that get processed
          */
         void process( map &here, Character *carrier, const tripoint &pos, float insulation = 1,
-                      temperature_flag flag = temperature_flag::NORMAL, float spoil_multiplier_parent = 1.0f,
-                      bool watertight_container = false );
+                      temperature_flag flag = temperature_flag::NORMAL, float spoil_multiplier_parent = 1.0f );
 
         void leak( map &here, Character *carrier, const tripoint &pos, item_pocket *pocke = nullptr );
 

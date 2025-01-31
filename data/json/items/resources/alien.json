@@ -7,8 +7,8 @@
     "description": "A shattered fragment of alien resin.  It looks a bit like a large piece of sea glass, frosted and gritty with the edges rounded off.  It is somewhat warm to the touch.",
     "weight": "70 g",
     "volume": "22 ml",
-    "price": "0 cent",
-    "price_postapoc": "0 cent",
+    "price": 0,
+    "price_postapoc": 0,
     "material": [ "alien_resin" ],
     "symbol": ",",
     "color": "light_gray",
@@ -22,8 +22,8 @@
     "description": "A large pod the size of a beer keg, filled with gooey alien resin.  Squeezing it firmly causes resin to squirt from the broken stalk at the end, hardening within a few seconds of being exposed to the air.",
     "weight": "70000 g",
     "volume": "22000 ml",
-    "price": "100 USD",
-    "price_postapoc": "5 USD",
+    "price": 10000,
+    "price_postapoc": 500,
     "material": [ "alien_resin" ],
     "symbol": "0",
     "color": "light_blue",
@@ -39,10 +39,12 @@
     "material": [ "wood" ],
     "flags": [ "TRADER_AVOID", "FIREWOOD" ],
     "weight": "80 g",
-    "volume": "5 L",
+    "volume": "5000 ml",
     "longest_side": "260 cm",
     "looks_like": "stick",
-    "category": "spare_parts"
+    "to_hit": -3,
+    "category": "spare_parts",
+    "melee_damage": { "bash": 1 }
   },
   {
     "type": "GENERIC",
@@ -53,7 +55,7 @@
     "color": "light_gray",
     "weight": "500 kg",
     "volume": "700 L",
-    "price": "10 kUSD",
+    "price": 1000000,
     "material": [ "steel" ],
     "category": "spare_parts"
   },
@@ -66,7 +68,7 @@
     "color": "light_gray",
     "weight": "40 kg",
     "volume": "150 L",
-    "price": "1 kUSD",
+    "price": 100000,
     "material": [ "steel", "aluminum" ],
     "category": "spare_parts"
   },
@@ -79,7 +81,7 @@
     "color": "light_blue",
     "weight": "20 kg",
     "volume": "10 L",
-    "price": "100 USD",
+    "price": 10000,
     "material": [ "plastic", "aluminum", "steel" ],
     "category": "spare_parts"
   },
@@ -92,7 +94,7 @@
     "color": "dark_gray",
     "weight": "10 kg",
     "volume": "10 L",
-    "price": "100 USD",
+    "price": 10000,
     "material": [ "plastic", "steel" ],
     "category": "spare_parts"
   },
@@ -105,7 +107,7 @@
     "color": "dark_gray",
     "weight": "1 kg",
     "volume": "1 L",
-    "price": "10 USD",
+    "price": 1000,
     "material": [ "copper", "steel" ],
     "category": "spare_parts"
   },
@@ -118,7 +120,7 @@
     "color": "dark_gray",
     "weight": "100 g",
     "volume": "250 ml",
-    "price": "100 USD",
+    "price": 10000,
     "material": [ "plastic", "steel" ],
     "category": "spare_parts"
   },
@@ -131,7 +133,7 @@
     "color": "dark_gray",
     "weight": "50 g",
     "volume": "100 ml",
-    "price": "10 USD",
+    "price": 1000,
     "material": [ "copper", "steel" ],
     "category": "spare_parts"
   },
@@ -144,7 +146,7 @@
     "color": "blue",
     "weight": "5 kg",
     "volume": "3 L",
-    "price": "200 USD",
+    "price": 20000,
     "material": [ "steel", "plastic" ],
     "category": "spare_parts"
   },
@@ -157,7 +159,7 @@
     "color": "blue",
     "weight": "2 kg",
     "volume": "500 ml",
-    "price": "20 USD",
+    "price": 2000,
     "material": [ "steel", "copper" ],
     "category": "spare_parts"
   },
@@ -170,7 +172,7 @@
     "color": "blue",
     "weight": "5 kg",
     "volume": "1000 ml",
-    "price": "20 USD",
+    "price": 2000,
     "material": [ "steel", "lead" ],
     "category": "spare_parts"
   },
@@ -183,7 +185,7 @@
     "color": "blue",
     "weight": "2 kg",
     "volume": "1500 ml",
-    "price": "20 USD",
+    "price": 2000,
     "material": [ "copper", "ceramic" ],
     "category": "spare_parts"
   },
@@ -195,8 +197,8 @@
     "description": "A block of pure aluminum at least as big as a dishwasher.",
     "weight": "2160 kg",
     "volume": "800 L",
-    "price": "50 USD",
-    "price_postapoc": "1 USD",
+    "price": 5000,
+    "price_postapoc": 100,
     "material": [ "aluminum" ],
     "symbol": "#",
     "color": "light_gray"
@@ -209,8 +211,8 @@
     "description": "A single enormous brick of plastic, big enough for you to curl up inside if it were hollow.",
     "weight": "800 kg",
     "volume": "800 L",
-    "price": "10 USD",
-    "price_postapoc": "50 cent",
+    "price": 1000,
+    "price_postapoc": 50,
     "material": [ "plastic" ],
     "symbol": "#",
     "color": "white"
@@ -223,8 +225,8 @@
     "description": "A monolithic block of high quality steel.",
     "weight": "6400 kg",
     "volume": "800 L",
-    "price": "100 USD",
-    "price_postapoc": "5 USD",
+    "price": 10000,
+    "price_postapoc": 500,
     "material": [ "steel" ],
     "symbol": "#",
     "color": "light_gray"
@@ -237,8 +239,8 @@
     "description": "An enormous ingot of pure tin.",
     "weight": "5480 kg",
     "volume": "800 L",
-    "price": "20 USD",
-    "price_postapoc": "80 cent",
+    "price": 2000,
+    "price_postapoc": 80,
     "material": [ "tin" ],
     "symbol": "#",
     "color": "white"
@@ -251,8 +253,8 @@
     "description": "A massive solid piece of copper, covered by a blue-green patina.",
     "weight": "7150 kg",
     "volume": "800 L",
-    "price": "80 USD",
-    "price_postapoc": "3 USD",
+    "price": 8000,
+    "price_postapoc": 300,
     "material": [ "copper" ],
     "symbol": "#",
     "color": "light_green"
@@ -265,8 +267,8 @@
     "description": "An absolutely massive block of pure zinc.  Bet you didn't expect that - nobody expects zinc.",
     "weight": "5680 kg",
     "volume": "800 L",
-    "price": "10 USD",
-    "price_postapoc": "20 cent",
+    "price": 1000,
+    "price_postapoc": 20,
     "material": [ "zinc" ],
     "symbol": "#",
     "color": "white"
@@ -279,8 +281,8 @@
     "description": "A block of lead so huge you don't even want to think about how heavy it is.",
     "weight": "9000 kg",
     "volume": "800 L",
-    "price": "90 USD",
-    "price_postapoc": "4 USD",
+    "price": 9000,
+    "price_postapoc": 400,
     "material": [ "lead" ],
     "symbol": "#",
     "color": "dark_gray"
@@ -293,11 +295,13 @@
     "name": { "str": "CBM interface wire kit" },
     "category": "spare_parts",
     "description": "A collection of hand-soldered wires leading to plugs and what looks like an exotic micro controller.  The plugs look like they could be attached to you, assuming you have an SNI (Standard Neurobionic Interface).",
-    "price": "20 USD",
-    "price_postapoc": "20 USD",
+    "price": 2000,
+    "price_postapoc": 2000,
     "material": [ "aluminum", "plastic", "copper" ],
     "weight": "250 g",
-    "volume": "1 L"
+    "volume": "1 L",
+    "to_hit": -1,
+    "melee_damage": { "bash": 5 }
   },
   {
     "type": "GENERIC",
@@ -307,11 +311,13 @@
     "name": { "str": "external climate control kit" },
     "category": "spare_parts",
     "description": "A collection of mismatched pipes, wires, and a central device that looks like an exotic micro controller.  Almost looks like it could be used for some form of central cooling.",
-    "price": "20 USD",
-    "price_postapoc": "20 USD",
+    "price": 2000,
+    "price_postapoc": 2000,
     "material": [ "aluminum", "plastic", "copper" ],
     "weight": "500 g",
-    "volume": "1 L"
+    "volume": "1 L",
+    "to_hit": -1,
+    "melee_damage": { "bash": 5 }
   },
   {
     "type": "GENERIC",
@@ -322,7 +328,7 @@
     "color": "yellow",
     "weight": "300 g",
     "volume": "1 L",
-    "price": "10 USD",
+    "price": 1000,
     "material": [ "copper", "steel" ],
     "category": "spare_parts"
   },
@@ -335,7 +341,7 @@
     "color": "white",
     "weight": "1 kg",
     "volume": "1 L",
-    "price": "10 USD",
+    "price": 1000,
     "material": [ "silver", "steel" ],
     "category": "spare_parts"
   },
@@ -346,9 +352,9 @@
     "description": "A collection of tiny metal strips, spheres, and other geometric primitives taken from a disassembled alien machine.",
     "symbol": ",",
     "color": "yellow",
-    "weight": "150 g",
+    "weight": "150g",
     "volume": "100 ml",
-    "price": "10 USD",
+    "price": 1000,
     "material": [ "silver", "gold" ],
     "category": "spare_parts"
   },
@@ -361,7 +367,7 @@
     "color": "yellow",
     "weight": "14 kg",
     "volume": "1 L",
-    "price": "10 USD",
+    "price": 1000,
     "material": [ "copper", "gold" ],
     "category": "spare_parts"
   },
@@ -374,7 +380,7 @@
     "color": "white",
     "weight": "3 kg",
     "volume": "2 L",
-    "price": "10 USD",
+    "price": 1000,
     "material": [ "steel", "gold" ],
     "category": "spare_parts"
   },
@@ -387,7 +393,7 @@
     "color": "white",
     "weight": "1 kg",
     "volume": "2 L",
-    "price": "10 USD",
+    "price": 1000,
     "material": [ "steel", "glass" ],
     "category": "spare_parts"
   }

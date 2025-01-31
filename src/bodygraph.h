@@ -2,20 +2,13 @@
 #ifndef CATA_SRC_BODYGRAPH_H
 #define CATA_SRC_BODYGRAPH_H
 
-#include <functional>
-#include <map>
-#include <optional>
-#include <string>
-#include <string_view>
-#include <utility>
 #include <vector>
 
 #include "color.h"
-#include "damage.h"
-#include "effect.h"
 #include "type_id.h"
+#include "damage.h"
 
-class Character;
+class effect;
 class JsonObject;
 
 struct bodygraph_part {
@@ -56,7 +49,6 @@ struct bodygraph {
     std::vector<std::vector<std::string>> rows;
     std::vector<std::vector<std::string>> fill_rows;
     std::map<std::string, bodygraph_part> parts;
-    std::string label_fill;
     std::string fill_sym;
     nc_color fill_color = c_white;
     bool was_loaded = false;
@@ -88,6 +80,6 @@ using bodygraph_callback =
  */
 std::vector<std::string> get_bodygraph_lines( const Character &u,
         const bodygraph_callback &fragment_cb, const bodygraph_id &id = bodygraph_id::NULL_ID(),
-        int width = 0, int height = 0, const std::string_view &label = "" );
+        int width = 0, int height = 0 );
 
 #endif // CATA_SRC_BODYGRAPH_H

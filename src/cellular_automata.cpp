@@ -1,8 +1,5 @@
 #include "cellular_automata.h"
 
-#include "point.h"
-#include "rng.h"
-
 namespace CellularAutomata
 {
 /**

@@ -73,7 +73,6 @@
       {
         "id": "armor_thick",
         "name": "a thick part of the exoskeleton",
-        "is_good": false,
         "armor_mult": { "all": 1.5 },
         "crit_mult": { "all": 0.75 },
         "coverage_mult": { "cut": 1.5 },
@@ -308,7 +307,7 @@
         "armor_mult": { "physical": 0.2 },
         "difficulty": { "ranged": 7, "melee": 2 },
         "coverage_mult": { "point": 0.75 },
-        "condition": { "npc_has_any_effect": [ "staggered" ] },
+        "required_effects": [ "staggered" ],
         "effects": [
           { "effect": "downed", "chance": 25, "message": "The %s is knocked down!", "damage_required": [ 1, 100 ] },
           {
@@ -330,7 +329,6 @@
       {
         "id": "armor_thick",
         "name": "a thick part of its armor",
-        "is_good": false,
         "armor_mult": { "all": 1.5 },
         "crit_mult": { "all": 0.75 },
         "coverage_mult": { "cut": 1.5 },
@@ -358,7 +356,7 @@
         "armor_mult": { "all": 0.33 },
         "crit_mult": { "all": 1.2 },
         "coverage": 15,
-        "condition": { "npc_has_any_effect": [ "maimed_armor" ] }
+        "required_effects": [ "maimed_armor" ]
       },
       {
         "id": "abdomen",

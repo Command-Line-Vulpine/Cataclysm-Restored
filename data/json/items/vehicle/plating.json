@@ -4,18 +4,18 @@
     "id": "sheet_metal",
     "name": { "str_sp": "sheet metal" },
     "description": "A thin sheet of metal.",
-    "//": "Roughly in the 70 cm × 70 cm × 1.5 mm to 1 m × 1 m × 0.75 mm range. Has to be folded / rolled up when in inventory, so 75% density compared to solid block.",
+    "//": "Roughly in the 70cm×70cm×1.5mm to 1m×1m×0.75mm range. Has to be folded / rolled up when in inventory, so 75% density compared to solid block.",
     "weight": "6 kg",
     "longest_side": "100 cm",
+    "to_hit": -2,
     "color": "light_cyan",
     "symbol": "]",
-    "material": [ "lc_steel" ],
+    "material": [ "steel" ],
     "volume": "1 L",
     "category": "spare_parts",
-    "price": "60 USD",
-    "price_postapoc": "1 USD",
+    "price": 6000,
+    "price_postapoc": 100,
     "qualities": [ [ "COOK", 1 ] ],
-    "use_action": [ "HEAT_SOLID_ITEMS" ],
     "melee_damage": { "bash": 5 }
   },
   {
@@ -30,8 +30,8 @@
     "material": [ "wood" ],
     "volume": "3 L",
     "category": "veh_parts",
-    "price": "120 USD",
-    "price_postapoc": "1 USD",
+    "price": 12000,
+    "price_postapoc": 100,
     "melee_damage": { "bash": 10 }
   },
   {
@@ -43,13 +43,12 @@
     "to_hit": -1,
     "color": "light_cyan",
     "symbol": "]",
-    "material": [ "lc_steel" ],
+    "material": [ "steel" ],
     "volume": "3 L",
     "category": "veh_parts",
-    "price": "120 USD",
-    "price_postapoc": "2 USD 50 cent",
+    "price": 12000,
+    "price_postapoc": 250,
     "qualities": [ [ "COOK", 1 ] ],
-    "use_action": [ "HEAT_SOLID_ITEMS" ],
     "melee_damage": { "bash": 6 }
   },
   {
@@ -64,10 +63,9 @@
     "material": [ "superalloy" ],
     "volume": "6 L",
     "category": "veh_parts",
-    "price": "185 USD",
-    "price_postapoc": "5 USD",
+    "price": 18500,
+    "price_postapoc": 500,
     "qualities": [ [ "COOK", 1 ] ],
-    "use_action": [ "HEAT_SOLID_ITEMS" ],
     "melee_damage": { "bash": 6 }
   },
   {
@@ -76,15 +74,15 @@
     "name": { "str": "superalloy sheet" },
     "description": "A sheet of sturdy superalloy; incredibly hard, yet incredibly malleable.",
     "weight": "900 g",
+    "to_hit": -2,
     "color": "light_cyan",
     "symbol": ",",
     "material": [ "superalloy" ],
     "volume": "500 ml",
     "category": "veh_parts",
-    "price": "85 USD",
-    "price_postapoc": "5 USD",
-    "qualities": [ [ "COOK", 1 ] ],
-    "use_action": [ "HEAT_SOLID_ITEMS" ]
+    "price": 8500,
+    "price_postapoc": 500,
+    "qualities": [ [ "COOK", 1 ] ]
   },
   {
     "type": "GENERIC",
@@ -99,10 +97,9 @@
     "volume": "3500 ml",
     "flags": [  ],
     "category": "veh_parts",
-    "price": "185 USD",
-    "price_postapoc": "2 USD 50 cent",
+    "price": 18500,
+    "price_postapoc": 250,
     "qualities": [ [ "COOK", 1 ] ],
-    "use_action": [ "HEAT_SOLID_ITEMS" ],
     "melee_damage": { "bash": 6, "stab": 3 }
   },
   {
@@ -117,10 +114,9 @@
     "material": [ "qt_steel" ],
     "volume": "3 L",
     "category": "veh_parts",
-    "price": "160 USD",
-    "price_postapoc": "5 USD",
+    "price": 16000,
+    "price_postapoc": 500,
     "qualities": [ [ "COOK", 1 ], [ "ANVIL", 2 ] ],
-    "use_action": [ "HEAT_SOLID_ITEMS" ],
     "melee_damage": { "bash": 6 }
   },
   {
@@ -135,11 +131,10 @@
     "material": [ "qt_steel", "ceramic" ],
     "volume": "3 L",
     "category": "veh_parts",
-    "price": "160 USD",
-    "price_postapoc": "7 USD 50 cent",
+    "price": 16000,
+    "price_postapoc": 750,
     "flags": [ "NO_REPAIR" ],
     "qualities": [ [ "COOK", 1 ] ],
-    "use_action": [ "HEAT_SOLID_ITEMS" ],
     "melee_damage": { "bash": 8 }
   },
   {
@@ -149,8 +144,8 @@
     "color": "yellow",
     "name": { "str": "chitin armor kit" },
     "description": "A piece of light chitin plating made for a vehicle.",
-    "price": "12 USD",
-    "price_postapoc": "2 USD 50 cent",
+    "price": 1200,
+    "price_postapoc": 250,
     "material": [ "chitin" ],
     "weight": "2000 g",
     "volume": "5500 ml",
@@ -164,22 +159,25 @@
     "copy-from": "chitin_plate",
     "name": { "str": "biosilicified chitin armor kit" },
     "description": "A piece of durable silica-coated chitin plating made for a vehicle.",
-    "material": [ "acidchitin" ]
+    "material": [ "acidchitin" ],
+    "proportional": { "price": 1.333, "weight": 1.2, "volume": 1.18, "melee_damage": { "bash": 1.25 } }
   },
   {
     "type": "GENERIC",
     "id": "counterweight",
     "name": { "str": "counterweight" },
     "description": "A heavy block of steel used for balancing other heavy things.  Can be used as a makeshift anvil.",
-    "weight": "750 kg",
+    "weight": "750000 g",
+    "to_hit": -10,
     "color": "dark_gray",
     "symbol": "]",
     "material": [ "steel" ],
     "volume": "330 L",
     "longest_side": "110 cm",
-    "price": "120 USD",
-    "price_postapoc": "2 USD 50 cent",
+    "price": 12000,
+    "price_postapoc": 250,
     "category": "veh_parts",
-    "qualities": [ [ "ANVIL", 2 ] ]
+    "qualities": [ [ "ANVIL", 2 ] ],
+    "melee_damage": { "bash": 25 }
   }
 ]

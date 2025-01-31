@@ -12,6 +12,6 @@
     "valid": false,
     "purifiable": false,
     "types": [ "Equipment" ],
-    "enchantments": [ { "values": [ { "value": "CARRY_WEIGHT", "multiply": 0.1 } ] } ]
+    "weight_capacity_modifier": 1.1
   }
 ]

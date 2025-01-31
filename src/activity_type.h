@@ -2,19 +2,17 @@
 #ifndef CATA_SRC_ACTIVITY_TYPE_H
 #define CATA_SRC_ACTIVITY_TYPE_H
 
-#include <set>
-#include <string>
+#include <iosfwd>
 
-#include "enums.h"
 #include "game_constants.h"
-#include "translation.h"
+#include "string_id.h"
+#include "translations.h"
 #include "type_id.h"
 
-class Character;
 class JsonObject;
 class activity_type;
+class Character;
 class player_activity;
-template <typename T> struct enum_traits;
 
 using activity_id = string_id<activity_type>;
 

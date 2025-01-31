@@ -8,7 +8,6 @@
 #include "json.h"
 #include "output.h"
 #include "overmapbuffer.h"
-#include "npctalk.h"
 
 const static flag_id json_flag_W_DISABLED_BY_DEFAULT( "W_DISABLED_BY_DEFAULT" );
 const static flag_id json_flag_W_DISABLED_WHEN_EMPTY( "W_DISABLED_WHEN_EMPTY" );
@@ -82,12 +81,10 @@ std::string enum_to_string<widget_var>( widget_var data )
             return "speed";
         case widget_var::stamina:
             return "stamina";
-        case widget_var::sleepiness:
-            return "sleepiness";
+        case widget_var::fatigue:
+            return "fatigue";
         case widget_var::health:
             return "health";
-        case widget_var::daily_health:
-            return "daily_health";
         case widget_var::weariness_level:
             return "weariness_level";
         case widget_var::mana:
@@ -100,8 +97,6 @@ std::string enum_to_string<widget_var>( widget_var data )
             return "log_power_balance";
         case widget_var::morale_level:
             return "morale_level";
-        case widget_var::custom:
-            return "custom";
         // Compass
         case widget_var::compass_text:
             return "compass_text";
@@ -148,12 +143,8 @@ std::string enum_to_string<widget_var>( widget_var data )
             return "bp_armor_outer_text";
         case widget_var::carry_weight_text:
             return "carry_weight_text";
-        case widget_var::carry_weight_value:
-            return "carry_weight_value";
         case widget_var::date_text:
             return "date_text";
-        case widget_var::faction_territory:
-            return "faction_territory";
         case widget_var::env_temp_text:
             return "env_temp_text";
         case widget_var::mood_text:
@@ -302,9 +293,6 @@ void widget_clause::load( const JsonObject &jo )
         read_condition( jo, "condition", condition, false );
         has_condition = true;
     }
-    if( jo.has_bool( "parse_tags" ) ) {
-        should_parse_tags = jo.get_bool( "parse_tags" );
-    }
 
     optional( jo, false, "widgets", widgets, string_id_reader<::widget> {} );
 }
@@ -312,8 +300,7 @@ void widget_clause::load( const JsonObject &jo )
 bool widget_clause::meets_condition( const std::string &opt_var ) const
 {
     dialogue d( get_talker_for( get_avatar() ), nullptr );
-    d.reason = opt_var; // TODO: remove since it's replaced by context var
-    write_var_value( var_type::context, "widget", &d, opt_var );
+    d.reason = opt_var;
     return !has_condition || condition( d );
 }
 
@@ -393,57 +380,6 @@ nc_color widget_clause::get_color_for_id( const std::string &clause_id, const wi
     return wp == nullptr ? c_white : wp->color;
 }
 
-void widget_custom_var::deserialize( const JsonObject &jo )
-{
-    if( jo.has_member( "value" ) ) {
-        value = get_dbl_or_var_part( jo.get_member( "value" ), "value" );
-    } else {
-        jo.throw_error( "missing mandatory member \"value\"" );
-    }
-
-    if( jo.has_array( "range" ) ) {
-        JsonArray range = jo.get_array( "range" );
-        switch( range.size() ) {
-            case 2:
-                min = get_dbl_or_var_part( range.next_value(), "range" );
-                norm = std::make_pair( dbl_or_var_part( INT_MIN ), dbl_or_var_part( INT_MAX ) );
-                max = get_dbl_or_var_part( range.next_value(), "range" );
-                break;
-            case 3:
-                min = get_dbl_or_var_part( range.next_value(), "range" );
-                norm.first = norm.second = get_dbl_or_var_part( range.next_value(), "range" );
-                max = get_dbl_or_var_part( range.next_value(), "range" );
-                break;
-            case 4:
-                min = get_dbl_or_var_part( range.next_value(), "range" );
-                norm.first = get_dbl_or_var_part( range.next_value(), "range" );
-                norm.second = get_dbl_or_var_part( range.next_value(), "range" );
-                max = get_dbl_or_var_part( range.next_value(), "range" );
-                break;
-            default:
-                jo.throw_error( "invalid number of elements in \"range\", must have 2~4" );
-                break;
-        }
-    } else {
-        jo.throw_error( "missing mandatory member \"range\"" );
-    }
-}
-
-void widget_custom_var::set_widget_var_range( const avatar &ava, widget &wgt ) const
-{
-    const_dialogue d( get_const_talker_for( ava ), nullptr );
-    wgt._var_min = static_cast<int>( min.evaluate( d ) );
-    wgt._var_max = static_cast<int>( max.evaluate( d ) );
-    wgt._var_norm.first = static_cast<int>( norm.first.evaluate( d ) );
-    wgt._var_norm.second = static_cast<int>( norm.second.evaluate( d ) );
-}
-
-int widget_custom_var::get_var_value( const avatar &ava ) const
-{
-    const_dialogue d( get_const_talker_for( ava ), nullptr );
-    return static_cast<int>( value.evaluate( d ) );
-}
-
 void widget::load( const JsonObject &jo, const std::string_view )
 {
     optional( jo, was_loaded, "width", _width, 0 );
@@ -479,10 +415,6 @@ void widget::load( const JsonObject &jo, const std::string_view )
 
     if( jo.has_string( "var" ) ) {
         _var = io::string_to_enum<widget_var>( jo.get_string( "var" ) );
-    }
-
-    if( _var == widget_var::custom ) {
-        mandatory( jo, was_loaded, "custom_var", _custom_var );
     }
 
     if( jo.has_string( "bodypart" ) ) {
@@ -647,14 +579,13 @@ void widget::set_default_var_range( const avatar &ava )
         case widget_var::cardio_fit:
             _var_min = 0;
             // Same maximum used by get_cardiofit - 3 x BMR, adjusted for mutations
-            _var_max = 3 * ava.base_bmr() * ava.enchantment_cache->modify_value(
-                           enchant_vals::mod::CARDIO_MULTIPLIER, 1 );
+            _var_max = 3 * ava.base_bmr() * ava.mutation_value( "cardio_multiplier" );
             break;
         case widget_var::carry_weight:
             _var_min = 0;
             _var_max = 120;
             break;
-        case widget_var::sleepiness:
+        case widget_var::fatigue:
             _var_min = 0;
             _var_max = 1000;
             break;
@@ -669,10 +600,6 @@ void widget::set_default_var_range( const avatar &ava )
             _var_max = 200;
             // Small range of normal health that won't be color-coded
             _var_norm = std::make_pair( -10, 10 );
-            break;
-        case widget_var::daily_health:
-            _var_min = -200;
-            _var_max = 200;
             break;
         case widget_var::mana:
             _var_min = 0;
@@ -745,9 +672,6 @@ void widget::set_default_var_range( const avatar &ava )
         case widget_var::weary_transition_level:
             _var_min = 0;
             _var_max = ava.weary_threshold();
-            break;
-        case widget_var::custom:
-            _custom_var.set_widget_var_range( ava, *this );
             break;
 
         // Base stats
@@ -876,7 +800,7 @@ int widget::get_var_value( const avatar &ava ) const
             value = ava.movecounter;
             break;
         case widget_var::move_remainder:
-            value = ava.get_moves();
+            value = ava.moves;
             break;
         case widget_var::move_cost:
             value = ava.run_cost( 100 );
@@ -884,14 +808,11 @@ int widget::get_var_value( const avatar &ava ) const
         case widget_var::pain:
             value = ava.get_perceived_pain();
             break;
-        case widget_var::sleepiness:
-            value = ava.get_sleepiness();
+        case widget_var::fatigue:
+            value = ava.get_fatigue();
             break;
         case widget_var::health:
             value = ava.get_lifestyle();
-            break;
-        case widget_var::daily_health:
-            value = ava.get_daily_health();
             break;
         case widget_var::weariness_level:
             value = ava.weariness_level();
@@ -926,9 +847,6 @@ int widget::get_var_value( const avatar &ava ) const
             break;
         case widget_var::carry_weight:
             value = ( 100 * ava.weight_carried() ) / ava.weight_capacity();
-            break;
-        case widget_var::custom:
-            value = _custom_var.get_var_value( ava );
             break;
 
         // TODO
@@ -1113,12 +1031,10 @@ bool widget::uses_text_function() const
         case widget_var::body_graph_wet:
         case widget_var::bp_armor_outer_text:
         case widget_var::carry_weight_text:
-        case widget_var::carry_weight_value:
         case widget_var::compass_text:
         case widget_var::compass_legend_text:
         case widget_var::date_text:
         case widget_var::env_temp_text:
-        case widget_var::faction_territory:
         case widget_var::mood_text:
         case widget_var::move_count_mode_text:
         case widget_var::pain_text:
@@ -1218,18 +1134,11 @@ std::string widget::color_text_function_string( const avatar &ava, unsigned int 
         case widget_var::carry_weight_text:
             desc = display::carry_weight_text_color( ava );
             break;
-        case widget_var::carry_weight_value:
-            desc = display::carry_weight_value_color( ava );
-            break;
-            break;
         case widget_var::date_text:
             desc.first = display::date_string();
             break;
         case widget_var::env_temp_text:
             desc.first = display::get_temp( ava );
-            break;
-        case widget_var::faction_territory:
-            desc = display::faction_text( ava );
             break;
         case widget_var::mood_text:
             desc = display::morale_face_color( ava );
@@ -1391,7 +1300,7 @@ nc_color widget::value_color( int value )
     // Get range of values from min to max
     const int var_range = _var_max - _var_min;
 
-    if( var_range > 0 && ! _breaks.empty() ) {
+    if( var_range != 0 && ! _breaks.empty() ) {
         const int value_offset = ( 100 * ( value - _var_min ) ) / var_range;
         for( int i = 0; i < color_max; i++ ) {
             if( value_offset < _breaks[i] ) {
@@ -1498,13 +1407,8 @@ std::string widget::text_cond( bool no_join, int width )
     std::vector<std::string> strings;
     strings.reserve( wplist.size() );
     for( const widget_clause *wp : wplist ) {
-        std::string txt = wp->text.translated();
-        if( wp->should_parse_tags ) {
-            parse_tags( txt, get_player_character(), get_player_character() );
-        }
-        txt = wp->color == c_unset ? txt : colorize(
-                  txt, wp->color );
-        strings.emplace_back( txt );
+        strings.emplace_back( wp->color == c_unset ? wp->text.translated() : colorize(
+                                  wp->text.translated(), wp->color ) );
     }
     int h = 0;
     std::string ret = format_widget_multiline( strings, _height_max, width, h, !no_join );
@@ -1552,11 +1456,7 @@ std::string widget::sym_text_cond( bool no_join, int width )
     strings.reserve( wplist.size() );
     for( const widget_clause *wp : wplist ) {
         std::string s = wp->color == c_unset ? wp->sym : colorize( wp->sym, wp->color );
-        std::string txt_str = wp->text.translated();
-        if( wp->should_parse_tags ) {
-            parse_tags( txt_str, get_player_character(), get_player_character() );
-        }
-        std::string txt = string_format( "%s %s", s, txt_str );
+        std::string txt = string_format( "%s %s", s, wp->text.translated() );
         strings.emplace_back( txt );
     }
     int h = 0;

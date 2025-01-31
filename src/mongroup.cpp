@@ -84,10 +84,6 @@ void mongroup::clear()
     monsters.clear();
 }
 
-/**
- * The average speed of the monsters in the group.
- * If monsters vector is empty, the average speed of the group is calculated.
- */
 float mongroup::avg_speed() const
 {
     float avg_speed = 0.0f;
@@ -455,11 +451,6 @@ void MonsterGroupManager::FinalizeMonsterGroups()
     }
 }
 
-std::map<mongroup_id, MonsterGroup> &MonsterGroupManager::Get_all_Groups()
-{
-    return MonsterGroupManager::monsterGroupMap;
-}
-
 void MonsterGroupManager::LoadMonsterGroup( const JsonObject &jo )
 {
     float mon_upgrade_factor = get_option<float>( "MONSTER_UPGRADE_FACTOR" );
@@ -610,7 +601,7 @@ static void check_group_def( const mongroup_id &g )
 
 void MonsterGroupManager::check_group_definitions()
 {
-    for( const auto &e : monsterGroupMap ) {
+    for( auto &e : monsterGroupMap ) {
         const MonsterGroup &mg = e.second;
         for( const MonsterGroupEntry &mge : mg.monsters ) {
             if( mge.is_group() ) {

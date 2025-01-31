@@ -9,8 +9,6 @@
     "move_cost": 0,
     "coverage": 90,
     "roof": "t_brick_roof",
-    "connect_groups": "WALL",
-    "connects_to": "WALL",
     "flags": [
       "NOITEM",
       "SUPPORTS_ROOF",
@@ -42,8 +40,6 @@
     "move_cost": 0,
     "coverage": 90,
     "roof": "t_brick_roof",
-    "connect_groups": "WALL",
-    "connects_to": "WALL",
     "flags": [
       "NOITEM",
       "SUPPORTS_ROOF",
@@ -74,8 +70,6 @@
     "move_cost": 0,
     "coverage": 90,
     "roof": "t_rock_roof",
-    "connect_groups": "WALL",
-    "connects_to": "WALL",
     "flags": [
       "NOITEM",
       "SUPPORTS_ROOF",
@@ -106,8 +100,6 @@
     "move_cost": 0,
     "coverage": 90,
     "roof": "t_wood_roof",
-    "connect_groups": "WALL",
-    "connects_to": "WALL",
     "flags": [
       "FLAMMABLE",
       "NOITEM",
@@ -144,8 +136,6 @@
     "move_cost": 4,
     "coverage": 60,
     "roof": "t_wood_roof",
-    "connect_groups": "WALL",
-    "connects_to": "WALL",
     "flags": [
       "FLAMMABLE",
       "NOITEM",
@@ -181,8 +171,6 @@
     "move_cost": 0,
     "coverage": 90,
     "roof": "t_wood_roof",
-    "connect_groups": "WALL",
-    "connects_to": "WALL",
     "flags": [
       "FLAMMABLE",
       "NOITEM",
@@ -214,8 +202,6 @@
     "move_cost": 4,
     "coverage": 60,
     "roof": "t_wood_roof",
-    "connect_groups": "WALL",
-    "connects_to": "WALL",
     "flags": [
       "FLAMMABLE",
       "NOITEM",
@@ -246,9 +232,17 @@
     "color": "brown",
     "move_cost": 0,
     "coverage": 90,
-    "connect_groups": "WALL",
-    "connects_to": "WALL",
-    "flags": [ "FLAMMABLE", "NOITEM", "SUPPORTS_ROOF", "WALL", "MOUNTABLE", "PERMEABLE", "TRANSPARENT", "THIN_OBSTACLE" ],
+    "flags": [
+      "FLAMMABLE",
+      "NOITEM",
+      "SUPPORTS_ROOF",
+      "CONNECT_WITH_WALL",
+      "WALL",
+      "MOUNTABLE",
+      "PERMEABLE",
+      "TRANSPARENT",
+      "THIN_OBSTACLE"
+    ],
     "bash": {
       "str_min": 28,
       "str_max": 75,
@@ -268,8 +262,6 @@
     "move_cost": 0,
     "coverage": 90,
     "roof": "t_concrete_roof",
-    "connect_groups": "WALL",
-    "connects_to": "WALL",
     "flags": [
       "NOITEM",
       "SUPPORTS_ROOF",
@@ -300,8 +292,6 @@
     "move_cost": 0,
     "coverage": 90,
     "roof": "t_concrete_roof",
-    "connect_groups": "WALL",
-    "connects_to": "WALL",
     "flags": [
       "NOITEM",
       "SUPPORTS_ROOF",

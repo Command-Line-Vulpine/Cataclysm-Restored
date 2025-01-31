@@ -120,17 +120,14 @@
       "aircraft_carrier_13b_2",
       "aircraft_carrier_13c_2",
       "aircraft_carrier_1a_3",
-      "aircraft_carrier_2a_3",
-      "aircraft_carrier_1a_4",
-      "aircraft_carrier_2a_4"
+      "aircraft_carrier_2a_3"
     ],
-    "vision_levels": "large_ship",
     "name": "aircraft carrier",
     "sym": "A",
     "color": "red",
-    "see_cost": "full_high",
+    "see_cost": 5,
     "spawns": { "group": "GROUP_AIRCRAFT_CARRIER", "population": [ 20, 40 ], "chance": 100 },
-    "flags": [ "RISK_EXTREME", "LAKE" ]
+    "flags": [ "RISK_HIGH", "LAKE" ]
   },
   {
     "type": "overmap_terrain",
@@ -175,12 +172,11 @@
       "aircraft_carrier_13b_-1",
       "aircraft_carrier_13c_-1"
     ],
-    "vision_levels": "large_ship",
     "name": "aircraft carrier",
     "sym": "A",
     "color": "red",
-    "see_cost": "full_high",
+    "see_cost": 5,
     "spawns": { "group": "GROUP_AIRCRAFT_CARRIER_TECHNICIANS", "population": [ 20, 35 ], "chance": 100 },
-    "flags": [ "RISK_EXTREME", "LAKE" ]
+    "flags": [ "RISK_HIGH", "LAKE" ]
   }
 ]

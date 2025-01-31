@@ -2,7 +2,6 @@
   {
     "type": "palette",
     "id": "regional_dump",
-    "palettes": [ "parametrized_walls_palette" ],
     "terrain": {
       ".": "t_region_groundcover_barren",
       ",": "t_region_groundcover",
@@ -12,6 +11,7 @@
       "y": "t_pavement_y",
       "o": "t_window",
       " ": "t_floor",
+      "#": "t_wall_r",
       "+": "t_door_c",
       "h": "t_floor",
       "L": "t_floor",

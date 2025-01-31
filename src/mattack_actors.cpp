@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <limits>
+#include <list>
 #include <memory>
 #include <optional>
 #include <string>
@@ -12,15 +13,14 @@
 #include "character.h"
 #include "creature.h"
 #include "creature_tracker.h"
-#include "effect_on_condition.h"
 #include "enums.h"
 #include "game.h"
 #include "generic_factory.h"
 #include "gun_mode.h"
-#include "input.h"
 #include "item.h"
 #include "item_factory.h"
 #include "item_pocket.h"
+#include "json.h"
 #include "line.h"
 #include "map.h"
 #include "map_iterator.h"
@@ -60,11 +60,8 @@ static const efftype_id effect_vampire_virus( "vampire_virus" );
 static const efftype_id effect_was_laserlocked( "was_laserlocked" );
 static const efftype_id effect_zombie_virus( "zombie_virus" );
 
-static const flag_id json_flag_CANNOT_MOVE( "CANNOT_MOVE" );
 static const flag_id json_flag_GRAB( "GRAB" );
 static const flag_id json_flag_GRAB_FILTER( "GRAB_FILTER" );
-
-static const json_character_flag json_flag_BIONIC_LIMB( "BIONIC_LIMB" );
 
 static const skill_id skill_gun( "gun" );
 static const skill_id skill_throw( "throw" );
@@ -79,6 +76,7 @@ void leap_actor::load_internal( const JsonObject &obj, const std::string & )
     // Optional:
     min_range = obj.get_float( "min_range", 1.0f );
     allow_no_target = obj.get_bool( "allow_no_target", false );
+    optional( obj, was_loaded, "attack_chance", attack_chance, 100 );
     optional( obj, was_loaded, "prefer_leap", prefer_leap, false );
     optional( obj, was_loaded, "random_leap", random_leap, false );
     optional( obj, was_loaded, "ignore_dest_terrain", ignore_dest_terrain, false );
@@ -123,7 +121,7 @@ bool leap_actor::call( monster &z ) const
         }
     }
 
-    std::vector<tripoint_bub_ms> options;
+    std::vector<tripoint> options;
     const tripoint_abs_ms target_abs = z.get_dest();
     // Calculate distance to target
     const float best_float = rl_dist( z.get_location(), target_abs );
@@ -141,22 +139,22 @@ bool leap_actor::call( monster &z ) const
         return false;
     }
     map &here = get_map();
-    const tripoint_bub_ms target = here.bub_from_abs( target_abs );
-    add_msg_debug( debugmode::DF_MATTACK, "Target at coordinates %s",
-                   target.to_string_writable() );
+    const tripoint target = here.getlocal( target_abs );
+    add_msg_debug( debugmode::DF_MATTACK, "Target at coordinates %d,%d,%d",
+                   target.x, target.y, target.z );
 
-    std::multimap<int, tripoint_bub_ms> candidates;
-    for( const tripoint_bub_ms &candidate : here.points_in_radius( z.pos_bub(), max_range ) ) {
-        if( candidate == z.pos_bub() ) {
-            add_msg_debug( debugmode::DF_MATTACK, "Monster at coordinates %s",
-                           candidate.to_string_writable() );
+    std::multimap<int, tripoint> candidates;
+    for( const tripoint &candidate : here.points_in_radius( z.pos(), max_range ) ) {
+        if( candidate == z.pos() ) {
+            add_msg_debug( debugmode::DF_MATTACK, "Monster at coordinates %d,%d,%d",
+                           candidate.x, candidate.y, candidate.z );
             continue;
         }
-        float leap_dist = trigdist ? trig_dist( z.pos_bub(), candidate ) :
-                          square_dist( z.pos_bub(), candidate );
+        float leap_dist = trigdist ? trig_dist( z.pos(), candidate ) :
+                          square_dist( z.pos(), candidate );
         add_msg_debug( debugmode::DF_MATTACK,
-                       "Candidate coordinates %s, distance %.1f, min range %.1f, max range %.1f",
-                       candidate.to_string_writable(), leap_dist, min_range, max_range );
+                       "Candidate coordinates %d,%d,%d, distance %.1f, min range %.1f, max range %.1f",
+                       candidate.x, candidate.y, candidate.z, leap_dist, min_range, max_range );
         if( leap_dist > max_range || leap_dist < min_range ) {
             add_msg_debug( debugmode::DF_MATTACK,
                            "Candidate outside of allowed range, discarded" );
@@ -182,7 +180,7 @@ bool leap_actor::call( monster &z ) const
     }
     for( const auto &candidate : candidates ) {
         const int &cur_dist = candidate.first;
-        const tripoint_bub_ms &dest = candidate.second;
+        const tripoint &dest = candidate.second;
         if( cur_dist > best && !random_leap ) {
             add_msg_debug( debugmode::DF_MATTACK,
                            "Distance %d larger than previous best %d, candidate discarded", cur_dist, best );
@@ -197,8 +195,8 @@ bool leap_actor::call( monster &z ) const
         }
         bool blocked_path = false;
         // check if monster has a clear path to the proposed point
-        std::vector<tripoint_bub_ms> line = here.find_clear_path( z.pos_bub(), dest );
-        for( tripoint_bub_ms &i : line ) {
+        std::vector<tripoint> line = here.find_clear_path( z.pos(), dest );
+        for( tripoint &i : line ) {
             if( here.impassable( i ) ) {
                 add_msg_debug( debugmode::DF_MATTACK, "Path blocked, candidate discarded" );
                 blocked_path = true;
@@ -223,9 +221,9 @@ bool leap_actor::call( monster &z ) const
         return false;    // Nowhere to leap!
     }
 
-    z.mod_moves( -move_cost );
+    z.moves -= move_cost;
     viewer &player_view = get_player_view();
-    const tripoint_bub_ms chosen = random_entry( options );
+    const tripoint chosen = random_entry( options );
     bool seen = player_view.sees( z ); // We can see them jump...
     z.setpos( chosen );
     seen |= player_view.sees( z ); // ... or we can see them land
@@ -257,6 +255,7 @@ void mon_spellcasting_actor::load_internal( const JsonObject &obj, const std::st
               //~ "<Monster Display name> cast <Spell Name> on <Target name>!"
               to_translation( "%1$s casts %2$s at %3$s!" ) );
     spell_data.trigger_message = monster_message;
+    optional( obj, was_loaded, "attack_chance", attack_chance, 100 );
     optional( obj, was_loaded, "allow_no_target", allow_no_target, false );
 
     if( obj.has_member( "condition" ) ) {
@@ -287,13 +286,13 @@ bool mon_spellcasting_actor::call( monster &mon ) const
         }
     }
 
-    const tripoint_bub_ms target = ( spell_data.self ||
-                                     allow_no_target ) ? mon.pos_bub() : mon.attack_target()->pos_bub();
+    const tripoint target = ( spell_data.self ||
+                              allow_no_target ) ? mon.pos() : mon.attack_target()->pos();
     spell spell_instance = spell_data.get_spell( mon );
     spell_instance.set_message( spell_data.trigger_message );
 
     // Bail out if the target is out of range.
-    if( !spell_data.self && rl_dist( mon.pos_bub(), target ) > spell_instance.range( mon ) ) {
+    if( !spell_data.self && rl_dist( mon.pos(), target ) > spell_instance.range( mon ) ) {
         return false;
     }
 
@@ -306,7 +305,7 @@ bool mon_spellcasting_actor::call( monster &mon ) const
                             spell_instance.name(), target_name );
 
     avatar fake_player;
-    mon.mod_moves( -spell_instance.casting_time( fake_player, true ) );
+    mon.moves -= spell_instance.casting_time( fake_player, true );
     spell_instance.cast_all_effects( mon, target );
 
     return true;
@@ -353,6 +352,7 @@ void melee_actor::load_internal( const JsonObject &obj, const std::string & )
         damage_max_instance = load_damage_instance( obj );
     }
 
+    optional( obj, was_loaded, "attack_chance", attack_chance, 100 );
     optional( obj, was_loaded, "accuracy", accuracy, INT_MIN );
     optional( obj, was_loaded, "min_mul", min_mul, 0.5f );
     optional( obj, was_loaded, "max_mul", max_mul, 1.0f );
@@ -363,12 +363,10 @@ void melee_actor::load_internal( const JsonObject &obj, const std::string & )
     optional( obj, was_loaded, "uncanny_dodgeable", uncanny_dodgeable, dodgeable );
     optional( obj, was_loaded, "blockable", blockable, true );
     optional( obj, was_loaded, "effects_require_dmg", effects_require_dmg, true );
-    optional( obj, was_loaded, "effects_require_organic", effects_require_organic, false );
     optional( obj, was_loaded, "grab", is_grab, false );
     optional( obj, was_loaded, "range", range, 1 );
     optional( obj, was_loaded, "throw_strength", throw_strength, 0 );
 
-    optional( obj, was_loaded, "eoc", eoc );
     optional( obj, was_loaded, "hitsize_min", hitsize_min, -1 );
     optional( obj, was_loaded, "hitsize_max", hitsize_max, -1 );
     optional( obj, was_loaded, "attack_upper", attack_upper, true );
@@ -451,7 +449,7 @@ Creature *melee_actor::find_target( monster &z ) const
 
     if( range > 1 ) {
         if( !z.sees( *target ) ||
-            !get_map().clear_path( z.pos_bub(), target->pos_bub(), range, 1, 200 ) ) {
+            !get_map().clear_path( z.pos(), target->pos(), range, 1, 200 ) ) {
             return nullptr;
         }
 
@@ -470,7 +468,7 @@ int melee_actor::do_grab( monster &z, Creature *target, bodypart_id bp_id ) cons
     }
     // Handle some messaging in-grab
     game_message_type msg_type = target->is_avatar() ? m_warning : m_info;
-    const std::string mon_name = get_player_character().sees( z.pos_bub() ) ?
+    const std::string mon_name = get_player_character().sees( z.pos() ) ?
                                  z.disp_name( false, true ) : _( "Something" );
     Character *foe = target->as_character();
     map &here = get_map();
@@ -492,12 +490,12 @@ int melee_actor::do_grab( monster &z, Creature *target, bodypart_id bp_id ) cons
         }
         add_msg_debug( debugmode::DF_MATTACK, "Target weight %d g under weight limit  %.1f g, ",
                        to_gram( target->get_weight() ), to_gram( z.get_weight() ) * grab_data.pull_weight_ratio );
-        const optional_vpart_position veh_part = here.veh_at( target->pos_bub() );
+        const optional_vpart_position veh_part = here.veh_at( target->pos() );
         if( foe && foe->in_vehicle && veh_part ) {
             const std::optional<vpart_reference> vp_seatbelt = veh_part.avail_part_with_feature( "SEATBELT" );
             if( vp_seatbelt ) {
                 if( grab_data.respect_seatbelts ) {
-                    z.mod_moves( -move_cost * 2 );
+                    z.moves -= move_cost * 2;
                     foe->add_msg_player_or_npc( msg_type, _( "%1s tries to drag you, but is stopped by your %2s!" ),
                                                 _( "%1s tries to drag <npcname>, but is stopped by their %2s!" ),
                                                 z.disp_name( false, true ), vp_seatbelt->part().name( false ) );
@@ -522,17 +520,17 @@ int melee_actor::do_grab( monster &z, Creature *target, bodypart_id bp_id ) cons
     if( grab_data.pull_chance > -1 && x_in_y( grab_data.pull_chance, 100 ) ) {
         add_msg_debug( debugmode::DF_MATTACK, "Pull chance roll succeeded" );
 
-        int pull_range = std::min( range, rl_dist( z.pos_bub(), target->pos_bub() ) + 1 );
-        tripoint_bub_ms pt = target->pos_bub();
+        int pull_range = std::min( range, rl_dist( z.pos(), target->pos() ) + 1 );
+        tripoint pt = target->pos();
         while( pull_range > 0 ) {
             // Recalculate the ray each step
             // We can't depend on either the target position being constant (obviously),
             // but neither on z pos staying constant, because we may want to shift the map mid-pull
-            const units::angle dir = coord_to_angle( target->pos_bub(), z.pos_bub() );
+            const units::angle dir = coord_to_angle( target->pos(), z.pos() );
             tileray tdir( dir );
             tdir.advance();
-            pt.x() = target->posx() + tdir.dx();
-            pt.y() = target->posy() + tdir.dy();
+            pt.x = target->posx() + tdir.dx();
+            pt.y = target->posy() + tdir.dy();
             //Cancel the grab if the space is occupied by something
             if( !g->is_empty( pt ) ) {
                 break;
@@ -540,17 +538,16 @@ int melee_actor::do_grab( monster &z, Creature *target, bodypart_id bp_id ) cons
 
             if( foe != nullptr ) {
                 if( foe->in_vehicle ) {
-                    here.unboard_vehicle( foe->pos_bub() );
+                    here.unboard_vehicle( foe->pos() );
                 }
 
-                if( foe->is_avatar() && ( pt.x() < HALF_MAPSIZE_X || pt.y() < HALF_MAPSIZE_Y ||
-                                          pt.x() >= HALF_MAPSIZE_X + SEEX || pt.y() >= HALF_MAPSIZE_Y + SEEY ) ) {
-                    g->update_map( pt.x(), pt.y() );
+                if( foe->is_avatar() && ( pt.x < HALF_MAPSIZE_X || pt.y < HALF_MAPSIZE_Y ||
+                                          pt.x >= HALF_MAPSIZE_X + SEEX || pt.y >= HALF_MAPSIZE_Y + SEEY ) ) {
+                    g->update_map( pt.x, pt.y );
                 }
             }
 
-            // Don't try to fall mid pull
-            target->setpos( pt, false );
+            target->setpos( pt );
             pull_range--;
             if( animate ) {
                 g->invalidate_main_ui_adaptor();
@@ -567,7 +564,6 @@ int melee_actor::do_grab( monster &z, Creature *target, bodypart_id bp_id ) cons
         }
         // The monster might drag a target that's not on it's z level
         // So if they leave them on open air, make them fall
-        target->gravity_check();
         here.creature_on_trap( *target );
 
         target->add_msg_player_or_npc( msg_type, grab_data.pull_msg_u, grab_data.pull_msg_npc, mon_name,
@@ -597,42 +593,42 @@ int melee_actor::do_grab( monster &z, Creature *target, bodypart_id bp_id ) cons
         int distance = grab_data.drag_distance;
         while( distance > 0 ) {
             // Start with the opposite square
-            tripoint_bub_ms opposite_square = z.pos_bub() - ( target->pos_bub() - z.pos_bub() );
+            tripoint opposite_square = z.pos() - ( target->pos() - z.pos() );
             // Keep track of our neighbors (no leaping)
-            std::set<tripoint_bub_ms> neighbors;
-            for( const tripoint_bub_ms &trp : here.points_in_radius( z.pos_bub(), 1 ) ) {
-                if( trp != z.pos_bub() && trp != target->pos_bub() ) {
+            std::set<tripoint> neighbors;
+            for( const tripoint &trp : here.points_in_radius( z.pos(), 1 ) ) {
+                if( trp != z.pos() && trp != target->pos() ) {
                     neighbors.insert( trp );
                 }
             }
             // Check where we get to consider dragging
-            std::set<tripoint_bub_ms> candidates;
-            for( const tripoint_bub_ms &trp : here.points_in_radius( opposite_square,
+            std::set<tripoint> candidates;
+            for( const tripoint &trp : here.points_in_radius( opposite_square,
                     grab_data.drag_deviation ) ) {
-                if( trp != z.pos_bub() && trp != target->pos_bub() ) {
+                if( trp != z.pos() && trp != target->pos() ) {
                     candidates.insert( trp );
                 }
             }
             // Select a random square from the options
-            std::set<tripoint_bub_ms> intersect;
+            std::set<tripoint> intersect;
             std::set_intersection( neighbors.begin(), neighbors.end(), candidates.begin(), candidates.end(),
                                    std::inserter( intersect, intersect.begin() ) );
-            tripoint_bub_ms target_square = random_entry<std::set<tripoint_bub_ms>>( intersect );
+            tripoint target_square = random_entry<std::set<tripoint>>( intersect );
             if( z.can_move_to( target_square ) ) {
                 monster *zz = target->as_monster();
-                tripoint_bub_ms zpt = z.pos_bub();
+                tripoint zpt = z.pos();
                 z.move_to( target_square, false, false, grab_data.drag_movecost_mod );
                 if( !g->is_empty( zpt ) ) { //Cancel the grab if the space is occupied by something
                     return 0;
                 }
-                if( target->is_avatar() && ( zpt.x() < HALF_MAPSIZE_X ||
-                                             zpt.y() < HALF_MAPSIZE_Y ||
-                                             zpt.x() >= HALF_MAPSIZE_X + SEEX || zpt.y() >= HALF_MAPSIZE_Y + SEEY ) ) {
-                    g->update_map( zpt.x(), zpt.y() );
+                if( target->is_avatar() && ( zpt.x < HALF_MAPSIZE_X ||
+                                             zpt.y < HALF_MAPSIZE_Y ||
+                                             zpt.x >= HALF_MAPSIZE_X + SEEX || zpt.y >= HALF_MAPSIZE_Y + SEEY ) ) {
+                    g->update_map( zpt.x, zpt.y );
                 }
                 if( foe != nullptr ) {
                     if( foe->in_vehicle ) {
-                        here.unboard_vehicle( foe->pos_bub() );
+                        here.unboard_vehicle( foe->pos() );
                     }
                     foe->setpos( zpt );
                     if( !foe->in_vehicle && here.veh_at( zpt ).part_with_feature( VPFLAG_BOARDABLE, true ) ) {
@@ -687,7 +683,7 @@ bool melee_actor::call( monster &z ) const
 
     z.mod_moves( -move_cost );
 
-    const std::string mon_name = get_player_character().sees( z.pos_bub() ) ?
+    const std::string mon_name = get_player_character().sees( z.pos() ) ?
                                  z.disp_name( false, true ) : _( "Something" );
 
     // Add always-applied self effects
@@ -722,20 +718,20 @@ bool melee_actor::call( monster &z ) const
 
     if( uncanny_dodgeable && target->uncanny_dodge() ) {
         game_message_type msg_type = target->is_avatar() ? m_warning : m_info;
-        sfx::play_variant_sound( "mon_bite", "bite_miss", sfx::get_heard_volume( z.pos_bub() ),
-                                 sfx::get_heard_angle( z.pos_bub() ) );
+        sfx::play_variant_sound( "mon_bite", "bite_miss", sfx::get_heard_volume( z.pos() ),
+                                 sfx::get_heard_angle( z.pos() ) );
         target->add_msg_player_or_npc( msg_type, miss_msg_u,
-                                       get_option<bool>( "LOG_MONSTER_ATTACK_MONSTER" ) ? miss_msg_npc : translation(),
+                                       get_option<bool>( "LOG_MONSTER_ATTACK_MONSTER" ) ? miss_msg_npc : to_translation( "" ),
                                        z.name(), body_part_name_accusative( bp_id ) );
         return true;
     }
 
     if( dodgeable ) {
         if( hitspread < 0 ) {
-            sfx::play_variant_sound( "mon_bite", "bite_miss", sfx::get_heard_volume( z.pos_bub() ),
-                                     sfx::get_heard_angle( z.pos_bub() ) );
+            sfx::play_variant_sound( "mon_bite", "bite_miss", sfx::get_heard_volume( z.pos() ),
+                                     sfx::get_heard_angle( z.pos() ) );
             target->add_msg_player_or_npc( msg_type, miss_msg_u,
-                                           get_option<bool>( "LOG_MONSTER_ATTACK_MONSTER" ) ? miss_msg_npc : translation(),
+                                           get_option<bool>( "LOG_MONSTER_ATTACK_MONSTER" ) ? miss_msg_npc : to_translation( "" ),
                                            mon_name, body_part_name_accusative( bp_id ) );
             return true;
         }
@@ -755,14 +751,13 @@ bool melee_actor::call( monster &z ) const
         if( target->has_effect_with_flag( json_flag_GRAB ) && grab_data.exclusive_grab ) {
             add_msg_debug( debugmode::DF_MATTACK, "Exclusive grab, begin filtering" );
             map &here = get_map();
-            const tripoint_range<tripoint_bub_ms> &surrounding = here.points_in_radius( target->pos_bub(), 1,
-                    0 );
+            const tripoint_range<tripoint> &surrounding = here.points_in_radius( target->pos(), 1, 0 );
             creature_tracker &creatures = get_creature_tracker();
 
             for( const effect &eff : target->get_effects_with_flag( json_flag_GRAB ) ) {
                 monster *grabber = nullptr;
                 // Iterate through the target's surroundings to find the grabber of this grab
-                for( const tripoint_bub_ms loc : surrounding ) {
+                for( const tripoint loc : surrounding ) {
                     monster *mon = creatures.creature_at<monster>( loc );
                     if( mon && mon->has_effect_with_flag( json_flag_GRAB_FILTER ) && mon->attack_target() == target ) {
                         if( target->is_monster() || ( !target->is_monster() &&
@@ -867,30 +862,27 @@ bool melee_actor::call( monster &z ) const
     if( damage_total > 0 ) {
         on_damage( z, *target, dealt_damage );
     } else {
-        sfx::play_variant_sound( "mon_bite", "bite_miss", sfx::get_heard_volume( z.pos_bub() ),
-                                 sfx::get_heard_angle( z.pos_bub() ) );
+        sfx::play_variant_sound( "mon_bite", "bite_miss", sfx::get_heard_volume( z.pos() ),
+                                 sfx::get_heard_angle( z.pos() ) );
         target->add_msg_player_or_npc( msg_type, no_dmg_msg_u,
-                                       get_option<bool>( "LOG_MONSTER_ATTACK_MONSTER" ) ? no_dmg_msg_npc : translation(),
+                                       get_option<bool>( "LOG_MONSTER_ATTACK_MONSTER" ) ? no_dmg_msg_npc : to_translation( "" ),
                                        mon_name, body_part_name_accusative( grabbed_bp_id.value_or( bp_id ) ) );
         if( !effects_require_dmg ) {
             for( const mon_effect_data &eff : effects ) {
                 if( x_in_y( eff.chance, 100 ) ) {
                     const bodypart_id affected_bp = eff.affect_hit_bp ? bp_id : eff.bp.id();
-                    if( !( effects_require_organic && affected_bp->has_flag( json_flag_BIONIC_LIMB ) ) ) {
-                        target->add_effect( eff.id, time_duration::from_turns( rng( eff.duration.first,
-                                            eff.duration.second ) ), affected_bp, eff.permanent, rng( eff.intensity.first,
-                                                    eff.intensity.second ) );
-                    }
+                    target->add_effect( eff.id, time_duration::from_turns( rng( eff.duration.first,
+                                        eff.duration.second ) ), affected_bp, eff.permanent, rng( eff.intensity.first,
+                                                eff.intensity.second ) );
                 }
             }
         }
     }
-    if( throw_strength > 0 && !( target->has_flag( mon_flag_IMMOBILE ) ||
-                                 target->has_effect_with_flag( json_flag_CANNOT_MOVE ) ) ) {
-        if( g->fling_creature( target, coord_to_angle( z.pos_bub(), target->pos_bub() ),
+    if( throw_strength > 0 ) {
+        if( g->fling_creature( target, coord_to_angle( z.pos(), target->pos() ),
                                throw_strength ) ) {
             target->add_msg_player_or_npc( msg_type, throw_msg_u,
-                                           get_option<bool>( "LOG_MONSTER_ATTACK_MONSTER" ) ? throw_msg_npc : translation(),
+                                           get_option<bool>( "LOG_MONSTER_ATTACK_MONSTER" ) ? throw_msg_npc : to_translation( "" ),
                                            mon_name );
 
             // Items strapped to you may fall off as you hit the ground
@@ -909,9 +901,9 @@ bool melee_actor::call( monster &z ) const
                     // the item is ripped off your character
                     if( sturdiness < chance ) {
                         float path_distance = rng_float( 0, 1.0 );
-                        tripoint_rel_ms vector = target->pos_bub() - z.pos_bub();
-                        vector = { vector.x() *path_distance, vector.y() *path_distance, vector.z() *path_distance };
-                        pd[index]->spill_contents( z.pos() + vector.raw() );
+                        tripoint vector = target->pos() - z.pos();
+                        vector = tripoint( vector.x * path_distance, vector.y * path_distance, vector.z * path_distance );
+                        pd[index]->spill_contents( z.pos() + vector );
                         add_msg( m_bad, _( "As you hit the ground something comes loose and is knocked away from you!" ) );
                         popup( _( "As you hit the ground something comes loose and is knocked away from you!" ) );
                     }
@@ -919,42 +911,32 @@ bool melee_actor::call( monster &z ) const
             }
         }
     }
-
-    //run EoCs
-    for( const effect_on_condition_id &eoc : eoc ) {
-        dialogue d( get_talker_for( z ), get_talker_for( target ) );
-        write_var_value( var_type::context, "damage", &d, damage_total );
-        eoc->activate( d );
-    }
-
     return true;
 }
 
 void melee_actor::on_damage( monster &z, Creature &target, dealt_damage_instance &dealt ) const
 {
     if( target.is_avatar() ) {
-        sfx::play_variant_sound( "mon_bite", "bite_hit", sfx::get_heard_volume( z.pos_bub() ),
-                                 sfx::get_heard_angle( z.pos_bub() ) );
+        sfx::play_variant_sound( "mon_bite", "bite_hit", sfx::get_heard_volume( z.pos() ),
+                                 sfx::get_heard_angle( z.pos() ) );
         sfx::do_player_death_hurt( dynamic_cast<Character &>( target ), false );
     }
     game_message_type msg_type = target.attitude_to( get_player_character() ) ==
                                  Creature::Attitude::FRIENDLY ?
                                  m_bad : m_neutral;
     const bodypart_id &bp = dealt.bp_hit ;
-    const std::string mon_name = get_player_character().sees( z.pos_bub() ) ?
+    const std::string mon_name = get_player_character().sees( z.pos() ) ?
                                  z.disp_name( false, true ) : _( "Something" );
     target.add_msg_player_or_npc( msg_type, hit_dmg_u,
-                                  get_option<bool>( "LOG_MONSTER_ATTACK_MONSTER" ) ? hit_dmg_npc : translation(),
+                                  get_option<bool>( "LOG_MONSTER_ATTACK_MONSTER" ) ? hit_dmg_npc : to_translation( "" ),
                                   mon_name, body_part_name_accusative( bp ) );
 
     for( const mon_effect_data &eff : effects ) {
         if( x_in_y( eff.chance, 100 ) ) {
             const bodypart_id affected_bp = eff.affect_hit_bp ? bp : eff.bp.id();
-            if( !( effects_require_organic && affected_bp->has_flag( json_flag_BIONIC_LIMB ) ) ) {
-                target.add_effect( eff.id, time_duration::from_turns( rng( eff.duration.first,
-                                   eff.duration.second ) ), affected_bp, eff.permanent, rng( eff.intensity.first,
-                                           eff.intensity.second ) );
-            }
+            target.add_effect( eff.id, time_duration::from_turns( rng( eff.duration.first,
+                               eff.duration.second ) ), affected_bp, eff.permanent, rng( eff.intensity.first,
+                                       eff.intensity.second ) );
         }
     }
 
@@ -992,36 +974,33 @@ void bite_actor::on_damage( monster &z, Creature &target, dealt_damage_instance 
 {
     melee_actor::on_damage( z, target, dealt );
     add_msg_debug( debugmode::DF_MATTACK, "Bite-type attack, infection chance %d", infection_chance );
-    const bodypart_id &hit = dealt.bp_hit;
 
-    // only do bitey things if the limb is fleshy
-    if( !hit->has_flag( json_flag_BIONIC_LIMB ) ) {
-        // first, do regular zombie infections
-        if( x_in_y( infection_chance, 100 ) ) {
-            if( target.has_effect( effect_bite, hit.id() ) ) {
-                add_msg_debug( debugmode::DF_MATTACK, "Incrementing bitten effect on %s", hit->name );
-                target.add_effect( effect_bite, 40_minutes, hit, true );
-            } else if( target.has_effect( effect_infected, hit.id() ) ) {
-                add_msg_debug( debugmode::DF_MATTACK, "Incrementing infected effect on %s", hit->name );
-                target.add_effect( effect_infected, 25_minutes, hit, true );
-            } else {
-                add_msg_debug( debugmode::DF_MATTACK, "Added bitten effect to %s", hit->name );
-                target.add_effect( effect_bite, 1_turns, hit, true );
-            }
+    if( x_in_y( infection_chance, 100 ) ) {
+        const bodypart_id &hit = dealt.bp_hit;
+        if( target.has_effect( effect_bite, hit.id() ) ) {
+            add_msg_debug( debugmode::DF_MATTACK, "Incrementing bitten effect on %s", hit->name );
+            target.add_effect( effect_bite, 40_minutes, hit, true );
+        } else if( target.has_effect( effect_infected, hit.id() ) ) {
+            add_msg_debug( debugmode::DF_MATTACK, "Incrementing infected effect on %s", hit->name );
+            target.add_effect( effect_infected, 25_minutes, hit, true );
+        } else {
+            add_msg_debug( debugmode::DF_MATTACK, "Added bitten effect to %s", hit->name );
+            target.add_effect( effect_bite, 1_turns, hit, true );
         }
-        // Flag only set for zombies in the deadly_bites mod
-        if( x_in_y( infection_chance, 20 ) ) {
-            if( z.has_flag( mon_flag_DEADLY_VIRUS ) && !target.has_effect( effect_zombie_virus ) ) {
-                target.add_effect( effect_zombie_virus, 1_turns, bodypart_str_id::NULL_ID(), true );
-            } else if( z.has_flag( mon_flag_VAMP_VIRUS ) && !target.has_trait( trait_VAMPIRE ) ) {
-                target.add_effect( effect_vampire_virus, 1_turns, bodypart_str_id::NULL_ID(), true );
-            }
+    }
+
+    // Flag only set for zombies in the deadly_bites mod
+    if( x_in_y( infection_chance, 20 ) ) {
+        if( z.has_flag( mon_flag_DEADLY_VIRUS ) && !target.has_effect( effect_zombie_virus ) ) {
+            target.add_effect( effect_zombie_virus, 1_turns, bodypart_str_id::NULL_ID(), true );
+        } else if( z.has_flag( mon_flag_VAMP_VIRUS ) && !target.has_trait( trait_VAMPIRE ) ) {
+            target.add_effect( effect_vampire_virus, 1_turns, bodypart_str_id::NULL_ID(), true );
         }
-        // lastly, poison it if we're yucky
-        if( target.has_trait( trait_TOXICFLESH ) ) {
-            z.add_effect( effect_poison, 5_minutes );
-            z.add_effect( effect_badpoison, 5_minutes );
-        }
+    }
+
+    if( target.has_trait( trait_TOXICFLESH ) ) {
+        z.add_effect( effect_poison, 5_minutes );
+        z.add_effect( effect_badpoison, 5_minutes );
     }
 }
 
@@ -1116,7 +1095,7 @@ int gun_actor::get_max_range()  const
 bool gun_actor::call( monster &z ) const
 {
     Creature *target;
-    tripoint_bub_ms aim_at;
+    tripoint aim_at;
     bool untargeted = false;
 
     if( has_condition ) {
@@ -1142,10 +1121,10 @@ bool gun_actor::call( monster &z ) const
             }
             return false;
         }
-        aim_at = target->pos_bub();
+        aim_at = target->pos();
     } else {
         target = z.attack_target();
-        aim_at = target ? target->pos_bub() : tripoint_bub_ms::zero;
+        aim_at = target ? target->pos() : tripoint_zero;
         if( !target || !z.sees( *target ) || ( !target->is_monster() && !z.aggro_character ) ) {
             if( !target_moving_vehicles ) {
                 return false;
@@ -1156,11 +1135,11 @@ bool gun_actor::call( monster &z ) const
             if( moving_veh_parts.empty() ) {
                 return false;
             }
-            aim_at = random_entry( moving_veh_parts, tripoint_bub_ms() );
+            aim_at = random_entry( moving_veh_parts, tripoint_bub_ms() ).raw();
         }
     }
 
-    const int dist = rl_dist( z.pos_bub(), aim_at );
+    const int dist = rl_dist( z.pos(), aim_at );
     if( target ) {
         add_msg_debug( debugmode::DF_MATTACK, "Target %s at range %d", target->disp_name(), dist );
     } else {
@@ -1170,8 +1149,9 @@ bool gun_actor::call( monster &z ) const
     for( const auto &e : ranges ) {
         if( dist >= e.first.first && dist <= e.first.second ) {
             if( untargeted || try_target( z, *target ) ) {
-                return shoot( z, aim_at, e.second );
+                shoot( z, aim_at, e.second );
             }
+            return true;
         }
     }
     return false;
@@ -1179,7 +1159,7 @@ bool gun_actor::call( monster &z ) const
 
 bool gun_actor::try_target( monster &z, Creature &target ) const
 {
-    if( require_sunlight && !g->is_in_sunlight( z.pos_bub() ) ) {
+    if( require_sunlight && !g->is_in_sunlight( z.pos() ) ) {
         add_msg_debug( debugmode::DF_MATTACK, "Requires sunlight" );
         if( one_in( 3 ) ) {
             add_msg_if_player_sees( z, failure_msg.translated(), z.name() );
@@ -1196,7 +1176,7 @@ bool gun_actor::try_target( monster &z, Creature &target ) const
 
     if( not_targeted || not_laser_locked ) {
         if( targeting_volume > 0 && !targeting_sound.empty() ) {
-            sounds::sound( z.pos_bub(), targeting_volume, sounds::sound_t::alarm,
+            sounds::sound( z.pos(), targeting_volume, sounds::sound_t::alarm,
                            targeting_sound );
         }
         if( not_targeted ) {
@@ -1211,7 +1191,7 @@ bool gun_actor::try_target( monster &z, Creature &target ) const
                                       _( "You're not sure why you've got a laser dot on you…" ) );
         }
 
-        z.mod_moves( -targeting_cost );
+        z.moves -= targeting_cost;
         return false;
     }
 
@@ -1225,9 +1205,11 @@ bool gun_actor::try_target( monster &z, Creature &target ) const
     return true;
 }
 
-bool gun_actor::shoot( monster &z, const tripoint_bub_ms &target, const gun_mode_id &mode,
+void gun_actor::shoot( monster &z, const tripoint &target, const gun_mode_id &mode,
                        int inital_recoil ) const
 {
+    z.moves -= move_cost;
+
     itype_id mig_gun_type = item_controller->migrate_id( gun_type );
     item gun( mig_gun_type );
     gun.gun_set_mode( mode );
@@ -1253,7 +1235,7 @@ bool gun_actor::shoot( monster &z, const tripoint_bub_ms &target, const gun_mode
 
     if( z.has_effect( effect_stunned ) || z.has_effect( effect_psi_stunned ) ||
         z.has_effect( effect_sensor_stun ) ) {
-        return false;
+        return;
     }
 
     add_msg_debug( debugmode::DF_MATTACK, "%d ammo (%s) remaining", z.ammo[ammo_type],
@@ -1261,12 +1243,12 @@ bool gun_actor::shoot( monster &z, const tripoint_bub_ms &target, const gun_mode
 
     if( !gun.ammo_sufficient( nullptr ) ) {
         if( !no_ammo_sound.empty() ) {
-            sounds::sound( z.pos_bub(), 10, sounds::sound_t::combat, no_ammo_sound );
+            sounds::sound( z.pos(), 10, sounds::sound_t::combat, no_ammo_sound );
         }
-        return false;
+        return;
     }
-    z.mod_moves( -move_cost );
-    standard_npc tmp( _( "The " ) + z.name(), z.pos_bub(), {}, 8,
+
+    standard_npc tmp( _( "The " ) + z.name(), z.pos(), {}, 8,
                       fake_str, fake_dex, fake_int, fake_per );
     tmp.worn.wear_item( tmp, item( "backpack" ), false, false, true, true );
     tmp.set_fake( true );
@@ -1296,5 +1278,4 @@ bool gun_actor::shoot( monster &z, const tripoint_bub_ms &target, const gun_mode
     } else {
         z.ammo[ammo_type] -= tmp.fire_gun( target, gun.gun_current_mode().qty );
     }
-    return true;
 }

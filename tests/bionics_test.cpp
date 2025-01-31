@@ -473,8 +473,9 @@ TEST_CASE( "fueled_bionics", "[bionics] [item]" )
         dummy.worn.wear_item( dummy, item( "backpack" ), false, false );
         item_location ups = dummy.i_add( item( "UPS_ON" ) );
         item_location cable = dummy.i_add( item( "jumper_cable" ) );
-        cable->link().source = link_state::ups;
-        cable->link().target = link_state::bio_cable;
+        cable->link = cata::make_value<item::link_data>();
+        cable->link->s_state = link_state::ups;
+        cable->link->t_state = link_state::bio_cable;
         ups->set_var( "cable", "plugged_in" );
         cable->active = true;
 
@@ -522,7 +523,7 @@ TEST_CASE( "fueled_bionics", "[bionics] [item]" )
         g->reset_light_level();
         scoped_weather_override weather_clear( WEATHER_CLEAR );
         calendar::turn = calendar::turn_zero + 12_hours;
-        REQUIRE( g->is_in_sunlight( dummy.pos_bub() ) );
+        REQUIRE( g->is_in_sunlight( dummy.pos() ) );
 
         // Connect solar backpack
         dummy.worn.wear_item( dummy, item( "pants_cargo" ), false, false );
@@ -531,8 +532,9 @@ TEST_CASE( "fueled_bionics", "[bionics] [item]" )
         item_location solar_pack = dummy.top_items_loc()[1];
         REQUIRE( solar_pack->typeId() == itype_solarpack_on );
         item_location cable = dummy.i_add( item( "jumper_cable" ) );
-        cable->link().source = link_state::solarpack;
-        cable->link().target = link_state::bio_cable;
+        cable->link = cata::make_value<item::link_data>();
+        cable->link->s_state = link_state::solarpack;
+        cable->link->t_state = link_state::bio_cable;
         solar_pack->set_var( "cable", "plugged_in" );
         cable->active = true;
 

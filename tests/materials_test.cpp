@@ -7,8 +7,6 @@
 #include "npc.h"
 #include "projectile.h"
 
-static const ammo_effect_str_id ammo_effect_SHATTER_SELF( "SHATTER_SELF" );
-
 static const damage_type_id damage_acid( "acid" );
 static const damage_type_id damage_bash( "bash" );
 static const damage_type_id damage_bullet( "bullet" );
@@ -24,8 +22,8 @@ static const material_id material_steel( "steel" );
 static const material_id material_wood( "wood" );
 
 static constexpr int num_iters = 1000;
-static constexpr tripoint_bub_ms dude_pos( HALF_MAPSIZE_X, HALF_MAPSIZE_Y, 0 );
-static constexpr tripoint_bub_ms target_pos( HALF_MAPSIZE_X - 10, HALF_MAPSIZE_Y, 0 );
+static constexpr tripoint dude_pos( HALF_MAPSIZE_X, HALF_MAPSIZE_Y, 0 );
+static constexpr tripoint target_pos( HALF_MAPSIZE_X - 10, HALF_MAPSIZE_Y, 0 );
 
 static void check_near( const std::string &subject, float prob, const float expected,
                         const float tolerance )
@@ -88,7 +86,7 @@ TEST_CASE( "Glass_portion_breakability", "[material] [slow]" )
         int shatter_count = 0;
         for( int i = 0; i < num_iters; i++ ) {
             dealt_projectile_attack atk = dude.throw_item( target_pos, *dude.get_wielded_item() );
-            if( atk.proj.proj_effects.find( ammo_effect_SHATTER_SELF ) != atk.proj.proj_effects.end() ) {
+            if( atk.proj.proj_effects.find( "SHATTER_SELF" ) != atk.proj.proj_effects.end() ) {
                 shatter_count++;
             }
         }
@@ -101,7 +99,7 @@ TEST_CASE( "Glass_portion_breakability", "[material] [slow]" )
         int shatter_count = 0;
         for( int i = 0; i < num_iters; i++ ) {
             dealt_projectile_attack atk = dude.throw_item( target_pos, *dude.get_wielded_item() );
-            if( atk.proj.proj_effects.find( ammo_effect_SHATTER_SELF ) != atk.proj.proj_effects.end() ) {
+            if( atk.proj.proj_effects.find( "SHATTER_SELF" ) != atk.proj.proj_effects.end() ) {
                 shatter_count++;
             }
         }

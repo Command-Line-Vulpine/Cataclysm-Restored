@@ -6,9 +6,11 @@
 #include <climits>
 #include <cstddef>
 #include <functional>
+#include <iosfwd>
 #include <limits>
 #include <list>
 #include <memory>
+#include <new>
 #include <optional>
 #include <string>
 #include <utility>
@@ -18,23 +20,25 @@
 #include "cuboid_rectangle.h"
 #include "cursesdef.h"
 #include "debug.h"
-#include "input_context.h"
+#include "input.h"
 #include "item_category.h"
 #include "item_location.h"
+#include "map.h"
 #include "memory_fast.h"
 #include "pocket_type.h"
 #include "pimpl.h"
 #include "translations.h"
+#include "units.h"
 #include "units_fwd.h"
 
-class basecamp;
 class Character;
 class inventory_selector_preset;
 class item;
 class item_stack;
 class string_input_popup;
-class tinymap;
 class ui_adaptor;
+struct point;
+struct tripoint;
 
 enum class navigation_mode : int {
     ITEM = 0,
@@ -52,6 +56,7 @@ enum class toggle_mode : int {
 };
 
 struct inventory_input;
+struct container_data;
 struct navigation_mode_data;
 
 using drop_location = std::pair<item_location, int>;
@@ -72,8 +77,6 @@ class inventory_entry
         int custom_invlet = INT_MIN;
         std::string *cached_name = nullptr;
         std::string *cached_name_full = nullptr;
-        unsigned int contents_count = 0;
-        size_t cached_denial_space = 0;
 
         inventory_entry() = default;
 
@@ -616,7 +619,6 @@ class inventory_selector
         void add_contained_gunmods( Character &you, item &gun );
         void add_contained_ebooks( item_location &container );
         void add_character_items( Character &character );
-        void add_character_ebooks( Character &character );
         void add_map_items( const tripoint &target );
         void add_vehicle_items( const tripoint &target );
         void add_nearby_items( int radius = 1 );
@@ -1058,7 +1060,7 @@ class pickup_selector : public inventory_multiselector
         bool wield( int &count );
         bool wear();
         void remove_from_to_use( item_location &it );
-        void reopen_menu();
+        void add_reopen_activity();
         const std::optional<tripoint> where;
 };
 

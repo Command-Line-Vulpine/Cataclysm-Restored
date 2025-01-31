@@ -109,8 +109,6 @@ extern mon_flag_id mon_flag_ACIDPROOF,
        mon_flag_DIGS,
        mon_flag_DOGFOOD,
        mon_flag_DORMANT,
-       mon_flag_DRACULIN_IMMUNE,
-       mon_flag_GEN_DORMANT,
        mon_flag_DRIPS_GASOLINE,
        mon_flag_DRIPS_NAPALM,
        mon_flag_DROPS_AMMO,
@@ -118,7 +116,6 @@ extern mon_flag_id mon_flag_ACIDPROOF,
        mon_flag_ELECTRIC,
        mon_flag_ELECTRIC_FIELD,
        mon_flag_ELECTRONIC,
-       mon_flag_FAE_CREATURE,
        mon_flag_FILTHY,
        mon_flag_FIREPROOF,
        mon_flag_FIREY,
@@ -128,10 +125,6 @@ extern mon_flag_id mon_flag_ACIDPROOF,
        mon_flag_GRABS,
        mon_flag_GROUP_BASH,
        mon_flag_GROUP_MORALE,
-       mon_flag_GUILT_ANIMAL,
-       mon_flag_GUILT_CHILD,
-       mon_flag_GUILT_HUMAN,
-       mon_flag_GUILT_OTHERS,
        mon_flag_HARDTOSHOOT,
        mon_flag_HAS_MIND,
        mon_flag_HEARS,
@@ -147,7 +140,6 @@ extern mon_flag_id mon_flag_ACIDPROOF,
        mon_flag_MECH_DEFENSIVE,
        mon_flag_MECH_RECON_VISION,
        mon_flag_MILKABLE,
-       mon_flag_MIND_SEEING,
        mon_flag_NEMESIS,
        mon_flag_NEVER_WANDER,
        mon_flag_NIGHT_INVISIBILITY,
@@ -160,7 +152,8 @@ extern mon_flag_id mon_flag_ACIDPROOF,
        mon_flag_NO_NECRO,
        mon_flag_PACIFIST,
        mon_flag_PARALYZEVENOM,
-       mon_flag_PATH_AVOID_DANGER,
+       mon_flag_PATH_AVOID_DANGER_1,
+       mon_flag_PATH_AVOID_DANGER_2,
        mon_flag_PATH_AVOID_FALL,
        mon_flag_PATH_AVOID_FIRE,
        mon_flag_PAY_BOT,
@@ -175,7 +168,6 @@ extern mon_flag_id mon_flag_ACIDPROOF,
        mon_flag_PUSH_VEH,
        mon_flag_QUEEN,
        mon_flag_QUIETDEATH,
-       mon_flag_QUIETMOVES,
        mon_flag_RANGED_ATTACKER,
        mon_flag_REVIVES,
        mon_flag_REVIVES_HEALTHY,
@@ -183,7 +175,6 @@ extern mon_flag_id mon_flag_ACIDPROOF,
        mon_flag_SEES,
        mon_flag_SHORTACIDTRAIL,
        mon_flag_SILENT_DISAPPEAR,
-       mon_flag_SILENTMOVES,
        mon_flag_SLUDGEPROOF,
        mon_flag_SLUDGETRAIL,
        mon_flag_SMALLSLUDGETRAIL,
@@ -194,9 +185,9 @@ extern mon_flag_id mon_flag_ACIDPROOF,
        mon_flag_SUNDEATH,
        mon_flag_SWARMS,
        mon_flag_SWIMS,
-       mon_flag_TEEP_IMMUNE,
        mon_flag_VAMP_VIRUS,
        mon_flag_VENOM,
+       mon_flag_VERMIN,
        mon_flag_WARM,
        mon_flag_WATER_CAMOUFLAGE,
        mon_flag_WEBWALK,
@@ -254,7 +245,6 @@ struct monster_death_effect {
     bool was_loaded = false;
     bool has_effect = false;
     fake_spell sp;
-    std::optional<effect_on_condition_id> eoc;
     translation death_message;
     mdeath_type corpse_type = mdeath_type::NORMAL;
 
@@ -281,13 +271,6 @@ struct mount_item_data {
     itype_id storage;
 };
 
-struct reproduction_type {
-    mtype_id baby_monster = mtype_id::NULL_ID();
-    mongroup_id baby_monster_group = mongroup_id::NULL_ID();
-    itype_id baby_egg = itype_id::NULL_ID();
-    item_group_id baby_egg_group = item_group_id::NULL_ID();
-};
-
 struct mtype {
     private:
         friend class MonsterGenerator;
@@ -309,7 +292,6 @@ struct mtype {
         mfaction_str_id default_faction;
         harvest_id harvest;
         harvest_id dissect;
-        harvest_id decay;
         speed_description_id speed_desc;
         // Monster upgrade variables
         mtype_id upgrade_into;
@@ -319,8 +301,8 @@ struct mtype {
         mtype_id zombify_into; // mtype_id this monster zombifies into
         mtype_id fungalize_into; // mtype_id this monster fungalize into
 
-        reproduction_type baby_type;
-
+        mtype_id baby_monster;
+        itype_id baby_egg;
         // Monster biosignature variables
         itype_id biosig_item;
 
@@ -350,8 +332,6 @@ struct mtype {
 
         // The type of material this monster can absorb. Leave unspecified for all materials.
         std::vector<material_id> absorb_material;
-        // The type of material this monster cannot absorb. Leave unspecified for no materials (blacklist none).
-        std::vector<material_id> no_absorb_material;
         damage_instance melee_damage; // Basic melee attack damage
         std::vector<std::string> special_attacks_names; // names of attacks, in json load order
         std::vector<std::string> chat_topics; // What it has to say.
@@ -461,7 +441,7 @@ struct mtype {
         // Maximum move cost for this monster to absorb an item (default -1, -1 for no limit)
         int absorb_move_cost_max = -1;
 
-        float luminance = 0;       // 0 is default, >0 gives luminance to lightmap
+        float luminance;           // 0 is default, >0 gives luminance to lightmap
         // Vision range is linearly scaled depending on lighting conditions
         int vision_day = 40;    /** vision range in bright light */
         int vision_night = 1;   /** vision range in total darkness */

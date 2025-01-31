@@ -162,13 +162,12 @@
   {
     "type": "construction_group",
     "id": "build_concrete_floor",
-    "name": "Build Concrete Floor (no roof support)"
+    "name": "Build Concrete Floor"
   },
   {
     "type": "construction_group",
-    "id": "build_concrete_floor_with_roof",
-    "//": "Obsolete id. Retained for save compatibility.",
-    "name": "Build Concrete Floor (supports roof)"
+    "id": "build_concrete_roof",
+    "name": "Build Concrete Roof"
   },
   {
     "type": "construction_group",
@@ -312,11 +311,6 @@
   },
   {
     "type": "construction_group",
-    "id": "build_compost_tank",
-    "name": "Build Small Scale Anaerobic Digestion System"
-  },
-  {
-    "type": "construction_group",
     "id": "build_fire_ring",
     "name": "Build Fire Ring"
   },
@@ -358,7 +352,7 @@
   {
     "type": "construction_group",
     "id": "build_junk_metal_floor",
-    "name": "Build Junk Metal Floor (supports roof)"
+    "name": "Build Junk Metal Floor"
   },
   {
     "type": "construction_group",
@@ -372,9 +366,8 @@
   },
   {
     "type": "construction_group",
-    "id": "build_primitive_floor_with_log_sod_roof",
-    "//": "Retain obsolete id for save compatibility",
-    "name": "Build Log Floor (supports roof)"
+    "id": "build_log_sod_roof",
+    "name": "Build Log & Sod Roof"
   },
   {
     "type": "construction_group",
@@ -458,9 +451,8 @@
   },
   {
     "type": "construction_group",
-    "id": "build_scrap_floor_with_roof",
-    "//": "Obsolete id. Retained for save compatibility.",
-    "name": "Build Scrap Floor (supports roof)"
+    "id": "build_metal_roof",
+    "name": "Build Metal Roof"
   },
   {
     "type": "construction_group",
@@ -549,9 +541,8 @@
   },
   {
     "type": "construction_group",
-    "id": "build_reinforced_concrete_floor_with_roof",
-    "//": "Obsolete id. Retained for save compatibility.",
-    "name": "Build Reinforced Concrete Floor (supports roof)"
+    "id": "build_reinforced_concrete_roof",
+    "name": "Build Reinforced Concrete Roof"
   },
   {
     "type": "construction_group",
@@ -655,14 +646,13 @@
   },
   {
     "type": "construction_group",
-    "id": "build_floor_with_treated_roof",
-    "//": "Retaining obsolete id for save compatibility",
-    "name": "Build Standard Floor (supports roof)"
+    "id": "build_roof",
+    "name": "Build Roof"
   },
   {
     "type": "construction_group",
-    "id": "build_dirt_floor",
-    "name": "Build Dirt Floor (can support roof)"
+    "id": "build_roof_over_dirt_floor",
+    "name": "Build Roof Over Dirt Floor"
   },
   {
     "type": "construction_group",
@@ -826,6 +816,11 @@
   },
   {
     "type": "construction_group",
+    "id": "build_thatched_roof",
+    "name": "Build Thatched Roof"
+  },
+  {
+    "type": "construction_group",
     "id": "build_triple_glazed_glass_window",
     "name": "Build Triple Glazed Glass Window"
   },
@@ -877,7 +872,7 @@
   {
     "type": "construction_group",
     "id": "build_wooden_floor",
-    "name": "Build Wooden Floor (no roof support)"
+    "name": "Build Wooden Floor"
   },
   {
     "type": "construction_group",
@@ -957,12 +952,12 @@
   {
     "type": "construction_group",
     "id": "deconstruct_furniture",
-    "name": "Deconstruct Terrain/Furniture"
+    "name": "Deconstruct Furniture"
   },
   {
     "type": "construction_group",
     "id": "deconstruct_simple_furniture",
-    "name": "Deconstruct Simple Terrain/Furniture"
+    "name": "Deconstruct Simple Furniture"
   },
   {
     "type": "construction_group",
@@ -987,7 +982,7 @@
   {
     "type": "construction_group",
     "id": "dig_downstair",
-    "name": "Dig Downstairs"
+    "name": "Dig Downstair"
   },
   {
     "type": "construction_group",
@@ -1006,19 +1001,13 @@
   },
   {
     "type": "construction_group",
-    "id": "extract_dirt",
-    "name": "Extract Dirt"
-  },
-  {
-    "type": "construction_group",
     "id": "extrude_resin_floor_and_roof",
-    "//": "Obsolete id. Retained for save compatibility",
-    "name": "Extrude Resin Floor (supports roof)"
+    "name": "Extrude Resin Floor and Roof"
   },
   {
     "type": "construction_group",
     "id": "extrude_resin_floor_no_roof",
-    "name": "Extrude Resin Floor (no roof support)"
+    "name": "Extrude Resin Floor (no roof)"
   },
   {
     "type": "construction_group",
@@ -1093,17 +1082,17 @@
   {
     "type": "construction_group",
     "id": "make_gravel_floor",
-    "name": "Make Gravel Floor (no roof support)"
+    "name": "Make Gravel Floor"
   },
   {
     "type": "construction_group",
     "id": "make_rubber_mulch",
-    "name": "Make Rubber Mulch Floor (no roof support)"
+    "name": "Make Rubber Mulch Floor"
   },
   {
     "type": "construction_group",
     "id": "make_woodchip_floor",
-    "name": "Make Woodchip Floor (no roof support)"
+    "name": "Make Woodchip Floor"
   },
   {
     "type": "construction_group",
@@ -1118,7 +1107,7 @@
   {
     "type": "construction_group",
     "id": "mine_downstair",
-    "name": "Mine Downstairs"
+    "name": "Mine Downstair"
   },
   {
     "type": "construction_group",
@@ -1128,7 +1117,7 @@
   {
     "type": "construction_group",
     "id": "mine_upstair",
-    "name": "Mine Upstairs"
+    "name": "Mine Upstair"
   },
   {
     "type": "construction_group",
@@ -1212,33 +1201,18 @@
   },
   {
     "type": "construction_group",
-    "id": "place_apartment_fridge",
-    "name": "Place Household Fridge"
-  },
-  {
-    "type": "construction_group",
-    "id": "place_big_portable_fridge",
-    "name": "Place Food Truck Fridge"
+    "id": "place_fridge",
+    "name": "Place Fridge"
   },
   {
     "type": "construction_group",
     "id": "place_glass_fridge",
-    "name": "Place Single Glass Door Fridge"
+    "name": "Place Glass Door Fridge"
   },
   {
     "type": "construction_group",
-    "id": "place_glass_fridge_double",
-    "name": "Place Double Glass Door Fridge"
-  },
-  {
-    "type": "construction_group",
-    "id": "place_heavy_duty_fridge",
-    "name": "Place Heavy-Duty Fridge"
-  },
-  {
-    "type": "construction_group",
-    "id": "place_display_fridge",
-    "name": "Place Display Fridge"
+    "id": "place_stereo",
+    "name": "Place Stereo System"
   },
   {
     "type": "construction_group",
@@ -1247,43 +1221,13 @@
   },
   {
     "type": "construction_group",
-    "id": "place_apartment_freezer",
-    "name": "Place Home Freezer"
+    "id": "place_freezer",
+    "name": "Place Freezer"
   },
   {
     "type": "construction_group",
     "id": "place_minifreezer",
     "name": "Place Minifreezer"
-  },
-  {
-    "type": "construction_group",
-    "id": "place_big_portable_freezer",
-    "name": "Place Food Truck Freezer"
-  },
-  {
-    "type": "construction_group",
-    "id": "place_chest_freezer",
-    "name": "Place Chest Freezer"
-  },
-  {
-    "type": "construction_group",
-    "id": "place_heavy_duty_freezer",
-    "name": "Place Heavy Duty Freezer"
-  },
-  {
-    "type": "construction_group",
-    "id": "place_glass_freezer",
-    "name": "Place Glass Door Freezer"
-  },
-  {
-    "type": "construction_group",
-    "id": "place_display_freezer",
-    "name": "Place Display Freezer"
-  },
-  {
-    "type": "construction_group",
-    "id": "place_stereo",
-    "name": "Place Stereo System"
   },
   {
     "type": "construction_group",
@@ -1314,11 +1258,6 @@
     "type": "construction_group",
     "id": "place_kiln",
     "name": "Place Kiln"
-  },
-  {
-    "type": "construction_group",
-    "id": "place_glassblowers_crucible",
-    "name": "Place Glassblower's Crucible"
   },
   {
     "type": "construction_group",
@@ -1467,16 +1406,6 @@
   },
   {
     "type": "construction_group",
-    "id": "place_motorbike_battery",
-    "name": "Place Motorbike Battery"
-  },
-  {
-    "type": "construction_group",
-    "id": "place_motorbike_small_battery",
-    "name": "Place Small Motorbike Battery"
-  },
-  {
-    "type": "construction_group",
     "id": "place_washing_machine",
     "name": "Place Washing Machine"
   },
@@ -1538,7 +1467,7 @@
   {
     "type": "construction_group",
     "id": "place_anvil_crude",
-    "name": "Place Small Anvil"
+    "name": "Place Crude Anvil"
   },
   {
     "type": "construction_group",
@@ -1892,11 +1821,6 @@
   },
   {
     "type": "construction_group",
-    "id": "place_travel_toilet",
-    "name": "Place Travel Toilet"
-  },
-  {
-    "type": "construction_group",
     "id": "place_oxygen_concentrator",
     "name": "Place Oxygen Concentrator"
   },
@@ -1913,7 +1837,7 @@
   {
     "type": "construction_group",
     "id": "constr_excavate_forestfloor",
-    "name": "Turn forest floor into dirt (no roof support)"
+    "name": "Turn forest floor into dirt"
   },
   {
     "type": "construction_group",
@@ -1999,90 +1923,5 @@
     "type": "construction_group",
     "id": "pipe_bulk",
     "name": "Build a Stack of Pipes"
-  },
-  {
-    "type": "construction_group",
-    "id": "place_piano",
-    "name": "Place Piano"
-  },
-  {
-    "type": "construction_group",
-    "id": "build_scaffolding",
-    "name": "Place Scaffolding"
-  },
-  {
-    "type": "construction_group",
-    "id": "remove_scaffolding",
-    "name": "Remove Scaffolding"
-  },
-  {
-    "type": "construction_group",
-    "id": "build_brick_roof",
-    "name": "Build Brick Roof"
-  },
-  {
-    "type": "construction_group",
-    "id": "build_concrete_roof",
-    "name": "Build Concrete Roof"
-  },
-  {
-    "type": "construction_group",
-    "id": "build_flat_roof",
-    "name": "Build Flat Roof"
-  },
-  {
-    "type": "construction_group",
-    "id": "build_log_sod_roof",
-    "name": "Build Log and Sod Roof"
-  },
-  {
-    "type": "construction_group",
-    "id": "build_metal_roof",
-    "name": "Build Metal Roof"
-  },
-  {
-    "type": "construction_group",
-    "id": "build_metal_flat_roof",
-    "name": "Build Flat Metal Roof"
-  },
-  {
-    "type": "construction_group",
-    "id": "extrude_resin_roof",
-    "name": "Extrude Resin Roof"
-  },
-  {
-    "type": "construction_group",
-    "id": "build_shingle_flat_roof",
-    "name": "Build Shingle Flat Roof"
-  },
-  {
-    "type": "construction_group",
-    "id": "build_thatched_roof",
-    "name": "Build Thatched Roof"
-  },
-  {
-    "type": "construction_group",
-    "id": "build_treated_wood_roof",
-    "name": "Build Treated Wood Roof"
-  },
-  {
-    "type": "construction_group",
-    "id": "build_wood_roof",
-    "name": "Build Wood Roof"
-  },
-  {
-    "type": "construction_group",
-    "id": "build_chimney",
-    "name": "Build Chimney"
-  },
-  {
-    "type": "construction_group",
-    "id": "build_vent_pipe",
-    "name": "Build Vent Pipe"
-  },
-  {
-    "type": "construction_group",
-    "id": "cover_windowframe_with_sheet",
-    "name": "Cover Empty Window With Sheet"
   }
 ]

@@ -3,18 +3,20 @@
 #define CATA_SRC_CONSTRUCTION_H
 
 #include <functional>
+#include <iosfwd>
 #include <list>
 #include <map>
+#include <new>
 #include <optional>
 #include <set>
 #include <string>
 #include <utility>
 #include <vector>
 
-#include "coords_fwd.h"
+#include "coordinates.h"
 #include "game_constants.h"
 #include "item.h"
-#include "translation.h"
+#include "translations.h"
 #include "type_id.h"
 
 class Character;
@@ -28,6 +30,7 @@ class window;
 } // namespace catacurses
 class JsonObject;
 class nc_color;
+struct tripoint;
 
 struct partial_con {
     int counter = 0;
@@ -47,8 +50,8 @@ struct construction {
         construction_group_str_id group;
         // Additional note displayed along with construction requirements.
         translation pre_note;
-        // Beginning terrain(s) for construction
-        std::set<std::string> pre_terrain;
+        // Beginning terrain for construction
+        std::string pre_terrain;
         // Final terrain after construction
         std::string post_terrain;
 
@@ -80,12 +83,9 @@ struct construction {
 
         // Custom constructibility check
         bool ( *pre_special )( const tripoint_bub_ms & );
-        std::vector<bool ( * )( const tripoint_bub_ms & )> pre_specials;
-        // Custom while constructing effects
-        void ( *do_turn_special )( const tripoint_bub_ms &, Character & );
         // Custom after-effects
         void ( *post_special )( const tripoint_bub_ms &, Character & );
-        std::vector<void ( * )( const tripoint_bub_ms &, Character & )> post_specials;
+        void ( *do_turn_special )( const tripoint_bub_ms &, Character & );
         // Custom error message display
         void ( *explain_failure )( const tripoint_bub_ms & );
         // Whether it's furniture or terrain

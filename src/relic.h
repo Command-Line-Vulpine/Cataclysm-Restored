@@ -216,8 +216,6 @@ class relic
         // passive enchantments to add by id in finalize once we can guarantee that they have loaded
         std::vector<enchantment_id> passive_enchant_ids; // NOLINT(cata-serialize)
     public:
-        ~relic();
-
         std::string name() const;
         // returns number of charges that should be consumed
         int activate( Creature &caster, const tripoint &target );

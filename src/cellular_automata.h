@@ -4,7 +4,8 @@
 
 #include <vector>
 
-struct point;
+#include "point.h"
+#include "rng.h"
 
 namespace CellularAutomata
 {

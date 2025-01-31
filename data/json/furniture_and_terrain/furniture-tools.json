@@ -11,10 +11,9 @@
     "coverage": 50,
     "required_str": -1,
     "flags": [ "TRANSPARENT", "NOITEM", "INDOORS", "SHORT", "PERMEABLE" ],
-    "connect_groups": [ "COUNTER", "INDOORFLOOR" ],
+    "connect_groups": "COUNTER",
     "connects_to": "COUNTER",
     "deconstruct": {
-      "skill": { "skill": "electronics", "multiplier": 0.5, "min": 1, "max": 4 },
       "furn_set": "f_counter",
       "items": [
         { "item": "processor", "count": [ 1, 2 ] },
@@ -62,10 +61,9 @@
     "required_str": -1,
     "light_emitted": 10,
     "flags": [ "TRANSPARENT", "CONSOLE", "NOITEM", "INDOORS", "SHORT", "PERMEABLE" ],
-    "connect_groups": [ "COUNTER", "INDOORFLOOR" ],
+    "connect_groups": "COUNTER",
     "connects_to": "COUNTER",
     "deconstruct": {
-      "skill": { "skill": "electronics", "min": 1, "max": 8 },
       "furn_set": "f_counter",
       "items": [
         { "item": "processor", "count": [ 1, 2 ] },
@@ -111,10 +109,8 @@
     "move_cost_mod": -1,
     "coverage": 50,
     "required_str": -1,
-    "connect_groups": "INDOORFLOOR",
     "flags": [ "TRANSPARENT", "NOITEM", "INDOORS", "SHORT", "PERMEABLE" ],
     "deconstruct": {
-      "skill": { "skill": "electronics", "min": 1, "max": 8 },
       "furn_set": "f_table",
       "items": [
         { "item": "processor", "count": [ 1, 2 ] },
@@ -281,15 +277,15 @@
   {
     "type": "furniture",
     "id": "f_anvil_crude",
-    "name": "small anvil",
+    "name": "crude anvil",
     "looks_like": "f_anvil",
-    "description": "A small, handcrafted anvil.",
+    "description": "A heavy anvil-shaped block of steel.  It's used for simple metalworking.",
     "symbol": "^",
     "color": "light_red",
     "move_cost_mod": -1,
     "coverage": 30,
     "required_str": 10,
-    "crafting_pseudo_item": "fake_anvil",
+    "crafting_pseudo_item": "fake_anvil_crude",
     "deconstruct": { "items": [ { "item": "anvil_crude", "count": 1 } ] },
     "flags": [ "TRANSPARENT", "NOITEM", "EASY_DECONSTRUCT" ],
     "bash": {
@@ -454,7 +450,6 @@
     "required_str": -1,
     "max_volume": "200 L",
     "flags": [ "CONTAINER", "FIRE_CONTAINER", "PLACE_ITEM" ],
-    "examine_action": { "type": "appliance_convert", "furn_set": "f_null", "item": "arc_furnace" },
     "deconstruct": { "items": [ { "item": "metal_tank", "count": [ 1, 4 ] }, { "item": "pipe", "count": [ 2, 4 ] } ] },
     "bash": {
       "str_min": 18,
@@ -602,7 +597,7 @@
     "id": "f_scutch_breaker",
     "name": "stationary scutcher",
     "looks_like": "f_rack",
-    "description": "A bulky, simple-hinged wooden device to break up the hard parts of fiber plants, with nail combs on the back for separating them out.",
+    "description": "A bulky, simple-hinged wooden device to break up the hard parts of fibre plants, with nail combs on the back for separating them out.",
     "symbol": "=",
     "bgcolor": "brown",
     "move_cost_mod": 2,
@@ -1334,66 +1329,6 @@
   },
   {
     "type": "furniture",
-    "id": "f_compost_empty",
-    "name": "anaerobic digester",
-    "looks_like": "f_standing_tank",
-    "description": "A 1000 L anaerobic digester.",
-    "symbol": "O",
-    "color": "brown",
-    "move_cost_mod": -1,
-    "required_str": -1,
-    "flags": [ "NOITEM", "SEALED", "TRANSPARENT", "FLAMMABLE", "CONTAINER", "DONT_REMOVE_ROTTEN" ],
-    "examine_action": "compost_empty",
-    "crafting_pseudo_item": "fake_digester_tank",
-    "deconstruct": {
-      "items": [
-        { "item": "brick", "count": [ 200, 400 ] },
-        { "item": "pipe", "count": [ 6, 8 ] },
-        { "item": "pipe_fittings", "count": [ 6, 8 ] },
-        { "item": "sheet_metal_small", "count": [ 10, 20 ] },
-        { "item": "hose", "count": 1 }
-      ]
-    },
-    "bash": {
-      "str_min": 3,
-      "str_max": 45,
-      "sound": "smash!",
-      "sound_fail": "whump.",
-      "items": [ { "item": "scrap", "count": [ 8, 32 ] } ]
-    }
-  },
-  {
-    "type": "furniture",
-    "id": "f_compost_full",
-    "name": "filled anaerobic digester",
-    "looks_like": "f_standing_tank",
-    "description": "A 1000L anaerobic digester.",
-    "symbol": "O",
-    "color": "brown_cyan",
-    "move_cost_mod": -1,
-    "required_str": -1,
-    "flags": [ "NOITEM", "SEALED", "TRANSPARENT", "FLAMMABLE", "CONTAINER", "DONT_REMOVE_ROTTEN" ],
-    "examine_action": "compost_full",
-    "crafting_pseudo_item": "fake_digester_tank",
-    "deconstruct": {
-      "items": [
-        { "item": "brick", "count": [ 200, 400 ] },
-        { "item": "pipe", "count": [ 6, 8 ] },
-        { "item": "pipe_fittings", "count": [ 6, 8 ] },
-        { "item": "sheet_metal_small", "count": [ 10, 20 ] },
-        { "item": "hose", "count": 1 }
-      ]
-    },
-    "bash": {
-      "str_min": 12,
-      "str_max": 50,
-      "sound": "smash!",
-      "sound_fail": "whump.",
-      "items": [ { "item": "scrap", "count": [ 8, 32 ] } ]
-    }
-  },
-  {
-    "type": "furniture",
     "id": "f_butcher_rack",
     "name": "butchering rack",
     "looks_like": "f_rack",
@@ -1618,39 +1553,8 @@
     "move_cost_mod": -1,
     "coverage": 90,
     "required_str": 30,
-    "flags": [ "SEALED", "PLACE_ITEM", "ALARMED", "CONTAINER", "BLOCKSDOOR", "MINEABLE" ],
+    "flags": [ "SEALED", "PLACE_ITEM", "ALARMED", "CONTAINER", "BLOCKSDOOR", "FLAMMABLE_HARD", "MINEABLE" ],
     "examine_action": "vending",
-    "bash": {
-      "str_min": 150,
-      "str_max": 520,
-      "sound": "glass breaking!",
-      "sound_fail": "whack!",
-      "furn_set": "f_vending_o",
-      "items": [
-        { "item": "glass_shard", "count": [ 8, 25 ] },
-        { "item": "sheet_metal", "count": [ 0, 2 ] },
-        { "item": "steel_chunk", "count": [ 1, 5 ] },
-        { "item": "money_one", "count": [ 0, 100 ] },
-        { "item": "money_two", "count": [ 0, 20 ] },
-        { "item": "money_five", "count": [ 0, 100 ] },
-        { "item": "money_ten", "count": [ 0, 100 ] },
-        { "item": "money_twenty", "count": [ 0, 100 ] },
-        { "item": "money_fifty", "count": [ 0, 50 ] }
-      ]
-    }
-  },
-  {
-    "type": "furniture",
-    "id": "f_vending_reinforced_off",
-    "name": "reinforced vending machine (off)",
-    "looks_like": "f_vending_reinforced",
-    "description": "A bit tougher to crack open than a regular vending machine.  Out of order, for lack of power.  That just makes it all the sweeter of a target, doesn't it?",
-    "symbol": "{",
-    "color": "light_red",
-    "move_cost_mod": -1,
-    "coverage": 90,
-    "required_str": 30,
-    "flags": [ "SEALED", "PLACE_ITEM", "CONTAINER", "BLOCKSDOOR", "MINEABLE" ],
     "bash": {
       "str_min": 150,
       "str_max": 520,
@@ -1681,31 +1585,8 @@
     "move_cost_mod": -1,
     "coverage": 90,
     "required_str": 12,
-    "flags": [ "SEALED", "PLACE_ITEM", "ALARMED", "CONTAINER", "BLOCKSDOOR", "MINEABLE", "TRANSPARENT" ],
+    "flags": [ "SEALED", "PLACE_ITEM", "ALARMED", "CONTAINER", "BLOCKSDOOR", "MINEABLE" ],
     "examine_action": "vending",
-    "bash": {
-      "str_min": 20,
-      "str_max": 40,
-      "sound": "glass breaking!",
-      "sound_fail": "whack!",
-      "sound_vol": 16,
-      "sound_fail_vol": 12,
-      "furn_set": "f_vending_o",
-      "items": [ { "item": "glass_shard", "count": [ 25, 50 ] } ]
-    }
-  },
-  {
-    "type": "furniture",
-    "id": "f_vending_c_off",
-    "name": "vending machine (off)",
-    "looks_like": "f_vending_c",
-    "symbol": "{",
-    "description": "An upright metal cabinet with a see-through door.  Out of order, for lack of power.",
-    "color": "light_cyan",
-    "move_cost_mod": -1,
-    "coverage": 90,
-    "required_str": 12,
-    "flags": [ "SEALED", "PLACE_ITEM", "CONTAINER", "BLOCKSDOOR", "MINEABLE", "TRANSPARENT" ],
     "bash": {
       "str_min": 20,
       "str_max": 40,
@@ -1760,7 +1641,7 @@
     "color": "white",
     "move_cost_mod": 1,
     "required_str": -1,
-    "flags": [ "CLIMBABLE", "TRANSPARENT", "SEEN_FROM_ABOVE", "EXAMINE_FROM_ABOVE", "DIFFICULT_Z", "ALLOW_ON_OPEN_AIR", "NOCOLLIDE" ],
+    "flags": [ "CLIMBABLE", "TRANSPARENT", "SEEN_FROM_ABOVE", "EXAMINE_FROM_ABOVE", "DIFFICULT_Z", "ALLOW_ON_OPEN_AIR" ],
     "examine_action": "deployed_furniture",
     "deployed_item": "grapnel",
     "bash": {
@@ -1781,7 +1662,7 @@
     "color": "light_green",
     "move_cost_mod": 1,
     "required_str": -1,
-    "flags": [ "CLIMBABLE", "TRANSPARENT", "SEEN_FROM_ABOVE", "ALLOW_ON_OPEN_AIR", "DIFFICULT_Z", "NOCOLLIDE" ],
+    "flags": [ "CLIMBABLE", "TRANSPARENT", "SEEN_FROM_ABOVE", "ALLOW_ON_OPEN_AIR", "DIFFICULT_Z" ],
     "examine_action": "deployed_furniture",
     "deployed_item": "vine_30",
     "bash": {
@@ -1802,7 +1683,7 @@
     "color": "white",
     "move_cost_mod": 1,
     "required_str": -1,
-    "flags": [ "CLIMBABLE", "TRANSPARENT", "SEEN_FROM_ABOVE", "ALLOW_ON_OPEN_AIR", "DIFFICULT_Z", "NOCOLLIDE" ],
+    "flags": [ "CLIMBABLE", "TRANSPARENT", "SEEN_FROM_ABOVE", "ALLOW_ON_OPEN_AIR", "DIFFICULT_Z" ],
     "examine_action": "deployed_furniture",
     "deployed_item": "rope_30",
     "bash": {
@@ -1822,7 +1703,7 @@
     "color": "yellow",
     "move_cost_mod": 0,
     "required_str": -1,
-    "flags": [ "TRANSPARENT", "EASY_DECONSTRUCT", "NOCOLLIDE" ],
+    "flags": [ "TRANSPARENT", "EASY_DECONSTRUCT" ],
     "examine_action": "deployed_furniture",
     "deployed_item": "rope_30",
     "deconstruct": { "items": [ { "item": "rope_30", "count": 1 } ] },
@@ -1838,7 +1719,7 @@
     "color": "white",
     "move_cost_mod": 0,
     "required_str": -1,
-    "flags": [ "TRANSPARENT", "NOCOLLIDE" ],
+    "flags": [ "TRANSPARENT" ],
     "deconstruct": {
       "items": [ { "item": "block_and_tackle", "count": 1 }, { "item": "rope_30", "count": 1 }, { "item": "spike", "count": 1 } ]
     },
@@ -1854,7 +1735,7 @@
     "color": "dark_gray",
     "move_cost_mod": 1,
     "required_str": -1,
-    "flags": [ "TRANSPARENT", "NOCOLLIDE" ],
+    "flags": [ "TRANSPARENT" ],
     "deconstruct": {
       "items": [ { "item": "chain", "count": 1 }, { "item": "block_and_tackle", "count": 1 }, { "item": "nuts_bolts", "charges": 2 } ]
     },

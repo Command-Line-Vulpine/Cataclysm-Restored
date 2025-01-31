@@ -8,7 +8,7 @@
 
 class JsonObject;
 class npc;
-struct const_dialogue;
+struct dialogue;
 
 constexpr char const *SHOPKEEPER_CONSUMPTION_RATES = "shopkeeper_consumption_rates";
 constexpr char const *SHOPKEEPER_BLACKLIST = "shopkeeper_blacklist";
@@ -17,9 +17,9 @@ struct icg_entry {
     itype_id itype;
     item_category_id category;
     item_group_id item_group;
-    translation message;
+    std::string message;
 
-    std::function<bool( const_dialogue const & )> condition;
+    std::function<bool( dialogue & )> condition;
 
     bool operator==( icg_entry const &rhs ) const;
     bool matches( item const &it, npc const &beta ) const;

@@ -4,6 +4,7 @@
 #include <iterator>
 #include <list>
 #include <memory>
+#include <new>
 #include <optional>
 #include <set>
 #include <tuple>
@@ -11,13 +12,14 @@
 #include <utility>
 
 #include "avatar.h"
+#include "calendar.h"
 #include "catacharset.h"
 #include "character.h"
 #include "clone_ptr.h"
 #include "debug.h"
 #include "flag.h"
 #include "game.h"
-#include "input_context.h"
+#include "input.h"
 #include "inventory.h"
 #include "item.h"
 #include "item_contents.h"
@@ -25,6 +27,7 @@
 #include "item_pocket.h"
 #include "itype.h"
 #include "iuse.h"
+#include "json.h"
 #include "make_static.h"
 #include "output.h"
 #include "pimpl.h"
@@ -34,7 +37,11 @@
 #include "type_id.h"
 #include "ui.h"
 
+class Character;
+
 static const std::string errstring( "ERROR" );
+
+struct tripoint;
 
 static item_action nullaction;
 
@@ -147,7 +154,7 @@ item_action_map item_action_generator::map_actions_to_items( Character &you,
 
             const use_function *func = actual_item->get_use( use );
             if( !( func && func->get_actor_ptr() &&
-                   func->get_actor_ptr()->can_use( you, *actual_item, you.pos_bub() ).success() ) ) {
+                   func->get_actor_ptr()->can_use( you, *actual_item, you.pos() ).success() ) ) {
                 continue;
             }
 
@@ -339,20 +346,27 @@ void game::item_action_menu( item_location loc )
     auto iter = menu_items.begin();
     std::advance( iter, iactions.size() );
     sort_menu( iter, menu_items.end() );
+    // Determine max lengths, to print the menu nicely.
+    std::pair<int, int> max_len;
+    for( const auto &elem : menu_items ) {
+        max_len.first = std::max( max_len.first, utf8_width( std::get<1>( elem ), true ) );
+        max_len.second = std::max( max_len.second, utf8_width( std::get<2>( elem ), true ) );
+    }
     // Fill the menu.
     for( const auto &elem : menu_items ) {
         std::string ss;
         ss += std::get<1>( elem );
+        ss += std::string( max_len.first - utf8_width( std::get<1>( elem ), true ), ' ' );
+        ss += std::string( 4, ' ' );
 
-        std::string ss_ctxt;
-        ss_ctxt += std::get<2>( elem );
+        ss += std::get<2>( elem );
+        ss += std::string( max_len.second - utf8_width( std::get<2>( elem ), true ), ' ' );
 
         const std::optional<input_event> bind = key_bound_to( ctxt, std::get<0>( elem ) );
         const bool enabled = assigned_action( std::get<0>( elem ) );
         const std::string desc =  std::get<3>( elem ) ;
 
         kmenu.addentry_desc( num, enabled, bind, ss, desc );
-        kmenu.entries[num].ctxt = ss_ctxt;
         num++;
     }
 
@@ -382,7 +396,7 @@ std::string use_function::get_type() const
     }
 }
 
-ret_val<void> iuse_actor::can_use( const Character &, const item &, const tripoint_bub_ms & ) const
+ret_val<void> iuse_actor::can_use( const Character &, const item &, const tripoint & ) const
 {
     return ret_val<void>::make_success();
 }

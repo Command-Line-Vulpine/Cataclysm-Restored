@@ -18,8 +18,8 @@
 #include "calendar.h"
 #include "color.h"
 #include "compatibility.h"
-#include "coordinates.h"
 #include "damage.h"
+#include "point.h"
 #include "requirements.h"
 #include "translations.h"
 #include "type_id.h"
@@ -92,7 +92,6 @@ enum vpart_bitflags : int {
     VPFLAG_WINDOW,
     VPFLAG_CURTAIN,
     VPFLAG_CARGO,
-    VPFLAG_CARGO_PASSABLE,
     VPFLAG_INTERNAL,
     VPFLAG_SOLAR_PANEL,
     VPFLAG_WATER_WHEEL,
@@ -111,11 +110,6 @@ enum vpart_bitflags : int {
     VPFLAG_CABLE_PORTS,
     VPFLAG_BATTERY,
     VPFLAG_POWER_TRANSFER,
-    VPFLAG_HUGE_OK,
-    VPFLAG_NEED_LEG,
-    VPFLAG_IGNORE_LEG_REQUIREMENT,
-    VPFLAG_INOPERABLE_SMALL,
-    VPFLAG_IGNORE_HEIGHT_REQUIREMENT,
 
     NUM_VPFLAGS
 };
@@ -162,12 +156,11 @@ struct vpslot_toolkit {
 
 struct vpslot_terrain_transform {
     std::set<std::string> pre_flags;
-    std::optional<ter_str_id> post_terrain;
-    std::optional<furn_str_id> post_furniture;
-    std::optional<field_type_str_id> post_field;
-    //Both only defined if(post_field)
-    int post_field_intensity;
-    time_duration post_field_age;
+    std::string post_terrain;
+    std::string post_furniture;
+    std::string post_field;
+    int post_field_intensity = 0;
+    time_duration post_field_age = 0_turns;
 };
 
 struct vp_control_req {
@@ -465,7 +458,7 @@ class vpart_info
 };
 
 struct vehicle_item_spawn {
-    point_rel_ms pos;
+    point pos;
     int chance = 0;
     /** Chance [0-100%] for items to spawn with ammo (plus default magazine if necessary) */
     int with_ammo = 0;
@@ -484,7 +477,7 @@ struct vehicle_item_spawn {
 struct vehicle_prototype {
     public:
         struct part_def {
-            point_rel_ms pos;
+            point pos;
             vpart_id part;
             std::string variant;
             int with_ammo = 0;
@@ -498,7 +491,7 @@ struct vehicle_prototype {
             zone_type_id zone_type;
             std::string name;
             std::string filter;
-            point_rel_ms pt;
+            point pt;
         };
 
         vproto_id id;
@@ -506,7 +499,6 @@ struct vehicle_prototype {
         std::vector<part_def> parts;
         std::vector<vehicle_item_spawn> item_spawns;
         std::vector<zone_def> zone_defs;
-        std::vector<std::pair<vproto_id, mod_id>> src;
 
         shared_ptr_fast<vehicle> blueprint;
 
@@ -514,6 +506,7 @@ struct vehicle_prototype {
         static void save_vehicle_as_prototype( const vehicle &veh, JsonOut &json );
     private:
         bool was_loaded = false; // used by generic_factory
+        std::vector<std::pair<vproto_id, mod_id>> src;
         friend class generic_factory<vehicle_prototype>;
         friend struct mod_tracker;
 };

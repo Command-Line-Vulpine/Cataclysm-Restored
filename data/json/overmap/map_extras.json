@@ -8,8 +8,7 @@
     "min_max_zlevel": [ 0, 0 ],
     "sym": "o",
     "color": "red",
-    "autonote": true,
-    "flags": [ "CLASSIC" ]
+    "autonote": true
   },
   {
     "id": "mx_collegekids",
@@ -21,7 +20,7 @@
     "sym": "c",
     "color": "light_red",
     "autonote": true,
-    "flags": [ "MAN_MADE", "CLASSIC" ]
+    "flags": [ "MAN_MADE" ]
   },
   {
     "id": "mx_drugdeal",
@@ -33,7 +32,7 @@
     "sym": "d",
     "color": "light_red",
     "autonote": true,
-    "flags": [ "MAN_MADE", "CLASSIC" ]
+    "flags": [ "MAN_MADE" ]
   },
   {
     "id": "mx_roadworks",
@@ -45,7 +44,7 @@
     "sym": "X",
     "color": "yellow",
     "autonote": true,
-    "flags": [ "MAN_MADE", "CLASSIC" ]
+    "flags": [ "MAN_MADE" ]
   },
   {
     "id": "mx_mayhem",
@@ -57,19 +56,7 @@
     "sym": "M",
     "color": "light_red",
     "autonote": true,
-    "flags": [ "MAN_MADE", "CLASSIC" ]
-  },
-  {
-    "id": "mx_mayhem_crash_start",
-    "type": "map_extra",
-    "name": { "str": "Car Crash" },
-    "description": "Car crash is here.",
-    "generator": { "generator_method": "update_mapgen", "generator_id": "mx_mayhem_crash_start" },
-    "min_max_zlevel": [ 0, 0 ],
-    "sym": "M",
-    "color": "light_red",
-    "autonote": true,
-    "flags": [ "MAN_MADE", "CLASSIC" ]
+    "flags": [ "MAN_MADE" ]
   },
   {
     "id": "mx_roadblock",
@@ -81,7 +68,7 @@
     "sym": "X",
     "color": "blue",
     "autonote": true,
-    "flags": [ "MAN_MADE", "CLASSIC" ]
+    "flags": [ "MAN_MADE" ]
   },
   {
     "id": "mx_roadblock_mil",
@@ -93,7 +80,7 @@
     "sym": "X",
     "color": "red",
     "autonote": true,
-    "flags": [ "MAN_MADE", "CLASSIC" ]
+    "flags": [ "MAN_MADE" ]
   },
   {
     "id": "mx_bandits_block",
@@ -106,7 +93,7 @@
     "color": "red",
     "//": "Can't be true because it doesn't always place anything",
     "autonote": false,
-    "flags": [ "MAN_MADE", "CLASSIC" ]
+    "flags": [ "MAN_MADE" ]
   },
   {
     "id": "mx_minefield",
@@ -118,7 +105,7 @@
     "sym": "M",
     "color": "red",
     "autonote": true,
-    "flags": [ "MAN_MADE", "CLASSIC" ]
+    "flags": [ "MAN_MADE" ]
   },
   {
     "id": "mx_supplydrop",
@@ -130,7 +117,7 @@
     "sym": "C",
     "color": "yellow",
     "autonote": true,
-    "flags": [ "MAN_MADE", "CLASSIC" ]
+    "flags": [ "MAN_MADE" ]
   },
   {
     "id": "mx_military",
@@ -142,7 +129,7 @@
     "sym": "m",
     "color": "light_red",
     "autonote": true,
-    "flags": [ "MAN_MADE", "CLASSIC" ]
+    "flags": [ "MAN_MADE" ]
   },
   {
     "id": "mx_helicopter",
@@ -154,7 +141,7 @@
     "sym": "X",
     "color": "light_blue",
     "autonote": true,
-    "flags": [ "MAN_MADE", "CLASSIC" ]
+    "flags": [ "MAN_MADE" ]
   },
   {
     "id": "mx_science",
@@ -270,7 +257,7 @@
     "sym": "c",
     "color": "light_red",
     "autonote": true,
-    "flags": [ "MAN_MADE", "CLASSIC" ]
+    "flags": [ "MAN_MADE" ]
   },
   {
     "id": "mx_spider",
@@ -296,7 +283,7 @@
     "type": "map_extra",
     "name": { "str": "Jabberwock" },
     "description": "Jabberwock is nearby.",
-    "generator": { "generator_method": "update_mapgen", "generator_id": "mx_jabberwock" },
+    "generator": { "generator_method": "map_extra_function", "generator_id": "mx_jabberwock" },
     "min_max_zlevel": [ -2, 5 ],
     "sym": "J",
     "color": "red",
@@ -311,8 +298,7 @@
     "min_max_zlevel": [ 0, 0 ],
     "sym": "F",
     "color": "light_green",
-    "autonote": true,
-    "flags": [ "CLASSIC" ]
+    "autonote": true
   },
   {
     "id": "mx_shrubbery",
@@ -323,8 +309,7 @@
     "min_max_zlevel": [ 0, 0 ],
     "sym": "s",
     "color": "light_green",
-    "autonote": true,
-    "flags": [ "CLASSIC" ]
+    "autonote": true
   },
   {
     "id": "mx_clearcut",
@@ -335,8 +320,7 @@
     "min_max_zlevel": [ 0, 0 ],
     "sym": ".",
     "color": "brown",
-    "autonote": true,
-    "flags": [ "CLASSIC" ]
+    "autonote": true
   },
   {
     "id": "mx_pond",
@@ -347,8 +331,7 @@
     "min_max_zlevel": [ 0, 0 ],
     "sym": "p",
     "color": "blue",
-    "autonote": true,
-    "flags": [ "CLASSIC", "WATER" ]
+    "autonote": true
   },
   {
     "id": "mx_pond_forest",
@@ -356,16 +339,14 @@
     "name": { "str": "basin" },
     "description": "Small basin is here.",
     "generator": { "generator_method": "update_mapgen", "generator_id": "mx_pond_forest" },
-    "min_max_zlevel": [ 0, 0 ],
-    "flags": [ "CLASSIC", "WATER" ]
+    "min_max_zlevel": [ 0, 0 ]
   },
   {
     "id": "mx_pond_forest_2",
     "type": "map_extra",
     "copy-from": "mx_pond_forest",
     "generator": { "generator_method": "update_mapgen", "generator_id": "mx_pond_forest_2" },
-    "min_max_zlevel": [ 0, 0 ],
-    "flags": [ "CLASSIC", "WATER" ]
+    "min_max_zlevel": [ 0, 0 ]
   },
   {
     "id": "mx_pond_swamp",
@@ -373,16 +354,14 @@
     "name": { "str": "bog" },
     "description": "Small bog is here.",
     "generator": { "generator_method": "update_mapgen", "generator_id": "mx_pond_swamp" },
-    "min_max_zlevel": [ 0, 0 ],
-    "flags": [ "CLASSIC", "WATER" ]
+    "min_max_zlevel": [ 0, 0 ]
   },
   {
     "id": "mx_pond_swamp_2",
     "type": "map_extra",
     "copy-from": "mx_pond_swamp",
     "generator": { "generator_method": "update_mapgen", "generator_id": "mx_pond_swamp_2" },
-    "min_max_zlevel": [ 0, 0 ],
-    "flags": [ "CLASSIC", "WATER" ]
+    "min_max_zlevel": [ 0, 0 ]
   },
   {
     "id": "mx_trees",
@@ -390,32 +369,28 @@
     "name": { "str": "Stand of trees" },
     "description": "A copse of trees.",
     "generator": { "generator_method": "update_mapgen", "generator_id": "mx_trees_map" },
-    "min_max_zlevel": [ 0, 0 ],
-    "flags": [ "CLASSIC" ]
+    "min_max_zlevel": [ 0, 0 ]
   },
   {
     "id": "mx_trees2",
     "type": "map_extra",
     "copy-from": "mx_trees",
     "generator": { "generator_method": "update_mapgen", "generator_id": "mx_trees2_map" },
-    "min_max_zlevel": [ 0, 0 ],
-    "flags": [ "CLASSIC" ]
+    "min_max_zlevel": [ 0, 0 ]
   },
   {
     "id": "mx_blackberry_patch",
     "type": "map_extra",
     "name": { "str": "Blackberry patch" },
     "description": "Blackberry bushes have spread here.",
-    "generator": { "generator_method": "update_mapgen", "generator_id": "mx_blackberry_patch" },
-    "flags": [ "CLASSIC" ]
+    "generator": { "generator_method": "update_mapgen", "generator_id": "mx_blackberry_patch" }
   },
   {
     "id": "mx_knotweed_patch",
     "type": "map_extra",
     "name": { "str": "Japanese knotweed patch" },
     "description": "Japanese knotweed shrubs have spread here.",
-    "generator": { "generator_method": "update_mapgen", "generator_id": "mx_knotweed_patch" },
-    "flags": [ "CLASSIC" ]
+    "generator": { "generator_method": "update_mapgen", "generator_id": "mx_knotweed_patch" }
   },
   {
     "id": "mx_grass",
@@ -423,16 +398,14 @@
     "name": { "str": "Tall grass" },
     "description": "A meadow of tall grass.",
     "generator": { "generator_method": "update_mapgen", "generator_id": "mx_grass_map" },
-    "min_max_zlevel": [ 0, 0 ],
-    "flags": [ "CLASSIC" ]
+    "min_max_zlevel": [ 0, 0 ]
   },
   {
     "id": "mx_grass2",
     "type": "map_extra",
     "copy-from": "mx_grass",
     "generator": { "generator_method": "update_mapgen", "generator_id": "mx_grass2_map" },
-    "min_max_zlevel": [ 0, 0 ],
-    "flags": [ "CLASSIC" ]
+    "min_max_zlevel": [ 0, 0 ]
   },
   {
     "id": "mx_fallen_shed",
@@ -444,19 +417,18 @@
     "sym": "^",
     "color": "dark_gray",
     "autonote": true,
-    "flags": [ "MAN_MADE", "CLASSIC" ]
+    "flags": [ "MAN_MADE" ]
   },
   {
     "id": "mx_clay_deposit",
     "type": "map_extra",
     "name": { "str": "Clay Deposit" },
     "description": "Small clay deposit is here.",
-    "generator": { "generator_method": "update_mapgen", "generator_id": "mx_clay_deposit" },
+    "generator": { "generator_method": "map_extra_function", "generator_id": "mx_clay_deposit" },
     "min_max_zlevel": [ 0, 0 ],
     "sym": "c",
     "color": "brown",
-    "autonote": true,
-    "flags": [ "CLASSIC" ]
+    "autonote": true
   },
   {
     "id": "mx_sand_patch",
@@ -467,68 +439,51 @@
     "min_max_zlevel": [ 0, 0 ],
     "sym": ".",
     "color": "yellow",
-    "autonote": true,
-    "flags": [ "CLASSIC" ]
+    "autonote": true
   },
   {
     "id": "mx_dead_vegetation",
     "type": "map_extra",
     "name": { "str": "Dead Vegetation" },
     "description": "Dead vegetation is here.",
-    "generator": { "generator_method": "update_mapgen", "generator_id": "mx_dead_vegetation" },
+    "generator": { "generator_method": "map_extra_function", "generator_id": "mx_dead_vegetation" },
     "min_max_zlevel": [ 0, 0 ],
     "sym": ".",
     "color": "brown",
-    "autonote": true,
-    "flags": [ "CLASSIC" ]
+    "autonote": true
   },
   {
     "id": "mx_point_dead_vegetation",
     "type": "map_extra",
     "name": { "str": "Dead Vegetation (Point)" },
     "description": "Dead vegetation is here.",
-    "generator": { "generator_method": "update_mapgen", "generator_id": "mx_point_dead_vegetation" },
+    "generator": { "generator_method": "map_extra_function", "generator_id": "mx_point_dead_vegetation" },
     "min_max_zlevel": [ 0, 0 ],
     "sym": ".",
     "color": "brown",
-    "autonote": true,
-    "flags": [ "CLASSIC" ]
+    "autonote": true
   },
   {
     "id": "mx_burned_ground",
     "type": "map_extra",
     "name": { "str": "Burned Ground" },
     "description": "Burned ground is here.",
-    "generator": { "generator_method": "update_mapgen", "generator_id": "mx_burned_ground" },
+    "generator": { "generator_method": "map_extra_function", "generator_id": "mx_burned_ground" },
     "min_max_zlevel": [ 0, 0 ],
     "sym": ".",
     "color": "light_gray",
-    "autonote": true,
-    "flags": [ "CLASSIC" ]
+    "autonote": true
   },
   {
     "id": "mx_point_burned_ground",
     "type": "map_extra",
     "name": { "str": "Burned Ground (Point)" },
     "description": "Burned ground is here.",
-    "generator": { "generator_method": "update_mapgen", "generator_id": "mx_point_burned_ground" },
+    "generator": { "generator_method": "map_extra_function", "generator_id": "mx_point_burned_ground" },
     "min_max_zlevel": [ 0, 5 ],
     "sym": ".",
     "color": "light_gray",
-    "autonote": true,
-    "flags": [ "CLASSIC" ]
-  },
-  {
-    "id": "mx_kelp_patch",
-    "type": "map_extra",
-    "name": { "str": "Kelp Patch" },
-    "description": "A patch of kelp.",
-    "generator": { "generator_method": "update_mapgen", "generator_id": "mx_kelp_patch" },
-    "min_max_zlevel": [ -9, -9 ],
-    "sym": "~",
-    "color": "green",
-    "autonote": true,
-    "flags": [ "CLASSIC" ]
+    "autonote": true
   },
   {
     "id": "mx_marloss_pilgrimage",
@@ -551,7 +506,7 @@
     "sym": "c",
     "color": "dark_gray",
     "autonote": true,
-    "flags": [ "MAN_MADE", "CLASSIC" ]
+    "flags": [ "MAN_MADE" ]
   },
   {
     "id": "mx_looters",
@@ -560,7 +515,7 @@
     "description": "Some looters gathering everything not nailed down.",
     "generator": { "generator_method": "map_extra_function", "generator_id": "mx_looters" },
     "min_max_zlevel": [ -2, 0 ],
-    "flags": [ "MAN_MADE", "CLASSIC" ]
+    "flags": [ "MAN_MADE" ]
   },
   {
     "id": "mx_corpses",
@@ -569,7 +524,7 @@
     "description": "Some unfortunates from the billions lost in the Cataclysm.",
     "generator": { "generator_method": "map_extra_function", "generator_id": "mx_corpses" },
     "min_max_zlevel": [ -5, 0 ],
-    "flags": [ "MAN_MADE", "CLASSIC" ]
+    "flags": [ "MAN_MADE" ]
   },
   {
     "id": "mx_nest_wasp",
@@ -600,7 +555,7 @@
     "description": "A prison bus.",
     "generator": { "generator_method": "update_mapgen", "generator_id": "mx_prison_bus" },
     "min_max_zlevel": [ 0, 0 ],
-    "flags": [ "MAN_MADE", "CLASSIC" ]
+    "flags": [ "MAN_MADE" ]
   },
   {
     "id": "mx_mass_grave",
@@ -612,7 +567,7 @@
     "sym": "X",
     "color": "yellow",
     "autonote": true,
-    "flags": [ "MAN_MADE", "CLASSIC" ]
+    "flags": [ "MAN_MADE" ]
   },
   {
     "id": "mx_grave",
@@ -621,19 +576,19 @@
     "description": "A grave.",
     "generator": { "generator_method": "update_mapgen", "generator_id": "mx_grave" },
     "min_max_zlevel": [ 0, 0 ],
-    "flags": [ "MAN_MADE", "CLASSIC" ]
+    "flags": [ "MAN_MADE" ]
   },
   {
     "id": "mx_city_trap",
     "type": "map_extra",
     "name": { "str": "Zombie Trap" },
     "description": "Someone put up a trap against zombies here.",
-    "generator": { "generator_method": "update_mapgen", "generator_id": "mx_city_trap" },
+    "generator": { "generator_method": "map_extra_function", "generator_id": "mx_city_trap" },
     "sym": "I",
     "color": "green",
     "autonote": true,
     "min_max_zlevel": [ 0, 0 ],
-    "flags": [ "MAN_MADE", "CLASSIC" ]
+    "flags": [ "MAN_MADE" ]
   },
   {
     "id": "mx_laststand",
@@ -645,7 +600,7 @@
     "color": "green",
     "autonote": true,
     "min_max_zlevel": [ 0, 0 ],
-    "flags": [ "MAN_MADE", "CLASSIC" ]
+    "flags": [ "MAN_MADE" ]
   },
   {
     "id": "mx_fungal_zone",
@@ -653,11 +608,7 @@
     "name": { "str": "Fungal infestation" },
     "description": "Fungal-infested location.",
     "generator": { "generator_method": "map_extra_function", "generator_id": "mx_fungal_zone" },
-    "sym": "F",
-    "color": "yellow",
-    "autonote": true,
-    "min_max_zlevel": [ 0, 0 ],
-    "flags": [ "FUNGAL" ]
+    "min_max_zlevel": [ 0, 0 ]
   },
   {
     "id": "mx_reed",
@@ -665,8 +616,7 @@
     "name": { "str": "Reed" },
     "description": "Water vegetation.",
     "generator": { "generator_method": "map_extra_function", "generator_id": "mx_reed" },
-    "min_max_zlevel": [ 0, 0 ],
-    "flags": [ "CLASSIC" ]
+    "min_max_zlevel": [ 0, 0 ]
   },
   {
     "id": "mx_riverside_boat",
@@ -675,7 +625,7 @@
     "description": "A small boat.",
     "generator": { "generator_method": "update_mapgen", "generator_id": "mx_riverside_boat" },
     "min_max_zlevel": [ 0, 0 ],
-    "flags": [ "MAN_MADE", "CLASSIC" ]
+    "flags": [ "MAN_MADE" ]
   },
   {
     "id": "mx_toxic_waste",
@@ -686,7 +636,7 @@
     "sym": "D",
     "color": "magenta",
     "autonote": true,
-    "flags": [ "MAN_MADE", "CLASSIC" ]
+    "flags": [ "MAN_MADE" ]
   },
   {
     "id": "mx_prison_van",
@@ -695,7 +645,7 @@
     "description": "A violent escape.",
     "generator": { "generator_method": "update_mapgen", "generator_id": "mx_prison_van" },
     "min_max_zlevel": [ 0, 0 ],
-    "flags": [ "MAN_MADE", "CLASSIC" ]
+    "flags": [ "MAN_MADE" ]
   },
   {
     "id": "mx_beehive_natural",
@@ -704,27 +654,5 @@
     "description": "An ordinary beehive.",
     "generator": { "generator_method": "update_mapgen", "generator_id": "mx_beehive_natural" },
     "min_max_zlevel": [ 0, 0 ]
-  },
-  {
-    "id": "mx_worm_sign",
-    "type": "map_extra",
-    "name": { "str": "Upturned Earth" },
-    "description": "There is a lot of upturned earth here.",
-    "generator": { "generator_method": "update_mapgen", "generator_id": "mx_worm_sign" },
-    "min_max_zlevel": [ 0, 0 ],
-    "sym": "o",
-    "color": "red",
-    "autonote": true
-  },
-  {
-    "id": "mx_sandy_beach",
-    "type": "map_extra",
-    "name": { "str": "Sandy beach" },
-    "description": "A sandy beach.",
-    "generator": { "generator_method": "map_extra_function", "generator_id": "mx_sandy_beach" },
-    "min_max_zlevel": [ 0, 0 ],
-    "sym": "~",
-    "color": "yellow",
-    "flags": [ "CLASSIC" ]
   }
 ]

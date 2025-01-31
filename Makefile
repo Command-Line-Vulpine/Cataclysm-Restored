@@ -146,7 +146,7 @@ export CCACHE_COMMENTS=1
 # Explicitly let 'char' to be 'signed char' to fix #18776
 OTHERS += -fsigned-char
 
-VERSION = 0.I
+VERSION = 0.H
 
 TARGET_NAME = cataclysm
 TILES_TARGET_NAME = $(TARGET_NAME)-tiles
@@ -167,8 +167,6 @@ CHKJSON_BIN = $(BUILD_PREFIX)chkjson
 BINDIST_DIR = $(BUILD_PREFIX)bindist
 BUILD_DIR = $(CURDIR)
 SRC_DIR = src
-IMGUI_DIR = $(SRC_DIR)/third-party/imgui
-IMTUI_DIR = $(SRC_DIR)/third-party/imtui
 LOCALIZE = 1
 ASTYLE_BINARY = astyle
 
@@ -597,9 +595,8 @@ ifeq ($(NATIVE), osx)
     endif
   endif
   ifeq ($(LOCALIZE), 1)
-    ifneq ($(TILES), 1)
-      CXXFLAGS += -D_XOPEN_SOURCE_EXTENDED
-      ifeq ($(MACPORTS), 1)
+    ifeq ($(MACPORTS), 1)
+      ifneq ($(TILES), 1)
         CXXFLAGS += -I$(shell ncursesw6-config --includedir)
         LDFLAGS += -L$(shell ncursesw6-config --libdir)
       endif
@@ -638,10 +635,6 @@ endif
 ifeq ($(NATIVE), emscripten)
   CXX=emcc
   LD=emcc
-  ifeq ($(CCACHE), 1)
-    CXX=$(CCACHEBIN) emcc
-    LD=$(CCACHEBIN) emcc
-  endif
 
   # Flags that are common across compile and link phases.
   EMCC_COMMON_FLAGS = -sUSE_SDL=2 -sUSE_SDL_IMAGE=2 -sUSE_SDL_TTF=2 -sSDL2_IMAGE_FORMATS=['png'] -fexceptions
@@ -717,6 +710,33 @@ endif
 
 PKG_CONFIG = $(CROSS)pkg-config
 
+ifeq ($(SOUND), 1)
+  ifneq ($(TILES),1)
+    $(error "SOUND=1 only works with TILES=1")
+  endif
+  ifeq ($(NATIVE),osx)
+    ifndef FRAMEWORK # libsdl build
+      ifeq ($(MACPORTS), 1)
+        LDFLAGS += -lSDL2_mixer -lvorbisfile -lvorbis -logg
+      else # homebrew
+        CXXFLAGS += $(shell $(PKG_CONFIG) --cflags SDL2_mixer)
+        LDFLAGS += $(shell $(PKG_CONFIG) --libs SDL2_mixer)
+        LDFLAGS += -lvorbisfile -lvorbis -logg
+      endif
+    endif
+  else # not osx
+    CXXFLAGS += $(shell $(PKG_CONFIG) --cflags SDL2_mixer)
+    LDFLAGS += $(shell $(PKG_CONFIG) --libs SDL2_mixer)
+    LDFLAGS += -lpthread
+  endif
+
+  ifeq ($(MSYS2),1)
+    LDFLAGS += -lmpg123 -lshlwapi -lvorbisfile -lvorbis -logg -lflac
+  endif
+
+  CXXFLAGS += -DSDL_SOUND
+endif
+
 ifeq ($(SDL), 1)
   TILES = 1
 endif
@@ -733,7 +753,7 @@ ifeq ($(TILES), 1)
 			ifeq ($(SOUND), 1)
 				OSX_INC += -I$(FRAMEWORKSDIR)/SDL2_mixer.framework/Headers
 			endif
-      LDFLAGS += -F$(FRAMEWORKSDIR) -rpath $(FRAMEWORKSDIR) \
+      LDFLAGS += -F$(FRAMEWORKSDIR) \
 		 -framework SDL2 -framework SDL2_image -framework SDL2_ttf -framework Cocoa
 		 ifeq ($(SOUND), 1)
 		 	LDFLAGS += -framework SDL2_mixer
@@ -750,12 +770,8 @@ ifeq ($(TILES), 1)
         LDFLAGS += -lSDL2_mixer
       endif
     endif
-    CXXFLAGS += $(shell $(PKG_CONFIG) --cflags freetype2)
-    LDFLAGS += $(shell $(PKG_CONFIG) --libs freetype2)
   else ifneq ($(NATIVE),emscripten)
-    CXXFLAGS += $(shell $(PKG_CONFIG) --cflags sdl2)
-    CXXFLAGS += $(shell $(PKG_CONFIG) --cflags SDL2_image SDL2_ttf)
-    CXXFLAGS += $(shell $(PKG_CONFIG) --cflags freetype2)
+    CXXFLAGS += $(shell $(PKG_CONFIG) --cflags sdl2 SDL2_image SDL2_ttf)
 
     ifeq ($(STATIC), 1)
       LDFLAGS += $(shell $(PKG_CONFIG) sdl2 --static --libs)
@@ -764,7 +780,10 @@ ifeq ($(TILES), 1)
     endif
 
     LDFLAGS += -lSDL2_ttf -lSDL2_image
-    LDFLAGS += $(shell $(PKG_CONFIG) --libs freetype2)
+
+    # We don't use SDL_main -- we have proper main()/WinMain()
+    CXXFLAGS := $(filter-out -Dmain=SDL_main,$(CXXFLAGS))
+    LDFLAGS := $(filter-out -lSDL2main,$(LDFLAGS))
   endif
 
   DEFINES += -DTILES
@@ -829,41 +848,7 @@ else
       endif # OSXCROSS
     endif # HAVE_NCURSES5CONFIG
   endif # HAVE_PKGCONFIG
-  ifeq ($(MSYS),1)
-    CXXFLAGS += -DNCURSES_INTERNALS
-  endif
 endif # TILES
-
-ifeq ($(SOUND), 1)
-  ifneq ($(TILES),1)
-    $(error "SOUND=1 only works with TILES=1")
-  endif
-  ifeq ($(NATIVE),osx)
-    ifndef FRAMEWORK # libsdl build
-      ifeq ($(MACPORTS), 1)
-        LDFLAGS += -lSDL2_mixer -lvorbisfile -lvorbis -logg
-      else # homebrew
-        CXXFLAGS += $(shell $(PKG_CONFIG) --cflags SDL2_mixer)
-        LDFLAGS += $(shell $(PKG_CONFIG) --libs SDL2_mixer)
-        LDFLAGS += -lvorbisfile -lvorbis -logg
-      endif
-    endif
-  else # not osx
-    CXXFLAGS += $(shell $(PKG_CONFIG) --cflags SDL2_mixer)
-    LDFLAGS += $(shell $(PKG_CONFIG) --libs SDL2_mixer)
-    LDFLAGS += -lpthread
-  endif
-
-  ifeq ($(MSYS2),1)
-    LDFLAGS += -lmpg123 -lshlwapi -lvorbisfile -lvorbis -logg -lflac
-  endif
-
-  CXXFLAGS += -DSDL_SOUND
-endif
-
-# We don't use SDL_main -- we have proper main()/WinMain()
-CXXFLAGS := $(filter-out -Dmain=SDL_main,$(CXXFLAGS))
-LDFLAGS := $(filter-out -lSDL2main,$(LDFLAGS))
 
 ifeq ($(BSD), 1)
   # BSDs have backtrace() and friends in a separate library
@@ -891,9 +876,6 @@ ifeq ($(BACKTRACE),1)
   ifeq ($(LIBBACKTRACE),1)
       DEFINES += -DLIBBACKTRACE
       LDFLAGS += -lbacktrace
-      ifneq ("$(wildcard LICENSE-libbacktrace.txt)","")
-        BINDIST_EXTRAS += LICENSE-libbacktrace.txt
-      endif
   endif
 endif
 
@@ -904,11 +886,6 @@ endif
 
 ifeq ($(TARGETSYSTEM),LINUX)
   BINDIST_EXTRAS += cataclysm-launcher
-  ifneq ("$(wildcard LICENSE-SDL.txt)","")
-    SDL2_solib = $(shell ldd $(TARGET) | grep libSDL2-2\.0 | cut -d ' ' -f 3)
-    INSTALL_EXTRAS += $(SDL2_solib)
-    BINDIST_EXTRAS += LICENSE-SDL.txt
-  endif
   ifeq ($(BACKTRACE),1)
     # -rdynamic needed for symbols in backtraces
     LDFLAGS += -rdynamic
@@ -947,7 +924,6 @@ CLANG_TIDY_PLUGIN_HEADERS := \
   $(wildcard tools/clang-tidy-plugin/*.h tools/clang-tidy-plugin/*/*.h)
 # Using sort here because it has the side-effect of deduplicating the list
 ASTYLE_SOURCES := $(sort \
-  src/cldr/imgui-glyph-ranges.cpp \
   $(SOURCES) \
   $(HEADERS) \
   $(OBJECT_CREATOR_SOURCES) \
@@ -962,17 +938,6 @@ ASTYLE_SOURCES := $(sort \
 
 # Third party sources should not be astyle'd
 SOURCES += $(THIRD_PARTY_SOURCES)
-
-IMGUI_SOURCES = $(IMGUI_DIR)/imgui.cpp $(IMGUI_DIR)/imgui_demo.cpp $(IMGUI_DIR)/imgui_draw.cpp $(IMGUI_DIR)/imgui_stdlib.cpp $(IMGUI_DIR)/imgui_tables.cpp $(IMGUI_DIR)/imgui_widgets.cpp
-ifeq ($(SDL), 1)
-	IMGUI_SOURCES += $(IMGUI_DIR)/imgui_freetype.cpp
-	IMGUI_SOURCES += $(IMGUI_DIR)/imgui_impl_sdl2.cpp $(IMGUI_DIR)/imgui_impl_sdlrenderer2.cpp
-else
-	IMGUI_SOURCES += $(IMTUI_DIR)/imtui-impl-ncurses.cpp $(IMTUI_DIR)/imtui-impl-text.cpp
-	DEFINES += -DIMTUI
-endif
-
-SOURCES += $(IMGUI_SOURCES)
 
 _OBJS = $(SOURCES:$(SRC_DIR)/%.cpp=%.o)
 ifeq ($(TARGETSYSTEM),WINDOWS)
@@ -1066,18 +1031,10 @@ $(BUILD_PREFIX)$(TARGET_NAME).a: $(OBJS)
 .PHONY: version prefix
 version:
 	@( VERSION_STRING=$(VERSION) ; \
-        [ -e ".git" ] && \
-          GITVERSION=$$( git describe --tags --always --match "[0-9A-Z]*.[0-9A-Z]*" --match "cdda-experimental-*" --exact-match 2>/dev/null || true ) && \
-          GITSHA=$$( git rev-parse --short HEAD ) && \
-          DIRTYFLAG=$$( [ -z "$$(git diff --numstat | grep -v lang/po/)" ] || echo "-dirty") && \
-          VERSION_STRING="$$GITVERSION $$GITSHA$$DIRTYFLAG" && \
-          VERSION_STRING="$${VERSION_STRING## }" ; \
-        [ -e "$(SRC_DIR)/version.h" ] && \
-          OLDVERSION=$$(grep VERSION $(SRC_DIR)/version.h | cut -d '"' -f2) ; \
-        if [ "x$$VERSION_STRING" != "x$$OLDVERSION" ]; then \
-          printf '// NOLINT(cata-header-guard)\n#define VERSION "%s"\n' "$$VERSION_STRING" | tee $(SRC_DIR)/version.h ; \
-        fi \
-     )
+            [ -e ".git" ] && GITVERSION=$$( git describe --tags --always --match "[0-9A-Z]*.[0-9A-Z]*" ) && DIRTYFLAG=$$( [ -z "$$(git diff --numstat | grep -v lang/po/)" ] || echo "-dirty") && VERSION_STRING=$$GITVERSION$$DIRTYFLAG ; \
+            [ -e "$(SRC_DIR)/version.h" ] && OLDVERSION=$$(grep VERSION $(SRC_DIR)/version.h|cut -d '"' -f2) ; \
+            if [ "x$$VERSION_STRING" != "x$$OLDVERSION" ]; then printf '// NOLINT(cata-header-guard)\n#define VERSION "%s"\n' "$$VERSION_STRING" | tee $(SRC_DIR)/version.h ; fi \
+         )
 
 prefix:
 	@( PREFIX_STRING=$(PREFIX) ; \
@@ -1095,12 +1052,6 @@ $(ODIR)/%.inc: $(SRC_DIR)/%.cpp
 .PHONY: includes
 includes: $(OBJS:.o=.inc)
 	+make -C tests includes
-
-$(ODIR)/third-party/imgui/%.o: $(IMGUI_DIR)/%.cpp
-	$(CXX) $(CPPFLAGS) $(DEFINES) $(CXXFLAGS) -w -MMD -MP -c $< -o $@
-
-$(ODIR)/third-party/imtui/%.o: $(IMTUI_DIR)/%.cpp
-	$(CXX) $(CPPFLAGS) $(DEFINES) $(CXXFLAGS) -w -MMD -MP -c $< -o $@
 
 $(ODIR)/%.o: $(SRC_DIR)/%.cpp $(PCH_P)
 	$(CXX) $(CPPFLAGS) $(DEFINES) $(CXXFLAGS) -MMD -MP $(PCHFLAGS) -c $< -o $@
@@ -1122,7 +1073,7 @@ $(TEST_MO): data/mods/TEST_DATA/lang/po/ru.po
 
 MO_DEPS := \
   $(wildcard lang/*.sh lang/*.py src/*.cpp src/*.h) \
-  $(shell find data/raw data/json data/mods data/core -type f -name '*.json')
+  $(shell find data/raw data/json data/mods data/core data/help -type f -name '*.json')
 
 lang/mo_built.stamp: $(MO_DEPS)
 	$(MAKE) -C lang
@@ -1174,6 +1125,7 @@ install: version $(TARGET)
 	cp -R --no-preserve=ownership data/motd $(DATA_PREFIX)
 	cp -R --no-preserve=ownership data/credits $(DATA_PREFIX)
 	cp -R --no-preserve=ownership data/title $(DATA_PREFIX)
+	cp -R --no-preserve=ownership data/help $(DATA_PREFIX)
 ifeq ($(TILES), 1)
 	cp -R --no-preserve=ownership gfx $(DATA_PREFIX)
 	install -Dm755 -t $(SHARE_DIR)/applications/ data/xdg/org.cataclysmdda.CataclysmDDA.desktop
@@ -1208,6 +1160,7 @@ install: version $(TARGET)
 	cp -R --no-preserve=ownership data/motd $(DATA_PREFIX)
 	cp -R --no-preserve=ownership data/credits $(DATA_PREFIX)
 	cp -R --no-preserve=ownership data/title $(DATA_PREFIX)
+	cp -R --no-preserve=ownership data/help $(DATA_PREFIX)
 ifeq ($(TILES), 1)
 	cp -R --no-preserve=ownership gfx $(DATA_PREFIX)
 	install -Dm755 -t $(SHARE_DIR)/applications/ data/xdg/org.cataclysmdda.CataclysmDDA.desktop
@@ -1266,6 +1219,7 @@ endif
 	cp -R data/motd $(APPDATADIR)
 	cp -R data/credits $(APPDATADIR)
 	cp -R data/title $(APPDATADIR)
+	cp -R data/help $(APPDATADIR)
 ifdef LANGUAGES
 	$(MAKE) -C lang
 	mkdir -p $(APPRESOURCESDIR)/lang/mo/
@@ -1285,7 +1239,11 @@ ifeq ($(SOUND), 1)
 endif  # ifeq ($(SOUND), 1)
 endif  # ifdef FRAMEWORK
 endif  # ifdef TILES
-	dylibbundler -of -b -x $(APPRESOURCESDIR)/$(APPTARGET) -d $(APPRESOURCESDIR)/ -p @executable_path/
+
+ifndef FRAMEWORK
+	python3 ./tools/copy_mac_libs.py $(APPRESOURCESDIR)/$(APPTARGET)
+endif  # ifndef FRAMEWORK
+
 
 dmgdistclean:
 	rm -rf Cataclysm
@@ -1312,7 +1270,6 @@ endif  # ifeq ($(NATIVE), osx)
 $(BINDIST): distclean version $(TARGET) $(L10N) $(BINDIST_EXTRAS) $(BINDIST_LOCALE)
 	mkdir -p $(BINDIST_DIR)
 	cp -R $(TARGET) $(BINDIST_EXTRAS) $(BINDIST_DIR)
-	$(foreach lib,$(INSTALL_EXTRAS), install --strip $(lib) $(BINDIST_DIR))
 ifdef LANGUAGES
 	cp -R --parents lang/mo $(BINDIST_DIR)
 endif
@@ -1326,7 +1283,7 @@ ctags: $(ASTYLE_SOURCES)
 
 etags: $(ASTYLE_SOURCES)
 	etags $^
-	find data -name "*.json" -print0 | xargs -0 -L 50 etags --append
+	./tools/json_tools/cddatags.py
 
 ifneq ($(IS_WINDOWS_HOST),1)
 # Parallel astyle for posix hosts where fork and filesystem are cheap.

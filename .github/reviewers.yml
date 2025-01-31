@@ -2,8 +2,6 @@ files:
   'data/mods/Aftershock/**':
     - Maleclypse
     - John-Candlebury
-  'data/mods/Backrooms/**':
-    - onura46
   'data/mods/DinoMod/**':
     - LyleSY
   'data/mods/BombasticPerks/**':
@@ -16,6 +14,7 @@ files:
     - tenmillimaster
   'data/mods/Magiclysm/**':
     - KorGgenT
+    - GuardianDll
   'data/mods/My_Sweet_Cataclysm/**':
     - Fris0uman
   'data/mods/ruralbiome/**':
@@ -26,6 +25,7 @@ files:
     - KorGgenT
   'data/mods/Xedra_Evolved/**':
     - Maleclypse
+    - GuardianDll
   'data/mods/MindOverMatter/**':
     - Standing-Storm
   'data/mods/innawood/**':
@@ -38,10 +38,6 @@ files:
     - Termineitor244
   'data/mods/Limb_WIP/**':
     - Venera3
-  'tools/json_tools/gun_variant_validator.py':
-    - anothersimulacrum
-  'data/changelog.txt':
-    - Procyonae
 
   '**/.clang-tidy':
     - jbytheway

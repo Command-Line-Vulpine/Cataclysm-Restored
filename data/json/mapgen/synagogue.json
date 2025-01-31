@@ -33,14 +33,13 @@
         "  s^^|||w||++||w|||^^   ",
         "  sssssssssss    !      "
       ],
-      "palettes": [ "parametrized_linoleum_palette" ],
       "terrain": {
         " ": "t_region_groundcover_urban",
         "+": "t_door_c",
         ".": "t_floor",
-        "S": { "param": "linoleum_color", "fallback": "t_linoleum_gray" },
-        "T": { "param": "linoleum_color", "fallback": "t_linoleum_gray" },
-        "'": { "param": "linoleum_color", "fallback": "t_linoleum_gray" },
+        "S": "t_linoleum_gray",
+        "T": "t_linoleum_gray",
+        "'": "t_linoleum_gray",
         "^": "t_region_shrub_decorative",
         "s": "t_sidewalk",
         "w": "t_window",
@@ -100,15 +99,15 @@
         "    -..............-    ",
         "   --..............--   ",
         "   -................-   ",
-        "   -....|O|OO|O|....-   ",
-        "   -....OooooooO....-   ",
+        "   -....|w|ww|w|....-   ",
+        "   -....woooooow....-   ",
         "   -....|oooooo|....-   ",
-        "   -....OooooooO....-   ",
+        "   -....woooooow....-   ",
         "   -....|oooooo|....-   ",
-        "   -....OooooooO....-   ",
+        "   -....woooooow....-   ",
         "   -....|oooooo|....-   ",
-        "   -....OooooooO....-   ",
-        "   -....|O|OO|O|....-   ",
+        "   -....woooooow....-   ",
+        "   -....|w|ww|w|....-   ",
         "   -................-   ",
         "   --..............--   ",
         "    -..............-    ",
@@ -118,7 +117,7 @@
         "                        "
       ],
       "palettes": [ "roof_palette" ],
-      "terrain": { ".": "t_tile_flat_roof", "|": "t_brick_wall", "o": "t_open_air_rooved", "O": "t_window" }
+      "terrain": { ".": "t_tile_flat_roof", "|": "t_brick_wall", "o": "t_open_air_rooved", "w": "t_window" }
     }
   },
   {

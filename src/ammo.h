@@ -2,9 +2,9 @@
 #ifndef CATA_SRC_AMMO_H
 #define CATA_SRC_AMMO_H
 
-#include <string>
+#include <iosfwd>
 
-#include "translation.h"
+#include "translations.h"
 #include "type_id.h"
 
 class JsonObject;

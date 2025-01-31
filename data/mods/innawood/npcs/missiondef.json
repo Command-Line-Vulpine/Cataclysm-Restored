@@ -9,7 +9,8 @@
     "value": 150000,
     "urgent": true,
     "origins": [ "ORIGIN_OPENER_NPC", "ORIGIN_ANY_NPC" ],
-    "deadline": [ "30 days", "48 days" ],
+    "deadline_low": 30,
+    "deadline_high": 48,
     "dialogue": {
       "describe": "I'm… short… of breath…",
       "offer": "I'm asthmatic.  I need you to get some kind of medicinal tea for me…",
@@ -44,7 +45,8 @@
     "urgent": true,
     "goal_condition": { "u_has_item": "cattail_jelly" },
     "origins": [ "ORIGIN_OPENER_NPC" ],
-    "deadline": [ "24 days", "48 days" ],
+    "deadline_low": 24,
+    "deadline_high": 48,
     "dialogue": {
       "describe": "This infection is bad, <very> bad…",
       "offer": "I'm infected.  Badly.  I need you to get something antiseptic for me…",
@@ -424,7 +426,7 @@
       "and": [
         { "u_has_item": "backpack_leather" },
         { "u_has_items": { "item": "cattail_stalk", "count": 80 } },
-        { "math": [ "u_skill('survival') >= 1" ] }
+        { "math": [ "u_skill('survival')", ">=", "1" ] }
       ]
     },
     "difficulty": 1,

@@ -33,10 +33,10 @@ TEST_CASE( "fun_for_non-food", "[fun_for][nonfood]" )
     std::pair<int, int> actual_fun;
 
     SECTION( "non-food has no fun value" ) {
-        item sheet_cotton( "sheet_cotton" );
-        REQUIRE_FALSE( sheet_cotton.is_comestible() );
+        item rag( "rag" );
+        REQUIRE_FALSE( rag.is_comestible() );
 
-        actual_fun = dummy.fun_for( sheet_cotton );
+        actual_fun = dummy.fun_for( rag );
         CHECK( actual_fun.first == 0 );
         CHECK( actual_fun.second == 0 );
     }
@@ -367,15 +367,12 @@ TEST_CASE( "fun_for_food_eaten_too_often", "[fun_for][food][monotony]" )
     std::pair<int, int> actual_fun;
 
     // A big box of tasty toast-ems
-    item toastem( "toastem_test", calendar::turn );
+    item toastem( "toastem", calendar::turn );
     REQUIRE( toastem.is_comestible() );
 
     // Base fun value and monotony penalty for toast-em
     int toastem_fun = toastem.get_comestible_fun();
     int toastem_penalty = toastem.get_comestible()->monotony_penalty;
-
-    REQUIRE( toastem_fun > 0 );
-    REQUIRE( toastem_penalty > 0 );
 
     // Will do 2 rounds of penalty testing, so base fun needs to be at least 2x that
     REQUIRE( toastem_fun > 2 * toastem_penalty );

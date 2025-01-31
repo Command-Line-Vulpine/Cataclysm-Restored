@@ -2,13 +2,12 @@
 #ifndef CATA_SRC_FLAG_H
 #define CATA_SRC_FLAG_H
 
+#include <iosfwd>
 #include <set>
 #include <string>
-#include <string_view>
-#include <utility>
 #include <vector>
 
-#include "translation.h"
+#include "translations.h"
 #include "type_id.h"
 
 class JsonObject;
@@ -67,9 +66,9 @@ extern const flag_id flag_BYPRODUCT;
 extern const flag_id flag_CABLE_SPOOL;
 extern const flag_id flag_CAMERA_PRO;
 extern const flag_id flag_CANNIBAL;
+extern const flag_id flag_CANNIBALISM;
 extern const flag_id flag_CANT_HEAL_EVERYONE;
 extern const flag_id flag_CANT_WEAR;
-extern const flag_id flag_CARNIVORE_DIET;
 extern const flag_id flag_CARNIVORE_OK;
 extern const flag_id flag_CASING;
 extern const flag_id flag_CATTLE;
@@ -95,7 +94,6 @@ extern const flag_id flag_CUT_HARVEST;
 extern const flag_id flag_CUT_IMMUNE;
 extern const flag_id flag_DANGEROUS;
 extern const flag_id flag_DEAF;
-extern const flag_id flag_DECAYS_IN_AIR;
 extern const flag_id flag_DIAMOND;
 extern const flag_id flag_DIG_TOOL;
 extern const flag_id flag_DIMENSIONAL_ANCHOR;
@@ -107,12 +105,10 @@ extern const flag_id flag_EATEN_COLD;
 extern const flag_id flag_EATEN_HOT;
 extern const flag_id flag_EDIBLE_FROZEN;
 extern const flag_id flag_EFFECT_IMPEDING;
-extern const flag_id flag_EFFECT_LIMB_DISABLE_CONDITIONAL_FLAGS;
 extern const flag_id flag_EFFECT_LIMB_SCORE_MOD;
 extern const flag_id flag_EFFECT_LIMB_SCORE_MOD_LOCAL;
 extern const flag_id flag_ELECTRIC_IMMUNE;
 extern const flag_id flag_ELECTRONIC;
-extern const flag_id flag_ENERGY_SHIELD;
 extern const flag_id flag_ETHEREAL_ITEM;
 extern const flag_id flag_EXO_ARM_PLATE;
 extern const flag_id flag_EXO_BOOT_PLATE;
@@ -164,7 +160,6 @@ extern const flag_id flag_GIBBED;
 extern const flag_id flag_GNV_EFFECT;
 extern const flag_id flag_HARVEST_SEEDS;
 extern const flag_id flag_HEAT_IMMUNE;
-extern const flag_id flag_HEMOVORE_FUN;
 extern const flag_id flag_HIDDEN_HALLU;
 extern const flag_id json_flag_HIDDEN_ITEM;
 extern const flag_id flag_HIDDEN_POISON;
@@ -180,6 +175,7 @@ extern const flag_id flag_IN_CBM;
 extern const flag_id flag_INTEGRATED;
 extern const flag_id flag_IRRADIATED;
 extern const flag_id flag_IRREMOVABLE;
+extern const flag_id flag_IR_EFFECT;
 extern const flag_id flag_IS_ARMOR;
 extern const flag_id flag_IS_PET_ARMOR;
 extern const flag_id flag_IS_UPS;
@@ -189,7 +185,6 @@ extern const flag_id flag_LEAK_ALWAYS;
 extern const flag_id flag_LEAK_DAM;
 extern const flag_id flag_LITCIG;
 extern const flag_id flag_LUPINE;
-extern const flag_id flag_MAGICAL;
 extern const flag_id flag_MAGIC_FOCUS;
 extern const flag_id flag_MAG_BELT;
 extern const flag_id flag_MAG_BULKY;
@@ -201,8 +196,6 @@ extern const flag_id flag_MECH_BAT;
 extern const flag_id flag_MELTS;
 extern const flag_id flag_MESSY;
 extern const flag_id flag_MISSION_ITEM;
-extern const flag_id flag_MODULE_HOLDER;
-extern const flag_id flag_MORPHIC;
 extern const flag_id flag_MOUNTED_GUN;
 extern const flag_id flag_MOUSE;
 extern const flag_id flag_MUNDANE;
@@ -211,7 +204,6 @@ extern const flag_id flag_MYCUS_OK;
 extern const flag_id flag_NANOFAB_REPAIR;
 extern const flag_id flag_NANOFAB_TEMPLATE;
 extern const flag_id flag_NANOFAB_TEMPLATE_SINGLE_USE;
-extern const flag_id flag_NATURAL_WEAPON;
 extern const flag_id flag_NEEDS_NO_LUBE;
 extern const flag_id flag_NEEDS_UNFOLD;
 extern const flag_id flag_NEGATIVE_MONOTONY_OK;
@@ -262,7 +254,6 @@ extern const flag_id flag_PRIMITIVE_RANGED_WEAPON;
 extern const flag_id flag_PROCESSING;
 extern const flag_id flag_PROCESSING_RESULT;
 extern const flag_id flag_PSEUDO;
-extern const flag_id flag_PSEUDOPOD_GRASP;
 extern const flag_id flag_PSYSHIELD_PARTIAL;
 extern const flag_id flag_PULPED;
 extern const flag_id flag_PUMP_ACTION;
@@ -293,7 +284,6 @@ extern const flag_id flag_REBREATHER;
 extern const flag_id flag_RECHARGE;
 extern const flag_id flag_REDUCED_BASHING;
 extern const flag_id flag_REDUCED_WEIGHT;
-extern const flag_id flag_RELIC_PINK;
 extern const flag_id flag_RELOAD_AND_SHOOT;
 extern const flag_id flag_RELOAD_EJECT;
 extern const flag_id flag_RELOAD_ONE;
@@ -314,6 +304,8 @@ extern const flag_id flag_SKINTIGHT;
 extern const flag_id flag_SLEEP_AID;
 extern const flag_id flag_SLEEP_AID_CONTAINER;
 extern const flag_id flag_SLEEP_IGNORE;
+extern const flag_id flag_SLOWS_MOVEMENT;
+extern const flag_id flag_SLOWS_THIRST;
 extern const flag_id flag_SLOW_WIELD;
 extern const flag_id flag_SMOKABLE;
 extern const flag_id flag_SMOKED;
@@ -355,7 +347,6 @@ extern const flag_id flag_UNDERFED;
 extern const flag_id flag_UNDERSIZE;
 extern const flag_id flag_UNDERWATER_GUN;
 extern const flag_id flag_UNRECOVERABLE;
-extern const flag_id flag_UNRESTRICTED;
 extern const flag_id flag_URSINE_HONEY;
 extern const flag_id flag_USES_BIONIC_POWER;
 extern const flag_id flag_USES_NEARBY_AMMO;
@@ -430,16 +421,6 @@ class json_flag
             return name_.translated();
         }
 
-        /** Custom prefix that is added to item name. */
-        const translation &item_prefix() const {
-            return item_prefix_;
-        }
-
-        /** Custom suffix that is added to item name. */
-        const translation &item_suffix() const {
-            return item_suffix_;
-        }
-
         /** Is flag inherited by base items from any attached items? */
         bool inherit() const {
             return inherit_;
@@ -474,8 +455,6 @@ class json_flag
         translation info_;
         translation restriction_;
         translation name_;
-        translation item_prefix_;
-        translation item_suffix_;
         std::set<std::string> conflicts_;
         bool inherit_ = true;
         bool craft_inherit_ = false;

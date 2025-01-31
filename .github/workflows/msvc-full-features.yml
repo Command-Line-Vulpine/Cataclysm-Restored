@@ -2,8 +2,7 @@ name: Cataclysm Windows build
 
 on:
   push:
-    branches:
-    - master
+    branches: [ 0.H-build ]
     paths-ignore:
     - 'android/**'
     - 'build-data/osx/**'
@@ -16,8 +15,7 @@ on:
     - '!tools/format/**'
     - 'utilities/**'
   pull_request:
-    branches:
-    - master
+    branches: [ 0.H-build ]
     paths-ignore:
     - 'android/**'
     - 'build-data/osx/**'
@@ -29,7 +27,6 @@ on:
     - 'tools/**'
     - '!tools/format/**'
     - 'utilities/**'
-    types: [opened, reopened, synchronize, ready_for_review]
 
 # We only care about the latest revision of a PR, so cancel previous instances.
 concurrency:
@@ -40,7 +37,7 @@ env:
   # Enable pretty backtraces
   BACKTRACE: 1
   # Compressed size ~1GB based on observations
-  CCACHE_LIMIT: 9GB
+  CCACHE_LIMIT: 8GB
   CDDA_CCACHE_PATH: ${{ github.workspace }}\ccache\
   CDDA_USE_CCACHE: true
   # There's not enough disk space to build both release and debug versions of
@@ -56,21 +53,12 @@ jobs:
   build_catatclysm:
     name: Build
     runs-on: windows-2019
-    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.draft == false }}
 
     steps:
-    - uses: actions/checkout@v4
-
-    - name: Setup msys2
-      uses: msys2/setup-msys2@v2
-      with:
-        msystem: mingw64
-        install: >-
-          gettext
-          make
+    - uses: actions/checkout@v3
 
     - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v2
+      uses: microsoft/setup-msbuild@v1.3.1
 
     - name: Use GNU tar to enable zstd for actions/cache
       run: |
@@ -86,14 +74,14 @@ jobs:
       id: runvcpkg
       with:
         vcpkgDirectory: '${{ runner.workspace }}/b/vcpkg'
-        vcpkgGitCommitId: '3b57fb2e1ff55613db14d2aaf0a30529289c7050'
+        vcpkgGitCommitId: '66444e13a86da7087ee24c342f91801cc6eb9877'
 
     - name: Integrate vcpkg
       run: |
         vcpkg integrate install --vcpkg-root '${{ runner.workspace }}\b\vcpkg'
 
     - name: Download ccache
-      uses: robinraju/release-downloader@v1.9
+      uses: robinraju/release-downloader@v1.4
       with:
         repository: 'ccache/ccache'
         tag: 'v4.6.1'
@@ -111,18 +99,17 @@ jobs:
       id: get-vars
       run: |
         echo "datetime=$(/bin/date -u "+%Y%m%d%H%M")" >> $GITHUB_OUTPUT
-        echo "datetime-seconds=$(/bin/date +%s)" >> $GITHUB_OUTPUT
         echo "ccache-path=$(echo "$APPDATA\\ccache")" >> $GITHUB_OUTPUT
       shell: bash
 
     - name: ccache cache files
-      uses: actions/cache@v4
+      uses: actions/cache@v3
       with:
         path: ${{ steps.get-vars.outputs.ccache-path }}
         # double-dash after compiler is not a typo, it is to disambiguate between g++-<date> and g++-11-<date> for restore key prefix matching
         key: ccache-${{ github.ref_name }}-${{ runner.os }}-msvc--${{ steps.get-vars.outputs.datetime }}
         restore-keys: |
-          ccache-master-${{ runner.os }}-msvc--
+          ccache-0.H-${{ runner.os }}-msvc--
 
     - name: Configure ccache
       run: |
@@ -138,27 +125,18 @@ jobs:
     - name: Build
       run: |
           msbuild -m -p:Configuration=Release -p:Platform=x64 "-target:Cataclysm-vcpkg-static;Cataclysm-test-vcpkg-static;JsonFormatter-vcpkg-static" msvc-full-features/Cataclysm-vcpkg-static.sln
-
-    - name: Get ccache cache age cutoff
-      id: get-cache-age
-      run: |
-        NOW=`/bin/date +%s`
-        DELTA=$(( $NOW - ${{ steps.get-vars.outputs.datetime-seconds }} ))
-        echo "ccache-age=$(( $NOW - ${{ steps.get-vars.outputs.datetime-seconds }} ))" >> $GITHUB_OUTPUT
-      shell: bash
+          msbuild -m -p:Configuration=Release -p:Platform=x64 "-target:ObjectCreator-vcpkg-static" msvc-object_creator/ObjectCreator-vcpkg-static.sln
 
     - name: Post-build ccache manipulation
       if: ${{ !failure() }}
       run: |
-        ${{ env.CDDA_CCACHE_PATH }}\ccache.exe -s -v
-        ${{ env.CDDA_CCACHE_PATH }}\ccache.exe --evict-older-than ${{ steps.get-ccache-age.outputs.ccache-age }}
         ${{ env.CDDA_CCACHE_PATH }}\ccache.exe -s -v
         ${{ env.CDDA_CCACHE_PATH }}\ccache.exe -M ${{ env.CCACHE_LIMIT }}
         ${{ env.CDDA_CCACHE_PATH }}\ccache.exe -c
         ${{ env.CDDA_CCACHE_PATH }}\ccache.exe -s -v
 
     - name: clear ccache on PRs
-      if: ${{ github.ref_name != 'master' }}
+      if: ${{ github.ref_name != '0.H-build' }}
       run: |
         ${{ env.CDDA_CCACHE_PATH }}\ccache.exe -C
 
@@ -167,6 +145,8 @@ jobs:
       run: |
         echo =================================================
         Get-ChildItem "${{ runner.workspace }}/Cataclysm-DDA/msvc-full-features/vcpkg_installed" -Recurse
+        echo =================================================
+        Get-ChildItem "${{ runner.workspace }}/Cataclysm-DDA/msvc-object_creator/vcpkg_installed" -Recurse
         echo =================================================
         Get-ChildItem "${{ runner.workspace }}/b/vcpkg/buildtrees" |
         Foreach-Object {
@@ -180,23 +160,22 @@ jobs:
         }
 
     - name: Compile .mo files for localization
-      if: ${{ github.ref_name != 'master' }}
-      shell: msys2 {0}
+      if: ${{ github.ref_name != '0.H-build' }}
       run: |
-          make -C lang -j2
-          mkdir -p ./data/mods/TEST_DATA/lang/mo/ru/LC_MESSAGES
+          & "C:\msys64\mingw64\bin\mingw32-make" -C lang -j2
+          mkdir -p ./data/mods/TEST_DATA/lang/mo/ru/LC_MESSAGES -ErrorAction SilentlyContinue
           msgfmt -f -o ./data/mods/TEST_DATA/lang/mo/ru/LC_MESSAGES/TEST_DATA.mo ./data/mods/TEST_DATA/lang/po/ru.po
 
     - name: Enable GitHub Actions problem matchers
-      if: ${{ github.ref_name != 'master' }}
+      if: ${{ github.ref_name != '0.H-build' }}
       run: |
           Write-Output "::add-matcher::build-scripts/problem-matchers/catch2.json"
           Write-Output "::add-matcher::build-scripts/problem-matchers/debugmsg.json"
 
     - name: Run tests
-      if: ${{ github.ref_name != 'master' }}
+      if: ${{ github.ref_name != '0.H-build' }}
       run: |
-          .\Cataclysm-test-vcpkg-static-Release-x64.exe --min-duration 20 --rng-seed time --order lex --wait-for-keypress exit
+          .\Cataclysm-test-vcpkg-static-Release-x64.exe --min-duration 20 --rng-seed time
 
     - name: Dump disk usage logs if job failed
       if: failure()
@@ -208,12 +187,14 @@ jobs:
         echo =================================================
         du -sh msvc-full-features/*
         echo =================================================
+        du -sh msvc-object_creator/*
+        echo =================================================
         du -sh tools/*
         echo =================================================
       shell: bash
 
     - name: Don't upload vcpkg cache on failure or PRs
-      if: ${{ failure() || cancelled() || github.ref_name != 'master' }}
+      if: ${{ failure() || cancelled() || github.ref_name != '0.H-build' }}
       run: |
         echo "RUNVCPKG_NO_CACHE=1" >> $GITHUB_ENV
       shell: bash

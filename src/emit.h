@@ -2,12 +2,12 @@
 #ifndef CATA_SRC_EMIT_H
 #define CATA_SRC_EMIT_H
 
+#include <iosfwd>
 #include <map>
 #include <string>
 
 #include "field_type.h"
 #include "type_id.h"
-#include <dialogue_helpers.h>
 
 class JsonObject;
 
@@ -27,23 +27,23 @@ class emit
         bool is_valid() const;
 
         /** Type of field to emit @see emit::is_valid */
-        field_type_id field( const_dialogue const &d ) const {
-            return field_type_id( field_.evaluate( d ) );
+        field_type_id field() const {
+            return field_;
         }
 
         /** Intensity of output fields, range [1..maximum_intensity] */
-        int intensity( const_dialogue const &d ) const {
-            return intensity_.evaluate( d );
+        int intensity() const {
+            return intensity_;
         }
 
         /** Units of field to generate per turn subject to @ref chance */
-        int qty( const_dialogue const &d ) const {
-            return qty_.evaluate( d );
+        int qty() const {
+            return qty_;
         }
 
         /** Chance to emit each turn, range [1..100] */
-        int chance( const_dialogue const &d ) const {
-            return chance_.evaluate( d );
+        int chance() const {
+            return chance_;
         }
 
         /** Load emission data from JSON definition */
@@ -63,10 +63,13 @@ class emit
 
     private:
         emit_id id_;
-        str_or_var field_;
-        dbl_or_var intensity_;
-        dbl_or_var qty_;
-        dbl_or_var chance_;
+        field_type_id field_ = fd_null.id_or( INVALID_FIELD_TYPE_ID );
+        int intensity_ = 1;
+        int qty_ = 1;
+        int chance_ = 100;
+
+        /** used during JSON loading only */
+        std::string field_name;
 };
 
 #endif // CATA_SRC_EMIT_H

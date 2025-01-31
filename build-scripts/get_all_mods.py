@@ -7,12 +7,13 @@
 
 import glob
 import json
-import os
 
 mods_this_time = []
 
 exclusions = [
     # Tuple of (mod_id, mod_id) - these two mods will be incompatible
+    # #76175 causes CI failure between limbified wings and Magiclysm ravenfolk
+    ('limb_wip', 'magiclysm')
 ]
 
 
@@ -62,26 +63,6 @@ for info in glob.glob('data/mods/*/modinfo.json'):
             all_mod_dependencies[ident] = e.get("dependencies", [])
             if e["category"] == "total_conversion":
                 total_conversions.add(ident)
-
-for r, d, f in os.walk('data/mods'):
-    if 'mod_interactions' not in d:
-        continue
-    if 'modinfo.json' not in f:
-        continue
-    ident = ""
-    info_path = os.path.join(r, 'modinfo.json')
-    mod_info = json.load(open(info_path, encoding='utf-8'))
-    for e in mod_info:
-        if(e["type"] == "MOD_INFO" and
-                ("obsolete" not in e or not e["obsolete"])):
-            ident = e["id"]
-    if ident == "":
-        continue
-    add_mods([ident])
-    for mod in os.scandir(os.path.join(r, 'mod_interactions')):
-        mods_this_time.append(os.path.basename(mod.path))
-    print(','.join(mods_this_time))
-    mods_this_time.clear()
 
 mods_remaining = set(all_mod_dependencies)
 

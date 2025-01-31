@@ -1,23 +1,23 @@
-#include "climbing.h"
-
-#include <cstdint>
-#include <memory>
-#include <set>
+#include <cstdlib>
+#include <unordered_set>
 #include <utility>
 
-#include "cata_utility.h"
+#include "climbing.h"
+
+#include "cata_assert.h"
 #include "character.h"
 #include "creature_tracker.h"
-#include "debug.h"
-#include "flexbuffer_json-inl.h"
-#include "flexbuffer_json.h"
+#include "enum_conversions.h"
+#include "enums.h"
+#include "game.h"
 #include "generic_factory.h"
-#include "init.h"
-#include "json_error.h"
+#include "int_id.h"
+#include "json.h"
 #include "map.h"
+#include "string_formatter.h"
+#include "vehicle.h"
 #include "vpart_position.h"
 
-template <typename E> struct enum_traits;
 
 static const climbing_aid_id climbing_aid_default( "default" );
 
@@ -327,7 +327,7 @@ static void detect_conditions_sub( climbing_aid::condition_list &list,
 }
 
 climbing_aid::condition_list climbing_aid::detect_conditions( Character &you,
-        const tripoint_bub_ms &examp )
+        const tripoint &examp )
 {
     condition_list list;
 
@@ -346,8 +346,8 @@ climbing_aid::condition_list climbing_aid::detect_conditions( Character &you,
         return cond.uses_item > 0;
     };
     auto detect_ter_furn_flag = [&here, &fall]( condition & cond ) {
-        tripoint_bub_ms pos = fall.pos_furniture_or_floor();
-        cond.range = fall.pos_top().z() - pos.z();
+        tripoint pos = fall.pos_furniture_or_floor();
+        cond.range = fall.pos_top().z - pos.z;
         return here.has_flag( cond.flag, pos );
     };
     auto detect_vehicle = [&fall]( condition & cond ) {
@@ -365,7 +365,7 @@ climbing_aid::condition_list climbing_aid::detect_conditions( Character &you,
     return list;
 }
 
-climbing_aid::fall_scan::fall_scan( const tripoint_bub_ms &examp )
+climbing_aid::fall_scan::fall_scan( const tripoint &examp )
 {
     map &here = get_map();
     creature_tracker &creatures = get_creature_tracker();
@@ -378,14 +378,15 @@ climbing_aid::fall_scan::fall_scan( const tripoint_bub_ms &examp )
 
     // Get coordinates just below and at ground level.
     // Also detect if furniture would block our tools/abilities.
-    tripoint_bub_ms bottom( examp );
-    tripoint_bub_ms just_below( bottom + tripoint::below );
+    tripoint bottom = examp;
+    tripoint just_below = examp;
+    just_below.z--;
 
     int hit_furn = false;
     int hit_crea = false;
     int hit_veh = false;
 
-    for( tripoint_bub_ms lower = just_below; here.valid_move( bottom, lower, false, true ); ) {
+    for( tripoint lower = just_below; here.valid_move( bottom, lower, false, true ); ) {
         if( !hit_furn ) {
             if( here.has_furn( lower ) ) {
                 hit_furn = true;
@@ -409,7 +410,7 @@ climbing_aid::fall_scan::fall_scan( const tripoint_bub_ms &examp )
             }
         }
         ++height;
-        bottom.z()--;
-        lower.z()--;
+        bottom.z--;
+        lower.z--;
     }
 }

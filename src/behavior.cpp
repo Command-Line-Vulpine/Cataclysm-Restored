@@ -8,12 +8,9 @@
 #include "behavior_oracle.h"
 #include "behavior_strategy.h"
 #include "cata_assert.h"
-#include "debug.h"
-#include "flexbuffer_json-inl.h"
-#include "flexbuffer_json.h"
 #include "generic_factory.h"
-#include "init.h"
-#include "json_error.h"
+#include "debug.h"
+#include "json.h"
 
 using namespace behavior;
 

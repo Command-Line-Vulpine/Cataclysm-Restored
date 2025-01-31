@@ -10,7 +10,6 @@
         }
       }
     },
-    "palettes": [ "parametrized_highrise_walls_palette" ],
     "terrain": {
       "*": "t_null",
       " ": "t_open_air",
@@ -35,10 +34,12 @@
       "1": "t_door_metal_interior_locked",
       "E": "t_elevator",
       "G": "t_door_glass_frosted_lab_c",
-      "R": "t_railing",
+      "R": "t_railing_v",
       "s": "t_sidewalk",
       "V": "t_reinforced_glass",
       "w": "t_window",
+      "-": "t_brick_wall",
+      "|": "t_brick_wall",
       "¥": "t_card_science"
     },
     "furniture": {
@@ -64,15 +65,11 @@
       "t": "f_table",
       "T": "f_toilet",
       "x": "f_console_broken",
-      "X": [
-        [ "f_generator_broken", 25 ],
-        [ "f_portable_generator", 5 ],
-        [ "f_diesel_generator", 5 ],
-        [ "f_military_generator", 5 ],
-        [ "f_12000_gasoline_generator", 5 ]
-      ],
+      "X": "f_generator_broken",
       "y": "f_locker",
-      "Y": "f_rack_coat"
+      "Y": "f_rack_coat",
+      "Đ": "f_vending_c",
+      "Ƒ": "f_vending_c"
     },
     "items": {
       "d": [ { "item": "SUS_office_desk", "chance": 50 }, { "item": "homebooks", "chance": 2 } ],
@@ -86,12 +83,7 @@
       "F": { "item": "SUS_office_filing_cabinet", "chance": 70 },
       ".": { "item": "office_mess", "chance": 1 }
     },
-    "vendingmachines": {
-      "8": { "item_group": "vending_drink", "lootable": true },
-      "9": { "item_group": "vending_food", "lootable": true },
-      "Đ": { "item_group": "vending_drink", "lootable": true },
-      "Ƒ": { "item_group": "vending_food", "lootable": true }
-    },
+    "vendingmachines": { "8": { "item_group": "vending_drink" }, "9": { "item_group": "vending_food" } },
     "toilets": { "T": {  } }
   },
   {

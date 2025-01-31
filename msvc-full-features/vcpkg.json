@@ -1,6 +1,6 @@
 {
     "name": "cdda-vcpkg-dependencies",
-    "version-string": "0.I",
+    "version-string": "0.H",
     "dependencies": [
         "sdl2",
         {
@@ -11,7 +11,11 @@
           "name": "sdl2-mixer",
           "features": [ "libflac", "mpg123", "libmodplug" ]
         },
-        "sdl2-ttf",
-        "pdcurses"
-    ]
+        "sdl2-ttf"
+    ],
+    "vcpkg-configuration": {
+        "overlay-ports": [
+            "../.github/vcpkg_ports"
+        ]
+    }
 }

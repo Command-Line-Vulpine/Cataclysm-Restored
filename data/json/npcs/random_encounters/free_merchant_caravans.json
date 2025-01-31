@@ -37,7 +37,6 @@
     "id": "NC_CARAVAN_MERCHANT",
     "name": { "str": "Trader" },
     "job_description": "I'm collecting gear and selling it.",
-    "common": false,
     "traits": [
       { "group": "BG_survival_story_EVACUEE" },
       { "group": "NPC_starting_traits" },
@@ -54,7 +53,6 @@
     "id": "NC_CARAVAN_GUARD",
     "name": { "str": "Bounty Hunter" },
     "job_description": "I'm a killer for hire.",
-    "common": false,
     "traits": [
       { "group": "BG_survival_story_POLICE" },
       { "group": "NPC_starting_traits" },
@@ -73,10 +71,7 @@
   {
     "type": "talk_topic",
     "id": "TALK_CARAVAN_MERCHANT_1",
-    "dynamic_line": {
-      "gendered_line": "Well well, another traveler.  Don't try anything, you're outnumbered here and we're well armed.",
-      "relevant_genders": [ "u" ]
-    },
+    "dynamic_line": "Well well, another traveler.  Don't try anything, you're outnumbered here and we're well armed.",
     "speaker_effect": { "effect": { "npc_first_topic": "TALK_CARAVAN_MERCHANT_2" } },
     "responses": [
       { "text": "Are you threatening me?", "topic": "TALK_CARAVAN_MERCHANT_Threatening" },
@@ -101,7 +96,7 @@
     "responses": [
       { "text": "Sure, let's trade.", "topic": "TALK_CARAVAN_MERCHANT_Trade", "effect": "start_trade" },
       { "text": "What's your deal here?", "topic": "TALK_CARAVAN_MERCHANT_Job" },
-      { "text": "That suits me fine.  <end_talking_leave>", "topic": "TALK_DONE" }
+      { "text": "That suits me fine.  I'll be on my way.", "topic": "TALK_DONE" }
     ]
   },
   {
@@ -111,7 +106,7 @@
     "responses": [
       { "text": "Sure, let's trade.", "topic": "TALK_CARAVAN_MERCHANT_Trade", "effect": "start_trade" },
       { "text": "That's it?  What's your story?", "topic": "TALK_CARAVAN_MERCHANT_Story" },
-      { "text": "That suits me fine.  <end_talking_leave>", "topic": "TALK_DONE" }
+      { "text": "That suits me fine.  I'll be on my way.", "topic": "TALK_DONE" }
     ]
   },
   {
@@ -130,20 +125,17 @@
         "condition": {
           "and": [
             { "not": { "u_has_mission": "MISSION_REACH_REFUGEE_CENTER" } },
-            { "not": { "compare_string": [ "yes", { "u_val": "found_refugee_center" } ] } }
+            { "not": { "u_has_var": "found_refugee_center", "value": "yes" } }
           ]
         }
       },
-      { "text": "Thanks for chatting.  <end_talking_leave>", "topic": "TALK_DONE" }
+      { "text": "Thanks for chatting.  I'd better go.", "topic": "TALK_DONE" }
     ]
   },
   {
     "type": "talk_topic",
     "id": "TALK_CARAVAN_MERCHANT_Others",
-    "dynamic_line": {
-      "gendered_line": "No offense, but my clients definitely would not like me giving strangers directions to their hideouts.  You'll have to find them on their own terms.",
-      "relevant_genders": [ "u" ]
-    },
+    "dynamic_line": "No offense, but my clients definitely would not like me giving strangers directions to their hideouts.  You'll have to find them on their own terms.",
     "responses": [
       {
         "text": "I can understand that.  Well, let's trade.",
@@ -156,11 +148,11 @@
         "condition": {
           "and": [
             { "not": { "u_has_mission": "MISSION_REACH_REFUGEE_CENTER" } },
-            { "not": { "compare_string": [ "yes", { "u_val": "found_refugee_center" } ] } }
+            { "not": { "u_has_var": "found_refugee_center", "value": "yes" } }
           ]
         }
       },
-      { "text": "Thanks for chatting.  <end_talking_leave>", "topic": "TALK_DONE" }
+      { "text": "Thanks for chatting.  I'd better go.", "topic": "TALK_DONE" }
     ]
   },
   {
@@ -174,7 +166,7 @@
         "text": "Can you give me directions to any of these other survivor groups?",
         "topic": "TALK_CARAVAN_MERCHANT_Others"
       },
-      { "text": "Thanks for that.  <end_talking_leave>", "topic": "TALK_DONE" }
+      { "text": "Thanks for that.  I'd better go.", "topic": "TALK_DONE" }
     ]
   },
   {
@@ -188,7 +180,7 @@
         "effect": "start_trade"
       },
       { "text": "Thanks.  What were we talking about before?", "topic": "TALK_NONE" },
-      { "text": "Thanks for that.  <end_talking_leave>", "topic": "TALK_DONE" }
+      { "text": "Thanks for that.  I'd better go.", "topic": "TALK_DONE" }
     ]
   },
   {
@@ -224,11 +216,11 @@
         "condition": {
           "and": [
             { "not": { "u_has_mission": "MISSION_REACH_REFUGEE_CENTER" } },
-            { "not": { "compare_string": [ "yes", { "u_val": "found_refugee_center" } ] } }
+            { "not": { "u_has_var": "found_refugee_center", "value": "yes" } }
           ]
         }
       },
-      { "text": "It's a living, eh?  <end_talking_leave>", "topic": "TALK_DONE" }
+      { "text": "It's a living, eh?  I'd better get going.", "topic": "TALK_DONE" }
     ]
   },
   {
@@ -243,11 +235,11 @@
         "condition": {
           "and": [
             { "not": { "u_has_mission": "MISSION_REACH_REFUGEE_CENTER" } },
-            { "not": { "compare_string": [ "yes", { "u_val": "found_refugee_center" } ] } }
+            { "not": { "u_has_var": "found_refugee_center", "value": "yes" } }
           ]
         }
       },
-      { "text": "It's a living, eh?  <end_talking_leave>", "topic": "TALK_DONE" }
+      { "text": "It's a living, eh?  I'd better get going.", "topic": "TALK_DONE" }
     ]
   },
   {
@@ -261,11 +253,11 @@
         "condition": {
           "and": [
             { "not": { "u_has_mission": "MISSION_REACH_REFUGEE_CENTER" } },
-            { "not": { "compare_string": [ "yes", { "u_val": "found_refugee_center" } ] } }
+            { "not": { "u_has_var": "found_refugee_center", "value": "yes" } }
           ]
         }
       },
-      { "text": "Thanks for the tip!  <end_talking_leave>", "topic": "TALK_DONE" }
+      { "text": "Thanks for the tip!  I'll be on my way.", "topic": "TALK_DONE" }
     ]
   },
   {
@@ -274,8 +266,8 @@
     "dynamic_line": "Sure, I can mark it on your map if you like.  Here.",
     "speaker_effect": { "effect": { "assign_mission": "MISSION_REACH_REFUGEE_CENTER" } },
     "responses": [
-      { "text": "Thanks for the tip!  <done_conversation_section>", "topic": "TALK_NONE" },
-      { "text": "Thanks for the tip!  <end_talking_leave>", "topic": "TALK_DONE" }
+      { "text": "Thanks for the tip!  What were you saying before?", "topic": "TALK_NONE" },
+      { "text": "Thanks for the tip!  I'll be on my way.", "topic": "TALK_DONE" }
     ]
   },
   {

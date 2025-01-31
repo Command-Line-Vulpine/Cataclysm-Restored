@@ -1,10 +1,5 @@
-/* Main Loop for cataclysm
- * Linux only I guess
- * But maybe not
- * Who knows
+/* Entry point and main loop for Cataclysm
  */
-
-// KG: Yes, the above is inaccurate now. It's also a poem, it stays.
 
 // IWYU pragma: no_include <sys/signal.h>
 #include <algorithm>
@@ -47,6 +42,7 @@
 #include "get_version.h"
 #include "help.h"
 #include "input.h"
+#include "loading_ui.h"
 #include "main_menu.h"
 #include "mapsharing.h"
 #include "memory_fast.h"
@@ -59,7 +55,6 @@
 #include "translations.h"
 #include "type_id.h"
 #include "ui_manager.h"
-#include "cata_imgui.h"
 #if defined(MACOSX) || defined(__CYGWIN__)
 #   include <unistd.h> // getpid()
 #endif
@@ -139,34 +134,45 @@ int start_logger( const char *app_name )
 namespace
 {
 
-#if defined(_WIN32) and defined(TILES)
+#if defined(_WIN32)
 // Used only if AttachConsole() works
 FILE *CONOUT;
 #endif
-
-#if !defined(_WIN32)
-extern "C" void sigint_handler( int /* s */ )
+void exit_handler( int s )
 {
-    if( g->uquit != QUIT_EXIT_PENDING ) {
-        g->uquit = QUIT_EXIT;
-    }
-}
-#endif
+    const int old_timeout = inp_mngr.get_timeout();
+    inp_mngr.reset_timeout();
+    if( s != 2 || query_yn( _( "Really Quit?  All unsaved changes will be lost." ) ) ) {
+        deinitDebug();
 
-void exit_handler( int /* s */ )
-{
-    deinitDebug();
+        int exit_status = 0;
+        g.reset();
 
-    g.reset();
-
-    catacurses::endwin();
+        catacurses::endwin();
 
 #if defined(__ANDROID__)
-    // Avoid capturing SIGABRT on exit on Android in crash report
-    // Can be removed once the SIGABRT on exit problem is fixed
-    signal( SIGABRT, SIG_DFL );
+        // Avoid capturing SIGABRT on exit on Android in crash report
+        // Can be removed once the SIGABRT on exit problem is fixed
+        signal( SIGABRT, SIG_DFL );
 #endif
 
+#if !defined(_WIN32)
+        if( s == 2 ) {
+            struct sigaction sigIntHandler;
+            sigIntHandler.sa_handler = SIG_DFL;
+            sigemptyset( &sigIntHandler.sa_mask );
+            sigIntHandler.sa_flags = 0;
+            sigaction( SIGINT, &sigIntHandler, nullptr );
+            kill( getpid(), s );
+        } else
+#endif
+        {
+            exit( exit_status );
+        }
+    }
+    inp_mngr.set_timeout( old_timeout );
+    ui_manager::redraw_invalidated();
+    catacurses::doupdate();
 }
 
 struct arg_handler {
@@ -275,7 +281,6 @@ void process_args( const char **argv, int argc, const std::vector<arg_handler> &
 struct cli_opts {
     int seed = time( nullptr );
     bool verifyexit = false;
-    bool noverify = false;
     bool check_mods = false;
     std::vector<std::string> opts;
     std::string world; /** if set try to load first save in this world on startup */
@@ -304,7 +309,7 @@ cli_opts parse_commandline( int argc, const char **argv )
             },
             {
                 "--jsonverify", {},
-                "Checks the CDDA json files and exits",
+                "Checks the CDDA json files",
                 section_default,
                 0,
                 [&result]( int, const char ** ) -> int {
@@ -314,7 +319,7 @@ cli_opts parse_commandline( int argc, const char **argv )
             },
             {
                 "--check-mods", "[mod…]",
-                "Checks the json files belonging to given CDDA mod and exits",
+                "Checks the json files belonging to given CDDA mod",
                 section_default,
                 1,
                 [&result]( int n, const char **params ) -> int {
@@ -324,16 +329,6 @@ cli_opts parse_commandline( int argc, const char **argv )
                     {
                         result.opts.emplace_back( params[ i ] );
                     }
-                    return 0;
-                }
-            },
-            {
-                "--noverify", {},
-                "Skips JSON verification",
-                section_default,
-                0,
-                [&result]( int, const char ** ) -> int {
-                    result.noverify = true;
                     return 0;
                 }
             },
@@ -586,7 +581,7 @@ EM_ASYNC_JS( void, mount_idbfs, (), {
             if( err ) {
                 reject( err );
             } else {
-                console.log( "Successfully mounted IDBFS." );
+                console.log( "Succesfully mounted IDBFS." );
                 resolve();
             }
         } );
@@ -609,7 +604,7 @@ EM_ASYNC_JS( void, mount_idbfs, (), {
             if( err ) {
                 console.error( err );
             } else {
-                console.log( "Successfully persisted to IDBFS..." );
+                console.log( "Succesfully persisted to IDBFS..." );
             }
         } );
     }
@@ -794,25 +789,19 @@ int main( int argc, const char *argv[] )
         }
         if( cli.check_mods ) {
             init_colors();
+            loading_ui ui( false );
             const std::vector<mod_id> mods( cli.opts.begin(), cli.opts.end() );
-            exit( g->check_mod_data( mods ) && !debug_has_error_been_observed() ? 0 : 1 );
+            exit( g->check_mod_data( mods, ui ) && !debug_has_error_been_observed() ? 0 : 1 );
         }
     } catch( const std::exception &err ) {
         debugmsg( "%s", err.what() );
         exit_handler( -999 );
     }
 
-    // Load the colors of ImGui to match the colors set by the user.
-    cataimgui::init_colors();
-
     // Override existing settings from cli  options
     if( cli.disable_ascii_art ) {
         get_options().get_option( "ENABLE_ASCII_ART" ).setValue( "false" );
         get_options().get_option( "ENABLE_ASCII_TITLE" ).setValue( "false" );
-    }
-
-    if( cli.noverify ) {
-        get_options().get_option( "SKIP_VERIFICATION" ).setValue( "true" );
     }
 
     // Now we do the actual game.
@@ -827,7 +816,7 @@ int main( int argc, const char *argv[] )
 
 #if !defined(_WIN32)
     struct sigaction sigIntHandler;
-    sigIntHandler.sa_handler = sigint_handler;
+    sigIntHandler.sa_handler = exit_handler;
     sigemptyset( &sigIntHandler.sa_mask );
     sigIntHandler.sa_flags = 0;
     sigaction( SIGINT, &sigIntHandler, nullptr );
@@ -840,8 +829,6 @@ int main( int argc, const char *argv[] )
 
 #if defined(LOCALIZE)
     if( get_option<std::string>( "USE_LANG" ).empty() && !SystemLocale::Language().has_value() ) {
-        imclient->new_frame(); // we have to prime the pump, because of reasons
-        imclient->end_frame();
         const std::string lang = select_language();
         get_options().get_option( "USE_LANG" ).setValue( lang );
         set_language_from_options();
@@ -851,19 +838,17 @@ int main( int argc, const char *argv[] )
 
     main_menu::queued_world_to_load = std::move( cli.world );
 
+    get_help().load();
+
     while( true ) {
         main_menu menu;
-        try {
-            if( !menu.opening_screen() ) {
-                break;
-            }
-
-            shared_ptr_fast<ui_adaptor> ui = g->create_or_get_main_ui_adaptor();
-            get_event_bus().send<event_type::game_begin>( getVersionString() );
-            while( !do_turn() ) { }
-        } catch( game::exit_exception const &/* ex */ ) {
+        if( !menu.opening_screen() ) {
             break;
         }
+
+        shared_ptr_fast<ui_adaptor> ui = g->create_or_get_main_ui_adaptor();
+        get_event_bus().send<event_type::game_begin>( getVersionString() );
+        while( !do_turn() );
     }
 
     exit_handler( -999 );

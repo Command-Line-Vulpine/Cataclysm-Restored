@@ -50,11 +50,7 @@
         "collection": [
           { "item": "oxy_torch", "prob": 100 },
           {
-            "distribution": [
-              { "item": "weldtank", "prob": 100, "count": [ 1, 2 ] },
-              { "item": "tinyweldtank", "prob": 100, "count": [ 1, 3 ] },
-              { "item": "smallweldtank", "prob": 100, "count": [ 1, 3 ] }
-            ],
+            "distribution": [ { "item": "weldtank", "prob": 100, "count": [ 1, 2 ] }, { "item": "tinyweldtank", "prob": 100, "count": [ 1, 3 ] } ],
             "prob": 100
           },
           {
@@ -148,9 +144,7 @@
           { "item": "candlestick", "prob": 40, "count": [ 1, 5 ] },
           { "item": "incense", "prob": 75, "count": [ 5, 20 ], "container-item": "box_small" },
           { "item": "lighter", "prob": 90, "charges": 100, "count": [ 3, 10 ] },
-          { "item": "marble", "prob": 30, "charges": [ 10, 50 ] },
-          { "item": "menorah", "prob": 3 },
-          { "group": "small_candles_in_box", "prob": 35 }
+          { "item": "marble", "prob": 30, "charges": [ 10, 50 ] }
         ]
       },
       {
