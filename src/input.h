@@ -460,6 +460,11 @@ class input_manager
         using t_actions = std::map<std::string, action_attributes>;
         using t_action_contexts = std::map<std::string, t_actions>;
         t_action_contexts action_contexts;
+        /**
+         * called basic rather than default to not confuse default context
+         * basic means default keybindings (without user changes)
+         */
+        t_action_contexts basic_action_contexts;
 
         using t_key_to_name_map = std::map<int, std::string>;
         t_key_to_name_map keyboard_char_keycode_to_keyname;
@@ -492,7 +497,7 @@ class input_manager
 
         t_input_event_list &get_or_create_event_list( const std::string &action_descriptor,
                 const std::string &context );
-        void remove_input_for_action( const std::string &action_descriptor, const std::string &context );
+        bool remove_input_for_action( const std::string &action_descriptor, const std::string &context );
         void add_input_for_action( const std::string &action_descriptor, const std::string &context,
                                    const input_event &event );
 
@@ -513,7 +518,8 @@ class input_manager
         const action_attributes &get_action_attributes(
             const std::string &action_id,
             const std::string &context = "default",
-            bool *overwrites_default = nullptr );
+            bool *overwrites_default = nullptr,
+            bool use_basic_action_contexts = false );
 
         /**
          * Get a value to be used as the default name for a newly created action.
@@ -917,7 +923,17 @@ class input_context
          * @param event The input event to be cleared from conflicting
          * keybindings.
          */
-        void clear_conflicting_keybindings( const input_event &event );
+        void clear_conflicting_keybindings( const input_event &event, const std::string &ignore_action );
+        /**
+         * Find all conflicts for all `events` (excluding conflicts for `ignore_action`).
+         * If there are any, prompt the user "Should they be cleared?".
+         * Then, clear all input_events from all conflicting keybindings (actions)
+         * in both the default and current context (see `category`).
+         *
+         * @param events The input events to be cleared from conflicting actions
+         * @return true if cleared (user agreed) or if no conflicts found
+         */
+        bool resolve_conflicts( const std::vector<input_event> &events, const std::string &ignore_action );
         /**
          * Filter a vector of strings by a phrase, returning only strings that contain the phrase.
          *
