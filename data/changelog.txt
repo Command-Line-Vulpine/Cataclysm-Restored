@@ -4,8 +4,11 @@
 1. Buffed makeshift crowbar, cudgel, and quarterstaff to older stats.
 2. Removed welding rod requirements; also added easy ways to make them, as a backup.
 3. Boosted cotton sheet output from dissembling sheets.
-4. Have game default to single-pool points system.  Renamed "survivor" back to Freeform.
-5. Obligatory self-insert OC on Fox Body Pillow. Just MShock and UndeadPeople.
+4. Game defaults to single-pool points system.  Rename "survivor" back to Freeform.
+5. Added body pillow variants to Undead_People tileset.
+6. Obligatory self-insert OC on Fox Body Pillow. Just MShock and UndeadPeople.
+7. Added back in AEP suit and ANBC suit, currently just dropped by Hazmat zombies.
+8. Added back in Chicken Walker and Tank Drone.
 
 # v 0.1 (Restored) 
 ## Highlights
