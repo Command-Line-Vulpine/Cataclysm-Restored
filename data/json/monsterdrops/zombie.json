@@ -37,7 +37,9 @@
       },
       { "group": "underwear", "damage": [ 1, 4 ] },
       { "distribution": [ { "group": "rad_gear", "prob": 1 } ] },
-      { "group": "wallets", "damage": [ 1, 4 ] }
+      { "group": "wallets", "damage": [ 1, 4 ] },
+	  { "item": "anbc_suit", "count": [ 0, 1 ], "prob": 25 },
+	  { "item": "aep_suit", "count": [ 0, 1 ], "prob": 25 }
     ]
   },
   {
