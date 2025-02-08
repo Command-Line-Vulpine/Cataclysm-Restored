@@ -321,6 +321,56 @@
     "melee_damage": { "bash": 8 }
   },
   {
+    "id": "broken_chickenbot",
+    "type": "TOOL",
+    "name": { "str": "Broken Chicken Walker" },
+    "description": "An inactive Z-02 Chicken Walker equipped with an Milkor MGL.  Using this item involves loading the unit with the 40x46mm grenades in your inventory (if you wish to divide your ammunition, set aside whatever 40x46mm grenades you do NOT want to give the robot), turning it on, and placing it on the ground.  If reprogrammed and rewired successfully, the Chicken Walker will then identify you as a friendly, roam around or follow you, and attack all enemies with its Milkor MGL.",
+    "volume": "1250000 ml",
+    "weight": "1250000 g",
+    "price": 800000,
+    "price_postapoc": 6000,
+    "to_hit": -3,
+    "material": [ "steel" ],
+    "symbol": ";",
+    "color": "red",
+    "use_action": {
+      "type": "place_monster",
+      "monster_id": "mon_chickenbot",
+      "friendly_msg": "The Chicken Walker beeps affirmatively and begins scanning for hostiles.",
+      "hostile_msg": "You misprogram the Chicken Walker and it trains its gun on you.  Your life flashes before your eyes.",
+      "difficulty": 8,
+      "moves": 150,
+      "skills": [ "electronics", "computer" ]
+    },
+    "flags": [ "SINGLE_USE" ],
+    "melee_damage": { "bash": 8 }
+  },
+  {
+    "id": "broken_tankbot",
+    "type": "TOOL",
+    "name": { "str": "Broken Tank Drone" },
+    "description": "An inactive Z-01 Tank Drone equipped with an M3E1 recoilless rifle.  Using this item involves loading the unit with the 84x246mm rounds in your inventory (if you wish to divide your ammunition, set aside whatever 84x246mm rounds you do NOT want to give the robot), turning it on, and placing it on the ground.  If reprogrammed and rewired successfully, the Tank Drone will then identify you as a friendly, roam around or follow you, and attack all enemies with its M3E1 recoilless rifle.",
+    "volume": "1300000 ml",
+    "weight": "1300000 g",
+    "price": 900000,
+    "price_postapoc": 8000,
+    "to_hit": -3,
+    "material": [ "steel" ],
+    "symbol": ";",
+    "color": "dark_gray",
+    "use_action": {
+      "type": "place_monster",
+      "monster_id": "mon_chickenbot",
+      "friendly_msg": "The Tank Drone beeps affirmatively and begins scanning for hostiles.",
+      "hostile_msg": "You misprogram the Tank Drone and it trains its gun on you.  Your life flashes before your eyes.",
+      "difficulty": 9,
+      "moves": 150,
+      "skills": [ "electronics", "computer" ]
+    },
+    "flags": [ "SINGLE_USE" ],
+    "melee_damage": { "bash": 8 }
+  },
+  {
     "id": "bot_nursebot",
     "type": "TOOL",
     "name": { "str": "inactive nurse bot" },
