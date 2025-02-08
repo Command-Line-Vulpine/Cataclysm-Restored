@@ -15,7 +15,7 @@ I've heard and found Bright Nights adjustments to be somewhat inconsistant, as w
 
 #### Why you?
 
-I'm no professional developer, but I'm not new to making mods.  Back in the 0.C era I made the Five Nights at Freddy's mod that added the animatronics and pizzeria to the game.  I also made the Lightfire Union mod for Stellaris which added a full fox furry race to the game using (with permission) artwork by real artists.  I've also done minor modifications for myself to CDDA when I play it.  Lastly, I've been playing CDDA since pre-0.A, all on camera for YouTube - I'll be blunt, and just say I think I have a better understanding of how the game was really meant to feel than the modern dev team.
+I'm no professional developer, but I'm not new to making mods.  Back in the 0.C era I made the Five Nights at Freddy's mod that added the animatronics and pizzeria to the game.  I also made the Lightfire Union mod for Stellaris which added a full fox furry race to the game using (with permission) artwork by real artists.  I've also done minor modifications for myself to CDDA when I play it.  Lastly, I've been playing CDDA since pre-0.A, all on camera for YouTube - and so I feel I have a strong understanding of the original direction of the game; and a good chance of putting it back on track.
 
 #### What do you plan to change?
 
