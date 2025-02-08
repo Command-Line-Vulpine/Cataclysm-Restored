@@ -27,8 +27,11 @@ v 0.2
 1. Buffed makeshift crowbar, cudgel, and quarterstaff to older stats.
 2. Removed welding rod requirements; also added easy ways to make them, as a backup.
 3. Boosted cotton sheet output from dissembling sheets.
-4. Have game default to single-pool points system.  Rename "survivor" back to Freeform.
-5. Obligatory self-insert OC on Fox Body Pillow. Just MShock and UndeadPeople.
+4. Game defaults to single-pool points system.  Rename "survivor" back to Freeform.
+5. Added body pillow variants to Undead_People tileset.
+6. Obligatory self-insert OC on Fox Body Pillow. Just MShock and UndeadPeople.
+7. Added back in AEP suit and ANBC suit, currently just dropped by Hazmat zombies.
+8. Added back in Chicken Walker and Tank Drone.
 
 v 0.1
 
@@ -42,7 +45,7 @@ v 0.1
 
 To-Do list
 
-* Add back in robots.  Chicken Walker, Police Bot, Riot Bot, etc.
+* Add in other removed monsters people want back.
 * Make it so dissecting certain types of zombies yields CBMs again.
 * Add back in various types of vending machines and ATMs.
 * Add more locations with auto-docs.
@@ -50,8 +53,7 @@ To-Do list
 * Add turning portal storms back on as a mod.
 * Add some way to get the benefits from portal storms without turning them on.
 * Check drugs and increase their stat bonuses closer to what they used to be.
-* Make loot pools my random, particularly in houses.
+* Make loot pools more random, particularly in houses.
 * Double check guns an ammo.  Add back in fan favorite weapons that were removed.  Make sure ammo is accessible for rare guns, perhaps via vending machine.
-* Simplify crafting.  This would include making rags the majority crafting item for cloth instead of sheets; and removing welding rods for metal working.
+* Further simplifiying crafting.
 * Restore old traits.  Packmule boosting carry volume by 20%, Trigger Happy if possible.
-* Have game default to single-pool points system.  Rename "survivor" back to Freeform.
