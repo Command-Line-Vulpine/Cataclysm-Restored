@@ -85,22 +85,22 @@ jobs:
             artifact: linux-terminal-only-x64
             ext: tar.gz
             content: application/gzip
-          - name: macOS Curses Universal Binary (x64 and arm64)
-            os: macos-13
-            mxe: none
-            tiles: 0
-            sound: 0
-            artifact: osx-terminal-only-universal
-            ext: dmg
-            content: application/x-apple-diskimage
-          - name: macOS Tiles Universal Binary (x64 and arm64)
-            os: macos-13
-            mxe: none
-            tiles: 1
-            sound: 0
-            artifact: osx-with-graphics-universal
-            ext: dmg
-            content: application/x-apple-diskimage
+          #- name: macOS Curses Universal Binary (x64 and arm64)
+          #  os: macos-13
+          #  mxe: none
+          #  tiles: 0
+          #  sound: 0
+          #  artifact: osx-terminal-only-universal
+          #  ext: dmg
+          #  content: application/x-apple-diskimage
+          #- name: macOS Tiles Universal Binary (x64 and arm64)
+          #  os: macos-13
+          #  mxe: none
+          #  tiles: 1
+          #  sound: 0
+          #  artifact: osx-with-graphics-universal
+          #  ext: dmg
+          #  content: application/x-apple-diskimage
           #- name: WebAssembly Bundle
           #  os: ubuntu-latest
           #  mxe: none
