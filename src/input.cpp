@@ -1670,6 +1670,9 @@ action_id input_context::display_menu( const bool permit_execute_action )
                     case kb_btn_idx::add_global:
                         status = s_add_global;
                         break;
+                    case kb_btn_idx::reset:
+                        status = s_reset;
+                        break;
                     case kb_btn_idx::none:
                         break;
                 }
